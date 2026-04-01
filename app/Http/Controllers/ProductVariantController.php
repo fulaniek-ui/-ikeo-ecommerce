@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProductVariantController extends Controller
@@ -82,6 +83,9 @@ class ProductVariantController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            if ($variant->image) {
+                Storage::disk('public')->delete($variant->image);
+            }
             $data['image'] = $request->file('image')->store('variants', 'public');
         }
 
@@ -92,7 +96,11 @@ class ProductVariantController extends Controller
 
     public function destroy($product_id, $variant_id)
     {
-        ProductVariant::findOrFail($variant_id)->delete();
+        $variant = ProductVariant::findOrFail($variant_id);
+        if ($variant->image) {
+            Storage::disk('public')->delete($variant->image);
+        }
+        $variant->delete();
         return redirect()->route('variants.index', $product_id);
     }
 }

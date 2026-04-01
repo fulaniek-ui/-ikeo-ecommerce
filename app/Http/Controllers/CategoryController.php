@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -69,6 +70,9 @@ class CategoryController extends Controller
         $data['slug'] = Str::slug($data['name']);
 
         if ($request->hasFile('image')) {
+            if ($category->image) {
+                Storage::disk('public')->delete($category->image);
+            }
             $data['image'] = $request->file('image')->store('categories', 'public');
         }
 
@@ -79,6 +83,9 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
         $category->delete();
         return redirect()->route('categories.index');
     }

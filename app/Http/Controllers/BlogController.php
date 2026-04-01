@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -93,6 +94,9 @@ class BlogController extends Controller
         $data['slug'] = Str::slug($data['title']);
 
         if ($request->hasFile('image')) {
+            if ($blog->image) {
+                Storage::disk('public')->delete($blog->image);
+            }
             $data['image'] = $request->file('image')->store('blogs', 'public');
         }
 
@@ -111,6 +115,9 @@ class BlogController extends Controller
 
     public function destroy(Blog $blog)
     {
+        if ($blog->image) {
+            Storage::disk('public')->delete($blog->image);
+        }
         $blog->delete();
         return redirect()->route('blogs.index');
     }

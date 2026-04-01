@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -63,6 +64,9 @@ class BrandController extends Controller
         $data['slug'] = Str::slug($data['name']);
 
         if ($request->hasFile('logo')) {
+            if ($brand->logo) {
+                Storage::disk('public')->delete($brand->logo);
+            }
             $data['logo'] = $request->file('logo')->store('brands', 'public');
         }
 
@@ -73,6 +77,9 @@ class BrandController extends Controller
 
     public function destroy(Brand $brand)
     {
+        if ($brand->logo) {
+            Storage::disk('public')->delete($brand->logo);
+        }
         $brand->delete();
         return redirect()->route('brands.index');
     }
