@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Services\XenditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -35,7 +36,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, XenditService $xendit)
     {
         $request->validate([
             'address_id' => ['required', 'exists:addresses,id'],
@@ -48,7 +49,7 @@ class OrderController extends Controller
             'items.*.quantity' => ['required', 'integer', 'min:1'],
         ]);
 
-        return DB::transaction(function () use ($request) {
+        return DB::transaction(function () use ($request, $xendit) {
             $subtotal = 0;
             $orderItems = [];
 
@@ -76,11 +77,12 @@ class OrderController extends Controller
             $shippingCost = 15000;
             $tax = round($subtotal * 0.11, 2);
             $total = $subtotal + $shippingCost + $tax;
+            $orderNumber = 'IKEO-' . strtoupper(Str::random(8));
 
             $order = Order::create([
                 'user_id' => $request->user()->id,
                 'address_id' => $request->address_id,
-                'order_number' => 'IKEO-' . strtoupper(Str::random(8)),
+                'order_number' => $orderNumber,
                 'payment_method' => $request->payment_method,
                 'courier' => $request->courier,
                 'subtotal' => $subtotal,
@@ -92,9 +94,25 @@ class OrderController extends Controller
 
             $order->orderItems()->createMany($orderItems);
 
+            // Create Xendit invoice
+            $invoice = $xendit->createInvoice([
+                'external_id' => $orderNumber,
+                'amount' => $total,
+                'payer_email' => $request->user()->email,
+                'description' => "IKEO Order #{$orderNumber}",
+                'success_url' => config('app.url') . '/api/payments/success?order=' . $order->id,
+                'failure_url' => config('app.url') . '/api/payments/failure?order=' . $order->id,
+            ]);
+
+            $order->update([
+                'xendit_invoice_id' => $invoice['id'],
+                'payment_url' => $invoice['invoice_url'],
+            ]);
+
             return response()->json([
                 'data' => $order->load('orderItems'),
-                'message' => 'Order created',
+                'payment_url' => $invoice['invoice_url'],
+                'message' => 'Order created. Redirect to payment.',
             ], 201);
         });
     }

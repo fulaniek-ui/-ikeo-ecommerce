@@ -71,7 +71,7 @@ export default function Form({ category }: Props) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="image">Image</Label>
-            {category?.image && <img src={`/storage/${category.image}`} alt={category.name} className="h-20 w-20 rounded-md object-cover" />}
+            {category?.image && <img src={category.image.startsWith('http') ? category.image : `/storage/${category.image}`} alt={category.name} className="h-20 w-20 rounded-md object-cover" />}
             <Input id="image" type="file" accept="image/*" onChange={(e) => setData('image', e.target.files?.[0] ?? null)} />
             {errors.image && <p className="mt-1 text-red-500">{errors.image}</p>}
           </div>

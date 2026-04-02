@@ -116,6 +116,8 @@ export interface Order {
   tax: number;
   total: number;
   notes?: string;
+  xendit_invoice_id?: string;
+  payment_url?: string;
   paid_at?: string;
   shipped_at?: string;
   delivered_at?: string;

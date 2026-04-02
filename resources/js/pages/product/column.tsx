@@ -15,7 +15,7 @@ export const columns: ColumnDef<Product>[] = [
     header: 'Image',
     cell: ({ row }) => {
       const image = row.getValue('image') as string;
-      return image ? <img src={`/storage/${image}`} alt="" className="h-10 w-10 rounded-md object-cover" /> : <div className="h-10 w-10 rounded-md bg-muted" />;
+      return image ? <img src={image.startsWith('http') ? image : `/storage/${image}`} alt="" className="h-10 w-10 rounded-md object-cover" /> : <div className="h-10 w-10 rounded-md bg-muted" />;
     },
   },
   { accessorKey: 'name', header: 'Name' },

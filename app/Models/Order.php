@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'user_id', 'address_id', 'order_number', 'status', 'payment_method',
         'courier', 'subtotal', 'shipping_cost', 'tax', 'total', 'notes',
-        'paid_at', 'shipped_at', 'delivered_at',
+        'xendit_invoice_id', 'payment_url', 'paid_at', 'shipped_at', 'delivered_at',
     ];
 
     protected function casts(): array

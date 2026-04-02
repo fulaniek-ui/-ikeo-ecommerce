@@ -30,7 +30,11 @@ export default function Show({ order }: Props) {
           <div><span className="text-muted-foreground">Customer:</span> {order.user?.name}</div>
           <div><span className="text-muted-foreground">Courier:</span> {order.courier}</div>
           <div><span className="text-muted-foreground">Payment:</span> {order.payment_method}</div>
+          <div><span className="text-muted-foreground">Paid:</span> {order.paid_at ? new Date(order.paid_at).toLocaleString('id-ID') : <Badge variant="destructive">Unpaid</Badge>}</div>
           <div><span className="text-muted-foreground">Date:</span> {new Date(order.created_at).toLocaleDateString('id-ID')}</div>
+          {order.payment_url && !order.paid_at && (
+            <div><a href={order.payment_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm">Open Payment Link ↗</a></div>
+          )}
         </div>
         {order.address && (
           <div className="text-sm">

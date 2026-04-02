@@ -82,7 +82,7 @@ export default function Form({ blog }: Props) {
             </div>
             <div className="space-y-2">
               <Label htmlFor="image">Image</Label>
-              {blog?.image && <img src={`/storage/${blog.image}`} alt="" className="h-20 w-20 rounded-md object-cover" />}
+              {blog?.image && <img src={blog.image.startsWith('http') ? blog.image : `/storage/${blog.image}`} alt="" className="h-20 w-20 rounded-md object-cover" />}
               <Input id="image" type="file" accept="image/*" onChange={(e) => setData('image', e.target.files?.[0] ?? null)} />
             </div>
           </div>

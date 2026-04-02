@@ -13,7 +13,7 @@ export const columns: ColumnDef<Brand>[] = [
     header: 'Logo',
     cell: ({ row }) => {
       const logo = row.getValue('logo') as string;
-      return logo ? <img src={`/storage/${logo}`} alt="" className="h-10 w-10 rounded-md object-cover" /> : <div className="h-10 w-10 rounded-md bg-muted" />;
+      return logo ? <img src={logo.startsWith('http') ? logo : `/storage/${logo}`} alt="" className="h-10 w-10 rounded-md object-cover" /> : <div className="h-10 w-10 rounded-md bg-muted" />;
     },
   },
   { accessorKey: 'name', header: 'Name' },

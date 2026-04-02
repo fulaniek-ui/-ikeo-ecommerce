@@ -8,6 +8,7 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ConsultationController;
 use App\Http\Controllers\API\NewsletterController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\StoreController;
@@ -35,6 +36,11 @@ Route::get('/stores', [StoreController::class, 'index']);
 
 Route::post('/newsletter', [NewsletterController::class, 'subscribe']);
 Route::post('/consultations', [ConsultationController::class, 'store']);
+
+// Payment (Xendit)
+Route::post('/payments/webhook', [PaymentController::class, 'webhook']);
+Route::get('/payments/success', [PaymentController::class, 'success']);
+Route::get('/payments/failure', [PaymentController::class, 'failure']);
 
 // Authenticated
 Route::middleware('auth:sanctum')->group(function () {

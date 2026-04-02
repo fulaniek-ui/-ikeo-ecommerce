@@ -45,7 +45,7 @@ export default function Form({ brand }: Props) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="logo">Logo</Label>
-            {brand?.logo && <img src={`/storage/${brand.logo}`} alt={brand.name} className="h-20 w-20 rounded-md object-cover" />}
+            {brand?.logo && <img src={brand.logo.startsWith('http') ? brand.logo : `/storage/${brand.logo}`} alt={brand.name} className="h-20 w-20 rounded-md object-cover" />}
             <Input id="logo" type="file" accept="image/*" onChange={(e) => setData('logo', e.target.files?.[0] ?? null)} />
             {errors.logo && <p className="mt-1 text-red-500">{errors.logo}</p>}
           </div>

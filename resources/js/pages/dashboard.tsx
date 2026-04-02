@@ -90,7 +90,7 @@ export default function Dashboard({ stats, latestOrders, latestProducts, lowStoc
                   {(lowStock.length > 0 ? lowStock : latestProducts).map((product) => (
                     <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/50 transition-colors">
                       {product.image ? (
-                        <img src={`/storage/${product.image}`} alt="" className="h-10 w-10 rounded-md object-cover" />
+                        <img src={product.image.startsWith('http') ? product.image : `/storage/${product.image}`} alt="" className="h-10 w-10 rounded-md object-cover" />
                       ) : (
                         <div className="h-10 w-10 rounded-md bg-muted" />
                       )}

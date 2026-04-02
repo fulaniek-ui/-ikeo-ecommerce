@@ -88,7 +88,7 @@ export default function Form({ product, variant }: Props) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="image">Image</Label>
-            {variant?.image && <img src={`/storage/${variant.image}`} alt="" className="h-20 w-20 rounded-md object-cover" />}
+            {variant?.image && <img src={variant.image.startsWith('http') ? variant.image : `/storage/${variant.image}`} alt="" className="h-20 w-20 rounded-md object-cover" />}
             <Input id="image" type="file" accept="image/*" onChange={(e) => setData('image', e.target.files?.[0] ?? null)} />
             {errors.image && <p className="mt-1 text-red-500">{errors.image}</p>}
           </div>
