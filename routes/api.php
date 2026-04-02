@@ -41,6 +41,7 @@ Route::post('/consultations', [ConsultationController::class, 'store']);
 Route::post('/payments/webhook', [PaymentController::class, 'webhook']);
 Route::get('/payments/success', [PaymentController::class, 'success']);
 Route::get('/payments/failure', [PaymentController::class, 'failure']);
+Route::get('/payments/{order}/check', [PaymentController::class, 'checkStatus']);
 
 // Authenticated
 Route::middleware('auth:sanctum')->group(function () {

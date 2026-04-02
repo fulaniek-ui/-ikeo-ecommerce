@@ -4,18 +4,38 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AppLayout from '@/layouts/app-layout';
 import { Order } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 
 const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
 
 interface Props { order: Order; }
 
-export default function Show({ order }: Props) {
+export default function Show({ order: initialOrder }: Props) {
+  const [order, setOrder] = useState(initialOrder);
+  const [checking, setChecking] = useState(false);
+  const [paymentMsg, setPaymentMsg] = useState('');
   const { data, setData, patch, processing } = useForm({ status: order.status });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     patch(`/dashboard/orders/${order.id}`);
+  };
+
+  const checkPayment = async () => {
+    setChecking(true);
+    setPaymentMsg('');
+    try {
+      const res = await fetch(`/api/payments/${order.id}/check`);
+      const json = await res.json();
+      setPaymentMsg(json.message);
+      if (json.data) {
+        setOrder(json.data);
+        setData('status', json.data.status);
+      }
+    } catch {
+      setPaymentMsg('Failed to check payment status');
+    }
+    setChecking(false);
   };
 
   return (
@@ -36,6 +56,26 @@ export default function Show({ order }: Props) {
             <div><a href={order.payment_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm">Open Payment Link ↗</a></div>
           )}
         </div>
+
+        {order.xendit_invoice_id && !order.paid_at && (
+          <div className="flex items-center gap-3">
+            <Button variant="outline" onClick={checkPayment} disabled={checking}>
+              {checking ? 'Checking...' : '🔄 Check Payment Status'}
+            </Button>
+            {paymentMsg && (
+              <span className={`text-sm font-medium ${paymentMsg.includes('confirmed') ? 'text-green-600' : paymentMsg.includes('Waiting') ? 'text-amber-600' : 'text-red-600'}`}>
+                {paymentMsg}
+              </span>
+            )}
+          </div>
+        )}
+
+        {order.paid_at && (
+          <div className="rounded-lg bg-green-50 border border-green-200 p-3 text-sm text-green-700 dark:bg-green-950 dark:border-green-800 dark:text-green-300">
+            ✅ Payment confirmed at {new Date(order.paid_at).toLocaleString('id-ID')}
+          </div>
+        )}
+
         {order.address && (
           <div className="text-sm">
             <span className="text-muted-foreground">Ship to:</span> {order.address.recipient_name}, {order.address.address}, {order.address.city}, {order.address.province} {order.address.postal_code}
