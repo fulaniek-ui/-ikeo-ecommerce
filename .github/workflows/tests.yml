@@ -2,59 +2,35 @@ name: tests
 
 on:
   push:
-    branches:
-      - develop
-      - main
-      - master
+    branches: [main]
   pull_request:
-    branches:
-      - develop
-      - main
-      - master
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    branches: [main]
 
 jobs:
   ci:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.4']
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
-          tools: composer:v2
+          php-version: '8.4'
           extensions: pdo_sqlite, sqlite3, mbstring
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: Install Node Dependencies
-        run: npm ci
-
-      - name: Install PHP Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Prepare Environment
-        run: |
-          cp .env.example .env
-          php artisan key:generate
-
-      - name: Build Assets
-        run: npm run build
+      - run: npm ci
+      - run: composer install --no-interaction --prefer-dist
+      - run: cp .env.example .env
+      - run: php artisan key:generate
+      - run: npm run build
 
       - name: Run Tests
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
-        run: ./vendor/bin/pest
+        run: php vendor/bin/pest --colors=always
