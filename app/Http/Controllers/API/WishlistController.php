@@ -31,6 +31,7 @@ class WishlistController extends Controller
 
         if ($existing) {
             $existing->delete();
+
             return response()->json(['message' => 'Removed from wishlist', 'wishlisted' => false]);
         }
 

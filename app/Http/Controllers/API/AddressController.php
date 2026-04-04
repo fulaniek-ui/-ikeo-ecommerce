@@ -28,7 +28,7 @@ class AddressController extends Controller
             'is_default' => ['boolean'],
         ]);
 
-        if (!empty($data['is_default'])) {
+        if (! empty($data['is_default'])) {
             $request->user()->addresses()->update(['is_default' => false]);
         }
 
@@ -54,7 +54,7 @@ class AddressController extends Controller
             'is_default' => ['boolean'],
         ]);
 
-        if (!empty($data['is_default'])) {
+        if (! empty($data['is_default'])) {
             $request->user()->addresses()->where('id', '!=', $address->id)->update(['is_default' => false]);
         }
 

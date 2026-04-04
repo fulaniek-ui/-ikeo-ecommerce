@@ -15,7 +15,7 @@ class PaymentController extends Controller
      */
     public function checkStatus(Request $request, Order $order, XenditService $xendit)
     {
-        if (!$order->xendit_invoice_id) {
+        if (! $order->xendit_invoice_id) {
             return response()->json(['message' => 'No payment invoice found'], 404);
         }
 
@@ -68,7 +68,7 @@ class PaymentController extends Controller
 
         $order = Order::where('order_number', $request->input('external_id'))->first();
 
-        if (!$order) {
+        if (! $order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
 

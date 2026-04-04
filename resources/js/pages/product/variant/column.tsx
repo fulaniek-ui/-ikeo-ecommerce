@@ -6,6 +6,7 @@ import { ProductVariant } from '@/types';
 import { router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { SafeImage } from '@/components/safe-image';
 
 const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
 
@@ -15,7 +16,8 @@ export const columns = (productId: number): ColumnDef<ProductVariant>[] => [
     header: 'Image',
     cell: ({ row }) => {
       const image = row.getValue('image') as string;
-      return image ? <img src={image.startsWith('http') ? image : `/storage/${image}`} alt="" className="h-10 w-10 rounded-md object-cover" /> : <div className="h-10 w-10 rounded-md bg-muted" />;
+      const src = image?.startsWith('http') ? image : `/storage/${image}`;
+      return <SafeImage src={src} alt="" className="h-10 w-10 rounded-xl object-cover shadow-sm border border-zinc-100 dark:border-zinc-800" />;
     },
   },
   { accessorKey: 'variant_name', header: 'Variant' },

@@ -1,12 +1,11 @@
+import * as React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { DashboardStats, Order, Product } from '@/types';
-import {
-  Package, Tag, Award, Users, ShoppingCart, TrendingUp,
-  AlertTriangle, Archive, Star, MessageSquare, Clock, ArrowUpRight,
-} from 'lucide-react';
+import { Package, Tag, Award, Users, ShoppingCart, TrendingUp, AlertTriangle, Archive, Star, MessageSquare, Clock, ArrowUpRight } from 'lucide-react';
+import { SafeImage } from '@/components/safe-image';
+import type { DashboardStats, Order, Product } from '@/types';
 
 interface Props {
   stats: DashboardStats & { pendingOrders: number; todayRevenue: number; reviews: number; consultations: number };
@@ -16,8 +15,14 @@ interface Props {
   topProducts: (Product & { reviews_count: number; reviews_avg_rating: number | null })[];
 }
 
-const formatIDR = (v: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v);
-const formatCompact = (v: number) => v >= 1000000 ? `${(v / 1000000).toFixed(1)}M` : v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v.toString();
+const formatIDR = (v: number | null | undefined) => {
+  if (v === null || v === undefined) return 'Rp 0';
+  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v);
+};
+const formatCompact = (v: number | null | undefined) => {
+  if (v === null || v === undefined) return '0';
+  return v >= 1000000 ? `${(v / 1000000).toFixed(1)}M` : v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v.toString();
+};
 
 const statusColor: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
@@ -50,14 +55,15 @@ function GradientCard({ title, value, subtitle, icon: Icon, gradient, href }: {
   );
 }
 
-function StarRating({ rating }: { rating: number | null }) {
+function StarRating({ rating }: { rating: number | string | null }) {
   if (!rating) return <span className="text-xs text-muted-foreground">No reviews</span>;
+  const numRating = Number(rating);
   return (
     <div className="flex items-center gap-1">
       {[1, 2, 3, 4, 5].map((i) => (
-        <Star key={i} className={`h-3 w-3 ${i <= Math.round(rating) ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground/30'}`} />
+        <Star key={i} className={`h-3 w-3 ${i <= Math.round(numRating) ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground/30'}`} />
       ))}
-      <span className="text-xs font-medium ml-1">{rating.toFixed(1)}</span>
+      <span className="text-xs font-medium ml-1">{numRating.toFixed(1)}</span>
     </div>
   );
 }
@@ -216,11 +222,11 @@ export default function Dashboard({ stats, latestOrders, latestProducts, lowStoc
                   {topProducts.map((product, i) => (
                     <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-3 rounded-xl p-3 hover:bg-muted/40 transition-all duration-200">
                       <div className="relative">
-                        {product.image ? (
-                          <img src={product.image.startsWith('http') ? product.image : `/storage/${product.image}`} alt="" className="h-12 w-12 rounded-xl object-cover shadow-sm" />
-                        ) : (
-                          <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-muted to-muted/50" />
-                        )}
+                        <SafeImage 
+                          src={product.image?.startsWith('http') ? product.image : `/storage/${product.image}`} 
+                          alt="" 
+                          className="h-12 w-12 rounded-xl object-cover shadow-sm border border-zinc-100 dark:border-zinc-800" 
+                        />
                         <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-bold text-white shadow">
                           {i + 1}
                         </span>
@@ -250,11 +256,11 @@ export default function Dashboard({ stats, latestOrders, latestProducts, lowStoc
                 <div className="space-y-3">
                   {lowStock.map((product) => (
                     <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-3 rounded-xl border border-red-100 dark:border-red-900/30 p-3 hover:bg-red-50/50 dark:hover:bg-red-950/20 transition-all">
-                      {product.image ? (
-                        <img src={product.image.startsWith('http') ? product.image : `/storage/${product.image}`} alt="" className="h-10 w-10 rounded-lg object-cover" />
-                      ) : (
-                        <div className="h-10 w-10 rounded-lg bg-muted" />
-                      )}
+                      <SafeImage 
+                        src={product.image?.startsWith('http') ? product.image : `/storage/${product.image}`} 
+                        alt="" 
+                        className="h-10 w-10 rounded-lg object-cover border border-red-200 dark:border-red-800" 
+                      />
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm truncate">{product.name}</p>
                         <p className="text-xs text-muted-foreground">{product.category?.name}</p>
@@ -291,11 +297,11 @@ export default function Dashboard({ stats, latestOrders, latestProducts, lowStoc
                 <div className="space-y-3">
                   {latestProducts.map((product) => (
                     <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-3 rounded-xl p-3 hover:bg-muted/40 transition-all duration-200">
-                      {product.image ? (
-                        <img src={product.image.startsWith('http') ? product.image : `/storage/${product.image}`} alt="" className="h-12 w-12 rounded-xl object-cover shadow-sm" />
-                      ) : (
-                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-muted to-muted/50" />
-                      )}
+                      <SafeImage 
+                        src={product.image?.startsWith('http') ? product.image : `/storage/${product.image}`} 
+                        alt="" 
+                        className="h-12 w-12 rounded-xl object-cover shadow-sm border border-zinc-100 dark:border-zinc-800" 
+                      />
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm truncate">{product.name}</p>
                         <p className="text-xs text-muted-foreground">{product.category?.name} · {product.brand?.name}</p>

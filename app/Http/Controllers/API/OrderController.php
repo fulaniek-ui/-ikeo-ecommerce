@@ -55,7 +55,7 @@ class OrderController extends Controller
 
             foreach ($request->items as $item) {
                 $product = Product::findOrFail($item['product_id']);
-                $variant = !empty($item['product_variant_id'])
+                $variant = ! empty($item['product_variant_id'])
                     ? ProductVariant::findOrFail($item['product_variant_id'])
                     : null;
 
@@ -77,7 +77,7 @@ class OrderController extends Controller
             $shippingCost = 15000;
             $tax = round($subtotal * 0.11, 2);
             $total = $subtotal + $shippingCost + $tax;
-            $orderNumber = 'IKEO-' . strtoupper(Str::random(8));
+            $orderNumber = 'IKEO-'.strtoupper(Str::random(8));
 
             $order = Order::create([
                 'user_id' => $request->user()->id,
@@ -100,8 +100,8 @@ class OrderController extends Controller
                 'amount' => $total,
                 'payer_email' => $request->user()->email,
                 'description' => "IKEO Order #{$orderNumber}",
-                'success_url' => config('app.url') . '/api/payments/success?order=' . $order->id,
-                'failure_url' => config('app.url') . '/api/payments/failure?order=' . $order->id,
+                'success_url' => config('app.url').'/api/payments/success?order='.$order->id,
+                'failure_url' => config('app.url').'/api/payments/failure?order='.$order->id,
             ]);
 
             $order->update([

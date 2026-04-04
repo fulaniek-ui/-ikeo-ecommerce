@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Blog;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class BlogFactory extends Factory
     public function definition(): array
     {
         return [
-            'author_id' => \App\Models\User::factory(),
+            'author_id' => User::factory(),
             'title' => fake()->sentence(),
             'title_id' => fake()->sentence(),
             'slug' => fake()->unique()->slug(),

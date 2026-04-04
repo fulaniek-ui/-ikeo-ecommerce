@@ -87,6 +87,7 @@ class CategoryController extends Controller
             Storage::disk('public')->delete($category->image);
         }
         $category->delete();
+
         return redirect()->route('categories.index');
     }
 }

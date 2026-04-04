@@ -18,7 +18,7 @@ class BrandController extends Controller
     {
         $brand = Brand::where('slug', $slug)->with('products')->first();
 
-        if (!$brand) {
+        if (! $brand) {
             return response()->json(['message' => 'Brand not found'], 404);
         }
 

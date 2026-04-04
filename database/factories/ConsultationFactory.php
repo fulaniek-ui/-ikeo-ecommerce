@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Consultation;
+use App\Models\Store;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +20,8 @@ class ConsultationFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => \App\Models\User::factory(),
-            'store_id' => \App\Models\Store::factory(),
+            'user_id' => User::factory(),
+            'store_id' => Store::factory(),
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'phone' => fake()->phoneNumber(),

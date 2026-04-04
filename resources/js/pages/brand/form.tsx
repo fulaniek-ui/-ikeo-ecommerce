@@ -1,12 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { Brand } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { FormEvent } from 'react';
+import { ArrowLeft, Save, Info, Image as ImageIcon, Award } from 'lucide-react';
+import { SafeImage } from '@/components/safe-image';
 
 interface Props { brand?: Brand; }
 
@@ -27,29 +29,116 @@ export default function Form({ brand }: Props) {
   return (
     <AppLayout breadcrumbs={[{ title: 'Brands', href: '/dashboard/brands' }, { title: brand ? 'Update' : 'Create', href: '#' }]}>
       <Head title={brand ? 'Update Brand' : 'Create Brand'} />
-      <div className="max-w-2xl p-5">
-        <div>
-          <h3 className="text-lg font-medium">{brand ? 'Update' : 'Create'} Brand</h3>
-          <Separator className="mt-5" />
-        </div>
-        <form onSubmit={handleSubmit} className="mt-5 space-y-5">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} />
-            {errors.name && <p className="mt-1 text-red-500">{errors.name}</p>}
+      
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        <form onSubmit={handleSubmit} className="space-y-8">
+          
+          {/* Header Action Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center gap-4">
+              <Link href="/dashboard/brands" className="p-2.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div>
+                <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+                  {brand ? 'Edit Brand' : 'Register New Brand'}
+                </h1>
+                <p className="text-zinc-500 dark:text-zinc-400 mt-1">
+                  {brand ? 'Maintain the brand identity and details.' : 'Establish a new brand partnership for your catalog.'}
+                </p>
+              </div>
+            </div>
+            <Button disabled={processing} type="submit" size="lg" className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 hover:-translate-y-0.5 transition-all h-12 px-8 font-bold">
+              <Save className="w-5 h-5 mr-2" />
+              {brand ? 'Save Changes' : 'Create Brand'}
+            </Button>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea id="description" value={data.description} onChange={(e) => setData('description', e.target.value)} />
-            {errors.description && <p className="mt-1 text-red-500">{errors.description}</p>}
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Left Column (Main Information) */}
+            <div className="lg:col-span-2 space-y-8">
+              
+              <Card className="border-0 shadow-xl shadow-zinc-200/40 dark:shadow-black/20 rounded-3xl bg-white dark:bg-zinc-900/60 backdrop-blur">
+                <CardHeader className="border-b border-zinc-100 dark:border-zinc-800/50 px-8 py-6">
+                  <CardTitle className="flex items-center gap-2 text-xl font-bold">
+                    <Info className="w-5 h-5 text-blue-500" />
+                    Brand Identity
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-8 space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-sm font-semibold">Brand Name <span className="text-red-500">*</span></Label>
+                    <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} className="h-12 rounded-xl bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800" placeholder="e.g. IKEA, Herman Miller" />
+                    {errors.name && <p className="mt-1 text-sm text-red-500 font-medium">{errors.name}</p>}
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="description" className="text-sm font-semibold">About the Brand</Label>
+                    <Textarea id="description" value={data.description} onChange={(e) => setData('description', e.target.value)} className="min-h-[160px] rounded-xl bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800" placeholder="Write a short biography or mission statement for this brand..." />
+                    {errors.description && <p className="mt-1 text-sm text-red-500 font-medium">{errors.description}</p>}
+                  </div>
+                </CardContent>
+              </Card>
+
+            </div>
+
+            {/* Right Column (Sidebar Information) */}
+            <div className="space-y-8">
+              
+              <Card className="border-0 shadow-xl shadow-zinc-200/40 dark:shadow-black/20 rounded-3xl bg-white dark:bg-zinc-900/60 backdrop-blur">
+                <CardHeader className="border-b border-zinc-100 dark:border-zinc-800/50 px-6 py-5">
+                  <CardTitle className="flex items-center gap-2 text-lg font-bold">
+                    <Award className="w-5 h-5 text-amber-500" />
+                    Brand Media
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="logo" className="text-sm font-semibold mb-2 block">Brand Logo</Label>
+                    <div className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-2xl p-6 bg-zinc-50 dark:bg-zinc-950/50 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors group cursor-pointer relative overflow-hidden aspect-square">
+                      {brand?.logo ? (
+                        <div className="relative w-full h-full rounded-xl overflow-hidden bg-white flex items-center justify-center p-4">
+                          <SafeImage 
+                            src={brand.logo.startsWith('http') ? brand.logo : `/storage/${brand.logo}`} 
+                            alt={brand.name} 
+                            className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500" 
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span className="text-white font-medium shadow-sm text-sm">Update Logo</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <div className="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center mx-auto mb-3">
+                            <ImageIcon className="w-8 h-8" />
+                          </div>
+                          <p className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Upload Official Logo</p>
+                          <p className="text-xs text-muted-foreground mt-1">Prefer transparent PNG or SVG</p>
+                        </div>
+                      )}
+                      <Input id="logo" type="file" accept="image/*" onChange={(e) => setData('logo', e.target.files?.[0] ?? null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                    </div>
+                    {errors.logo && <p className="text-sm text-red-500 font-medium text-center mt-2">{errors.logo}</p>}
+                  </div>
+
+                </CardContent>
+              </Card>
+
+              <div className="p-6 rounded-3xl bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/50">
+                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mb-2 flex items-center gap-2">
+                  <Info className="w-4 h-4 text-zinc-400" />
+                  Quick Tip
+                </h4>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  High-quality logos with transparent backgrounds perform best on the storefront and product badges.
+                </p>
+              </div>
+
+            </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="logo">Logo</Label>
-            {brand?.logo && <img src={brand.logo.startsWith('http') ? brand.logo : `/storage/${brand.logo}`} alt={brand.name} className="h-20 w-20 rounded-md object-cover" />}
-            <Input id="logo" type="file" accept="image/*" onChange={(e) => setData('logo', e.target.files?.[0] ?? null)} />
-            {errors.logo && <p className="mt-1 text-red-500">{errors.logo}</p>}
-          </div>
-          <Button disabled={processing} type="submit">{brand ? 'Update' : 'Submit'}</Button>
         </form>
       </div>
     </AppLayout>

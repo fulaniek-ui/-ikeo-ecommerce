@@ -1,12 +1,24 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { Order } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { FormEvent, useState } from 'react';
+import { Package, Truck, User, MapPin, CreditCard, Calendar, ArrowLeft, RefreshCw, CheckCircle2, AlertCircle, Receipt } from 'lucide-react';
 
 const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+const statusColor: Record<string, string> = {
+  pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200',
+  processing: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200',
+  shipped: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border-purple-200',
+  delivered: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-200',
+  cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-200',
+};
 
 interface Props { order: Order; }
 
@@ -41,80 +53,253 @@ export default function Show({ order: initialOrder }: Props) {
   return (
     <AppLayout breadcrumbs={[{ title: 'Orders', href: '/dashboard/orders' }, { title: order.order_number, href: '#' }]}>
       <Head title={`Order ${order.order_number}`} />
-      <div className="max-w-3xl p-5 space-y-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium">Order {order.order_number}</h3>
-          <Badge variant="outline">{order.status}</Badge>
-        </div>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div><span className="text-muted-foreground">Customer:</span> {order.user?.name}</div>
-          <div><span className="text-muted-foreground">Courier:</span> {order.courier}</div>
-          <div><span className="text-muted-foreground">Payment:</span> {order.payment_method}</div>
-          <div><span className="text-muted-foreground">Paid:</span> {order.paid_at ? new Date(order.paid_at).toLocaleString('id-ID') : <Badge variant="destructive">Unpaid</Badge>}</div>
-          <div><span className="text-muted-foreground">Date:</span> {new Date(order.created_at).toLocaleDateString('id-ID')}</div>
-          {order.payment_url && !order.paid_at && (
-            <div><a href={order.payment_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-sm">Open Payment Link ↗</a></div>
-          )}
-        </div>
-
-        {order.xendit_invoice_id && !order.paid_at && (
+      
+      <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        {/* Header Actions */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Button variant="outline" onClick={checkPayment} disabled={checking}>
-              {checking ? 'Checking...' : '🔄 Check Payment Status'}
-            </Button>
-            {paymentMsg && (
-              <span className={`text-sm font-medium ${paymentMsg.includes('confirmed') ? 'text-green-600' : paymentMsg.includes('Waiting') ? 'text-amber-600' : 'text-red-600'}`}>
-                {paymentMsg}
-              </span>
-            )}
+            <Link href="/dashboard/orders" className="p-2 -ml-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-3">
+                Order {order.order_number}
+                <Badge className={`px-3 py-1 text-sm font-semibold border ${statusColor[order.status] || ''}`}>
+                  {capitalize(order.status)}
+                </Badge>
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Placed on {new Date(order.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              </p>
+            </div>
           </div>
-        )}
 
-        {order.paid_at && (
-          <div className="rounded-lg bg-green-50 border border-green-200 p-3 text-sm text-green-700 dark:bg-green-950 dark:border-green-800 dark:text-green-300">
-            ✅ Payment confirmed at {new Date(order.paid_at).toLocaleString('id-ID')}
-          </div>
-        )}
+          <form onSubmit={handleSubmit} className="flex bg-muted/30 p-2 rounded-2xl border border-border/50 items-center gap-3 shadow-sm">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <span className="text-sm font-medium text-muted-foreground ml-2 hidden sm:inline-block">Status:</span>
+              <div className="w-[180px]">
+                <Select value={data.status} onValueChange={(v) => setData('status', v as Order['status'])}>
+                  <SelectTrigger className="w-full bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 shadow-xs focus:ring-amber-500 rounded-xl h-10">
+                    <SelectValue placeholder="Update status..." />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-2xl rounded-xl z-[1000] min-w-[200px] overflow-hidden">
+                    {['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((s) => (
+                      <SelectItem key={s} value={s} className="cursor-pointer py-2.5 px-3 focus:bg-amber-50 dark:focus:bg-amber-900/20 focus:text-amber-700 dark:focus:text-amber-400 m-1 rounded-lg font-medium transition-colors">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${s === 'delivered' ? 'bg-green-500' : s === 'cancelled' ? 'bg-red-500' : s === 'shipped' ? 'bg-purple-500' : s === 'processing' ? 'bg-blue-500' : 'bg-amber-500'}`} />
+                          {capitalize(s)}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button disabled={processing} type="submit" size="sm" className="rounded-xl h-10 px-5 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 shadow-md transition-all hover:scale-105 active:scale-95">
+                Save
+              </Button>
+            </div>
+          </form>
+        </div>
 
-        {order.address && (
-          <div className="text-sm">
-            <span className="text-muted-foreground">Ship to:</span> {order.address.recipient_name}, {order.address.address}, {order.address.city}, {order.address.province} {order.address.postal_code}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Main Content (Left Column) */}
+          <div className="lg:col-span-2 space-y-8">
+            
+            {/* Order Items Card */}
+            <Card className="border-0 shadow-xl shadow-zinc-200/40 dark:shadow-black/20 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/50 backdrop-blur-xl">
+              <CardHeader className="border-b border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20 pb-4">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Package className="w-5 h-5 text-amber-500" />
+                  Order Items
+                </CardTitle>
+              </CardHeader>
+              <div className="p-0">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-zinc-50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 uppercase text-xs tracking-wider">
+                        <th className="p-4 pl-6 text-left font-semibold">Product</th>
+                        <th className="p-4 text-center font-semibold">Price</th>
+                        <th className="p-4 text-center font-semibold">Qty</th>
+                        <th className="p-4 pr-6 text-right font-semibold">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50">
+                      {order.order_items?.map((item) => (
+                        <tr key={item.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors">
+                          <td className="p-4 pl-6">
+                            <p className="font-bold text-zinc-900 dark:text-zinc-100">{item.product_name}</p>
+                            {item.variant_name && (
+                              <p className="text-xs text-muted-foreground mt-0.5">{item.variant_name}</p>
+                            )}
+                          </td>
+                          <td className="p-4 text-center text-muted-foreground font-medium">{formatIDR(item.price)}</td>
+                          <td className="p-4 text-center">
+                            <span className="inline-flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-md w-8 h-8 font-semibold text-zinc-900 dark:text-zinc-100">
+                              {item.quantity}
+                            </span>
+                          </td>
+                          <td className="p-4 pr-6 text-right font-bold text-zinc-900 dark:text-zinc-100">{formatIDR(item.subtotal)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="bg-zinc-50 dark:bg-zinc-900/30 p-6 border-t border-zinc-100 dark:border-zinc-800/50">
+                <div className="w-full max-w-sm ml-auto space-y-3 text-sm">
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Subtotal</span>
+                    <span className="font-medium text-foreground">{formatIDR(order.subtotal)}</span>
+                  </div>
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Shipping</span>
+                    <span className="font-medium text-foreground">{formatIDR(order.shipping_cost)}</span>
+                  </div>
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Tax</span>
+                    <span className="font-medium text-foreground">{formatIDR(order.tax)}</span>
+                  </div>
+                  <div className="h-px bg-zinc-200 dark:bg-zinc-800 my-2" />
+                  <div className="flex justify-between items-center text-lg font-extrabold text-amber-600 dark:text-amber-500">
+                    <span>Total</span>
+                    <span>{formatIDR(order.total)}</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Payment Status Card */}
+            <Card className="border-0 shadow-xl shadow-zinc-200/40 dark:shadow-black/20 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/50">
+              <CardHeader className="border-b border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20 pb-4">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Receipt className="w-5 h-5 text-blue-500" />
+                  Payment Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className={`flex items-center justify-center w-12 h-12 rounded-xl border-2 ${order.paid_at ? 'border-green-100 bg-green-50 text-green-600 dark:border-green-900/50 dark:bg-green-900/20 dark:text-green-400' : 'border-amber-100 bg-amber-50 text-amber-600 dark:border-amber-900/50 dark:bg-amber-900/20 dark:text-amber-500'}`}>
+                      {order.paid_at ? <CheckCircle2 className="w-6 h-6" /> : <AlertCircle className="w-6 h-6" />}
+                    </div>
+                    <div>
+                      <p className="font-bold text-lg">{order.paid_at ? 'Payment Confirmed' : 'Waiting for Payment'}</p>
+                      <p className="text-sm text-muted-foreground mt-0.5">
+                        {order.paid_at ? `Paid on ${new Date(order.paid_at).toLocaleString('id-ID')}` : 'Customer has not completed payment yet.'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {order.xendit_invoice_id && !order.paid_at && (
+                    <div className="flex flex-col items-end gap-2 w-full sm:w-auto">
+                      <Button onClick={checkPayment} disabled={checking} variant="outline" className="w-full sm:w-auto rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                        <RefreshCw className={`w-4 h-4 mr-2 ${checking ? 'animate-spin' : ''}`} />
+                        {checking ? 'Checking...' : 'Check Status'}
+                      </Button>
+                      
+                      {order.payment_url && (
+                        <a href={order.payment_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 dark:text-blue-400 hover:underline font-medium px-2">
+                          View Invoice Link ↗
+                        </a>
+                      )}
+                      
+                      {paymentMsg && (
+                        <span className={`text-xs font-medium px-2 ${paymentMsg.includes('confirmed') ? 'text-green-600' : paymentMsg.includes('Waiting') ? 'text-amber-600' : 'text-red-600'}`}>
+                          {paymentMsg}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
-        )}
-        <div className="rounded-md border">
-          <table className="w-full text-sm">
-            <thead><tr className="border-b bg-muted/50"><th className="p-3 text-left">Product</th><th className="p-3 text-left">Variant</th><th className="p-3 text-right">Price</th><th className="p-3 text-right">Qty</th><th className="p-3 text-right">Subtotal</th></tr></thead>
-            <tbody>
-              {order.order_items?.map((item) => (
-                <tr key={item.id} className="border-b">
-                  <td className="p-3">{item.product_name}</td>
-                  <td className="p-3">{item.variant_name ?? '-'}</td>
-                  <td className="p-3 text-right">{formatIDR(item.price)}</td>
-                  <td className="p-3 text-right">{item.quantity}</td>
-                  <td className="p-3 text-right">{formatIDR(item.subtotal)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="text-sm space-y-1 text-right">
-          <div>Subtotal: {formatIDR(order.subtotal)}</div>
-          <div>Shipping: {formatIDR(order.shipping_cost)}</div>
-          <div>Tax: {formatIDR(order.tax)}</div>
-          <div className="font-bold text-base">Total: {formatIDR(order.total)}</div>
-        </div>
-        <form onSubmit={handleSubmit} className="flex items-end gap-3">
-          <div className="space-y-2">
-            <span className="text-sm font-medium">Update Status</span>
-            <Select value={data.status} onValueChange={(v) => setData('status', v as Order['status'])}>
-              <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-              </SelectContent>
-            </Select>
+
+          {/* Sidebar Info (Right Column) */}
+          <div className="space-y-6">
+            
+            {/* Customer Info Card */}
+            <Card className="border-0 shadow-lg shadow-zinc-200/30 dark:shadow-black/20 rounded-2xl bg-white dark:bg-zinc-900/50">
+              <CardHeader className="pb-3 border-b border-zinc-100 dark:border-zinc-800/50">
+                <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-muted-foreground">
+                  <User className="w-4 h-4" />
+                  Customer
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold text-lg uppercase">
+                    {order.user?.name?.charAt(0) || '?'}
+                  </div>
+                  <div>
+                    <p className="font-bold text-foreground">{order.user?.name}</p>
+                    <p className="text-sm text-muted-foreground">{order.user?.email}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Shipping Info Card */}
+            <Card className="border-0 shadow-lg shadow-zinc-200/30 dark:shadow-black/20 rounded-2xl bg-white dark:bg-zinc-900/50">
+              <CardHeader className="pb-3 border-b border-zinc-100 dark:border-zinc-800/50">
+                <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-muted-foreground">
+                  <Truck className="w-4 h-4" />
+                  Shipping Details
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-5 space-y-4">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Courier Service</p>
+                  <p className="font-bold flex items-center gap-2 text-foreground">
+                    <span className="px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-xs uppercase tracking-wider">
+                      {order.courier}
+                    </span>
+                  </p>
+                </div>
+                
+                {order.address && (
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Delivery Address</p>
+                    <div className="bg-zinc-50 dark:bg-zinc-900/50 p-3.5 rounded-xl text-sm border border-zinc-100 dark:border-zinc-800/50">
+                      <p className="font-bold flex items-center gap-2 mb-1 text-foreground">
+                        <MapPin className="w-3.5 h-3.5 text-rose-500" />
+                        {order.address.recipient_name}
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed pl-5">
+                        {order.address.address}<br/>
+                        {order.address.city}, {order.address.province} {order.address.postal_code}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Payment Method Card */}
+            <Card className="border-0 shadow-lg shadow-zinc-200/30 dark:shadow-black/20 rounded-2xl bg-white dark:bg-zinc-900/50">
+              <CardHeader className="pb-3 border-b border-zinc-100 dark:border-zinc-800/50">
+                <CardTitle className="text-sm font-bold flex items-center gap-2 uppercase tracking-wider text-muted-foreground">
+                  <CreditCard className="w-4 h-4" />
+                  Payment Method
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 flex items-center justify-center">
+                    <CreditCard className="w-5 h-5" />
+                  </div>
+                  <p className="font-bold text-foreground capitalize text-lg">{order.payment_method}</p>
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
-          <Button disabled={processing} type="submit">Update</Button>
-        </form>
+        </div>
       </div>
     </AppLayout>
   );

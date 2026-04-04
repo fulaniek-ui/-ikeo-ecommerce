@@ -113,6 +113,7 @@ class ProductController extends Controller
             Storage::disk('public')->delete($product->image);
         }
         $product->delete();
+
         return redirect()->route('products.index');
     }
 }

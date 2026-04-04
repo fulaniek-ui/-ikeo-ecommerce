@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Address extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id', 'label', 'recipient_name', 'phone',
         'address', 'city', 'province', 'postal_code', 'is_default',

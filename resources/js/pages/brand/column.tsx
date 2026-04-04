@@ -6,6 +6,7 @@ import { Brand } from '@/types';
 import { router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
+import { SafeImage } from '@/components/safe-image';
 
 export const columns: ColumnDef<Brand>[] = [
   {
@@ -13,7 +14,8 @@ export const columns: ColumnDef<Brand>[] = [
     header: 'Logo',
     cell: ({ row }) => {
       const logo = row.getValue('logo') as string;
-      return logo ? <img src={logo.startsWith('http') ? logo : `/storage/${logo}`} alt="" className="h-10 w-10 rounded-md object-cover" /> : <div className="h-10 w-10 rounded-md bg-muted" />;
+      const src = logo?.startsWith('http') ? logo : `/storage/${logo}`;
+      return <SafeImage src={src} alt="" className="h-10 w-10 rounded-xl object-contain shadow-sm border border-zinc-100 dark:border-zinc-800 p-1" />;
     },
   },
   { accessorKey: 'name', header: 'Name' },

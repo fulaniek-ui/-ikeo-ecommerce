@@ -36,11 +36,11 @@ class OrderController extends Controller
             'status' => ['required', 'in:pending,processing,shipped,delivered,cancelled'],
         ]);
 
-        if ($data['status'] === 'shipped' && !$order->shipped_at) {
+        if ($data['status'] === 'shipped' && ! $order->shipped_at) {
             $data['shipped_at'] = now();
         }
 
-        if ($data['status'] === 'delivered' && !$order->delivered_at) {
+        if ($data['status'] === 'delivered' && ! $order->delivered_at) {
             $data['delivered_at'] = now();
         }
 

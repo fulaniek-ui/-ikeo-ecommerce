@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Blog;
 use App\Models\BlogTag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class BlogTagFactory extends Factory
     public function definition(): array
     {
         return [
-            'blog_id' => \App\Models\Blog::factory(),
+            'blog_id' => Blog::factory(),
             'tag' => fake()->word(),
             'tag_id' => fake()->word(),
         ];

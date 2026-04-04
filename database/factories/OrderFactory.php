@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +20,8 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => \App\Models\User::factory(),
-            'address_id' => \App\Models\Address::factory(),
+            'user_id' => User::factory(),
+            'address_id' => Address::factory(),
             'order_number' => fake()->unique()->bothify('ORD-####-????'),
             'status' => fake()->randomElement(['pending', 'processing', 'shipped', 'delivered', 'cancelled']),
             'payment_method' => fake()->randomElement(['transfer', 'ewallet']),

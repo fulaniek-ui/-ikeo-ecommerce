@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Store extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name', 'address', 'city', 'phone', 'latitude', 'longitude', 'hours_id', 'hours_en',
     ];

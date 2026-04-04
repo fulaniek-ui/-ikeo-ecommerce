@@ -27,7 +27,7 @@ class BlogController extends Controller
             ->with('author', 'tags')
             ->first();
 
-        if (!$blog) {
+        if (! $blog) {
             return response()->json(['message' => 'Blog not found'], 404);
         }
 

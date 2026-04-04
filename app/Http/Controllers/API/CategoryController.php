@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('slug', $slug)->with('products')->first();
 
-        if (!$category) {
+        if (! $category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
 

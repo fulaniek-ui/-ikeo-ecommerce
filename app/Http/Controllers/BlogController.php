@@ -59,7 +59,7 @@ class BlogController extends Controller
 
         $blog = Blog::create($data);
 
-        if (!empty($tags)) {
+        if (! empty($tags)) {
             $blog->tags()->createMany($tags);
         }
 
@@ -106,7 +106,7 @@ class BlogController extends Controller
         $blog->update($data);
 
         $blog->tags()->delete();
-        if (!empty($tags)) {
+        if (! empty($tags)) {
             $blog->tags()->createMany($tags);
         }
 
@@ -119,6 +119,7 @@ class BlogController extends Controller
             Storage::disk('public')->delete($blog->image);
         }
         $blog->delete();
+
         return redirect()->route('blogs.index');
     }
 }

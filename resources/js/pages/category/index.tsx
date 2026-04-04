@@ -1,11 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { DataTable } from '@/components/data-table';
 import AppLayout from '@/layouts/app-layout';
 import { Category, PaginatedData } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { columns } from './column';
 import { useState } from 'react';
+import { Tag, Plus, Search, FolderTree } from 'lucide-react';
 
 interface Props {
   categories: PaginatedData<Category>;
@@ -21,27 +23,76 @@ export default function CategoryPage({ categories, filters }: Props) {
   };
 
   return (
-    <AppLayout breadcrumbs={[{ title: 'Categories', href: '/dashboard/categories' }]}>
+    <AppLayout breadcrumbs={[{ title: 'Categories overview', href: '/dashboard/categories' }]}>
       <Head title="Categories" />
-      <div className="p-5 space-y-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-medium">Categories</h3>
-            <p className="text-muted-foreground text-sm">Manage product categories.</p>
+      
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        {/* Elegant Header Area */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-zinc-200 dark:border-zinc-800">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <FolderTree className="w-6 h-6 text-white" />
+              </div>
+              <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+                Product Categories
+              </h1>
+            </div>
+            <p className="text-zinc-500 dark:text-zinc-400 text-sm max-w-xl">
+              Organize your inventory clearly. Group products together to help customers find what they are looking for seamlessly.
+            </p>
           </div>
           <Link href="/dashboard/categories/create">
-            <Button>Create Category</Button>
+            <Button size="lg" className="rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-white shadow-xl hover:-translate-y-0.5 transition-all w-full md:w-auto h-12 font-bold px-6">
+              <Plus className="w-5 h-5 mr-2" />
+              Add Category
+            </Button>
           </Link>
         </div>
-        <Input placeholder="Search categories..." value={search} onChange={(e) => handleSearch(e.target.value)} className="max-w-sm" />
-        <DataTable columns={columns} data={categories.data} />
-        {categories.last_page > 1 && (
-          <div className="flex items-center justify-center gap-1">
-            {categories.links.map((link, i) => (
-              <Button key={i} variant={link.active ? 'default' : 'outline'} size="sm" disabled={!link.url} onClick={() => link.url && router.get(link.url, {}, { preserveState: true })} dangerouslySetInnerHTML={{ __html: link.label }} />
-            ))}
-          </div>
-        )}
+
+        {/* Data Card Content */}
+        <Card className="border-0 shadow-2xl shadow-zinc-200/50 dark:shadow-black/40 rounded-3xl overflow-hidden bg-white/80 dark:bg-zinc-900/80 backdrop-blur-3xl">
+          <CardHeader className="bg-zinc-50/50 dark:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800/50 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <CardTitle className="text-lg font-bold flex items-center gap-2">
+                <Tag className="w-5 h-5 text-emerald-500" />
+                Category List ({categories.total})
+              </CardTitle>
+            </div>
+            <div className="relative w-full sm:max-w-xs">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+              <Input 
+                placeholder="Search categories..." 
+                value={search} 
+                onChange={(e) => handleSearch(e.target.value)} 
+                className="pl-10 rounded-xl bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-sm focus-visible:ring-emerald-500 h-10 w-full" 
+              />
+            </div>
+          </CardHeader>
+          
+          <CardContent className="p-0">
+            <DataTable columns={columns} data={categories.data} />
+          </CardContent>
+
+          {/* Pagination */}
+          {categories.last_page > 1 && (
+            <div className="p-4 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/30 dark:bg-zinc-900/30 flex items-center justify-center gap-1.5 flex-wrap">
+              {categories.links.map((link, i) => (
+                <Button 
+                  key={i} 
+                  variant={link.active ? 'default' : 'outline'} 
+                  size="sm" 
+                  disabled={!link.url} 
+                  onClick={() => link.url && router.get(link.url, {}, { preserveState: true })} 
+                  dangerouslySetInnerHTML={{ __html: link.label }}
+                  className={`rounded-lg ${link.active ? 'bg-emerald-500 hover:bg-emerald-600 outline-none border-none shadow-md text-white' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-800'}`}
+                />
+              ))}
+            </div>
+          )}
+        </Card>
+
       </div>
     </AppLayout>
   );

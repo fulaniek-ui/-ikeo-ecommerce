@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,8 +20,8 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id' => \App\Models\Category::factory(),
-            'brand_id' => \App\Models\Brand::factory(),
+            'category_id' => Category::factory(),
+            'brand_id' => Brand::factory(),
             'name' => fake()->words(3, true),
             'slug' => fake()->unique()->slug(),
             'description' => fake()->paragraph(),
@@ -31,7 +33,7 @@ class ProductFactory extends Factory
             'is_bestseller' => fake()->boolean(),
             'is_featured' => fake()->boolean(),
             'material' => fake()->word(),
-            'dimensions' => fake()->randomNumber(2) . 'x' . fake()->randomNumber(2),
+            'dimensions' => fake()->randomNumber(2).'x'.fake()->randomNumber(2),
             'weight' => fake()->randomFloat(2, 0.5, 50),
         ];
     }

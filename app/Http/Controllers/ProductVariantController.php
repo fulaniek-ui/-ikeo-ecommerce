@@ -101,6 +101,7 @@ class ProductVariantController extends Controller
             Storage::disk('public')->delete($variant->image);
         }
         $variant->delete();
+
         return redirect()->route('variants.index', $product_id);
     }
 }

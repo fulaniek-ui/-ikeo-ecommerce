@@ -2,25 +2,25 @@
 
 namespace Database\Seeders;
 
+use App\Models\Address;
+use App\Models\Blog;
+use App\Models\BlogTag;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Consultation;
+use App\Models\NewsletterSubscriber;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductImage;
+use App\Models\ProductVariant;
+use App\Models\Review;
+use App\Models\Store;
+use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\User;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\ProductVariant;
-use App\Models\ProductImage;
-use App\Models\Address;
-use App\Models\Store;
-use App\Models\Wishlist;
-use App\Models\Review;
-use App\Models\Blog;
-use App\Models\BlogTag;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Consultation;
-use App\Models\NewsletterSubscriber;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
         ]);
-        
+
         // Random Users
         User::factory(10)->create();
 
@@ -49,19 +49,30 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Chairs', 'name_id' => 'Kursi', 'icon' => 'chair'],
             ['name' => 'Storage', 'name_id' => 'Penyimpanan', 'icon' => 'archive'],
             ['name' => 'Lighting', 'name_id' => 'Pencahayaan', 'icon' => 'lightbulb'],
-            ['name' => 'Decor', 'name_id' => 'Dekorasi', 'icon' => 'aperture']
+            ['name' => 'Decor', 'name_id' => 'Dekorasi', 'icon' => 'aperture'],
         ];
-        
+
         $categories = [];
-        foreach($categoriesData as $c) {
+        foreach ($categoriesData as $c) {
+            $imageUrl = match ($c['name']) {
+                'Sofas & Armchairs' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
+                'Beds' => 'https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=800&q=80',
+                'Tables' => 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=800&q=80',
+                'Chairs' => 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80',
+                'Storage' => 'https://images.unsplash.com/photo-1595514535215-8a4fa58e0a13?auto=format&fit=crop&w=800&q=80',
+                'Lighting' => 'https://images.unsplash.com/photo-1513506003901-1e6a229e9d15?auto=format&fit=crop&w=800&q=80',
+                'Decor' => 'https://images.unsplash.com/photo-1558211583-d26f610b1ebb?auto=format&fit=crop&w=800&q=80',
+                default => 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?auto=format&fit=crop&w=800&q=80',
+            };
+
             $categories[$c['name']] = Category::create([
                 'name' => $c['name'],
                 'name_id' => $c['name_id'],
                 'slug' => Str::slug($c['name']),
                 'icon' => $c['icon'],
-                'description' => 'Beautiful ' . $c['name'] . ' for your scandinavian home.',
-                'description_id' => 'Koleksi ' . $c['name_id'] . ' bergaya Skandinavian.',
-                'image' => 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?auto=format&fit=crop&w=500&q=80',
+                'description' => 'Beautiful '.$c['name'].' for your scandinavian home.',
+                'description_id' => 'Koleksi '.$c['name_id'].' bergaya Skandinavian.',
+                'image' => $imageUrl,
             ]);
         }
 
@@ -72,11 +83,11 @@ class DatabaseSeeder extends Seeder
             ['name' => 'IKEA', 'logo' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ikea_logo.svg/512px-Ikea_logo.svg.png'],
             ['name' => 'Nordiska', 'logo' => 'https://images.unsplash.com/photo-1581428982868-e410dd147a90?w=100&q=80'],
             ['name' => 'ScandiHome', 'logo' => 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&q=80'],
-            ['name' => 'JYSK', 'logo' => 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=100&q=80']
+            ['name' => 'JYSK', 'logo' => 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=100&q=80'],
         ];
-        
+
         $brands = [];
-        foreach($brandsData as $b) {
+        foreach ($brandsData as $b) {
             $brands[$b['name']] = Brand::create([
                 'name' => $b['name'],
                 'slug' => Str::slug($b['name']),
@@ -100,7 +111,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '228x95x83 cm',
                 'is_bestseller' => true,
                 'description' => 'Enjoy super comfort with KIVIK sofa. A broad, deep seat with a soft, sink-in feel.',
-                'description_id' => 'Nikmati kenyamanan maksimal dengan sofa KIVIK. Dudukan yang lebar dan dalam dengan pelukan lembut.'
+                'description_id' => 'Nikmati kenyamanan maksimal dengan sofa KIVIK. Dudukan yang lebar dan dalam dengan pelukan lembut.',
             ],
             [
                 'name' => 'STRANDMON Wing Chair',
@@ -113,7 +124,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '82x96x101 cm',
                 'is_bestseller' => false,
                 'description' => 'A classic piece that brings an elegant vintage look into your living room.',
-                'description_id' => 'Karya klasik yang menghadirkan tampilan vintage elegan ke ruang tamu Anda.'
+                'description_id' => 'Karya klasik yang menghadirkan tampilan vintage elegan ke ruang tamu Anda.',
             ],
             [
                 'name' => 'LISABO Table',
@@ -126,7 +137,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '140x78x74 cm',
                 'is_bestseller' => true,
                 'description' => 'Ash veneer and solid birch table brings a warm, natural feel to your dining room.',
-                'description_id' => 'Meja dengan veneer abu dan kayu birch solid menghadirkan nuansa hangat dan alami di ruang makan Anda.'
+                'description_id' => 'Meja dengan veneer abu dan kayu birch solid menghadirkan nuansa hangat dan alami di ruang makan Anda.',
             ],
             [
                 'name' => 'MALM Bed frame',
@@ -139,7 +150,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '160x200 cm',
                 'is_bestseller' => true,
                 'description' => 'A clean design that’s just as beautiful on all sides – place the bed freestanding or with the headboard against a wall.',
-                'description_id' => 'Desain bersih yang sama indahnya dari semua sisi – letakkan tempat tidur di tengah atau dengan sandaran menghadap dinding.'
+                'description_id' => 'Desain bersih yang sama indahnya dari semua sisi – letakkan tempat tidur di tengah atau dengan sandaran menghadap dinding.',
             ],
             [
                 'name' => 'LERSTA Reading Lamp',
@@ -152,7 +163,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '131 cm height',
                 'is_bestseller' => false,
                 'description' => 'You easily direct the light where you want it because the lamp arm is adjustable.',
-                'description_id' => 'Anda dapat mengarahkan cahaya dengan mudah ke arah yang diinginkan karena lengan lampu dapat ditekuk.'
+                'description_id' => 'Anda dapat mengarahkan cahaya dengan mudah ke arah yang diinginkan karena lengan lampu dapat ditekuk.',
             ],
             [
                 'name' => 'KALLAX Shelving unit',
@@ -165,7 +176,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '77x147 cm',
                 'is_bestseller' => true,
                 'description' => 'Standing or lying, against the wall or to divide the room – KALLAX series is eager to please.',
-                'description_id' => 'Berdiri atau berbaring, menempel pada dinding atau untuk membagi rungan – seri KALLAX siap memenuhi kebutuhan.'
+                'description_id' => 'Berdiri atau berbaring, menempel pada dinding atau untuk membagi rungan – seri KALLAX siap memenuhi kebutuhan.',
             ],
             [
                 'name' => 'HEMNES 8-drawer chest',
@@ -178,7 +189,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '160x96 cm',
                 'is_bestseller' => false,
                 'description' => 'A classic roomy chest of drawers in solid wood, with a traditional look and modern function.',
-                'description_id' => 'Lemari laci klasik lapang berbahan kayu solid, dengan tampilan tradisional dan fungsi modern.'
+                'description_id' => 'Lemari laci klasik lapang berbahan kayu solid, dengan tampilan tradisional dan fungsi modern.',
             ],
             [
                 'name' => 'POÄNG Armchair',
@@ -191,7 +202,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '68x82x100 cm',
                 'is_bestseller' => true,
                 'description' => 'Layer-glued bent oak gives comfortable resilience. The high back provides good support for your neck.',
-                'description_id' => 'Lenturan kayu oak yang dilapis-lapis memberi kekenyalan kursi yang nyaman. Sandaran tingginya menopang leher dengan baik.'
+                'description_id' => 'Lenturan kayu oak yang dilapis-lapis memberi kekenyalan kursi yang nyaman. Sandaran tingginya menopang leher dengan baik.',
             ],
             [
                 'name' => 'INGATORP Extendable table',
@@ -204,7 +215,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '155/215x87 cm',
                 'is_bestseller' => false,
                 'description' => 'It’s quick and easy to change the size of the table to suit your different needs.',
-                'description_id' => 'Mudah dan cepat untuk mengubah ukuran meja untuk menyesuaikan dengan kebutuhan yang berbeda.'
+                'description_id' => 'Mudah dan cepat untuk mengubah ukuran meja untuk menyesuaikan dengan kebutuhan yang berbeda.',
             ],
             [
                 'name' => 'LOHALS Rug',
@@ -217,7 +228,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '200x300 cm',
                 'is_bestseller' => false,
                 'description' => 'A rough, organic look with subtle variations in colour and weave.',
-                'description_id' => 'Tampilan kasar organik dengan variasi warna dan anyaman yang halus.'
+                'description_id' => 'Tampilan kasar organik dengan variasi warna dan anyaman yang halus.',
             ],
             [
                 'name' => 'GLADOM Tray table',
@@ -230,7 +241,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '45x53 cm',
                 'is_bestseller' => true,
                 'description' => 'A tray and a table in one. Perfect for bringing snacks around.',
-                'description_id' => 'Nampan dan meja jadi satu. Sempurna untuk membawa camilan ke mana saja.'
+                'description_id' => 'Nampan dan meja jadi satu. Sempurna untuk membawa camilan ke mana saja.',
             ],
             [
                 'name' => 'RÅSKOG Trolley',
@@ -243,7 +254,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '35x45x78 cm',
                 'is_bestseller' => true,
                 'description' => 'Fits in the smallest of spaces and can be moved to wherever you need it.',
-                'description_id' => 'Muat di ruang terkecil dan mudah dipindahkan ke mana pun Anda membutuhkannya.'
+                'description_id' => 'Muat di ruang terkecil dan mudah dipindahkan ke mana pun Anda membutuhkannya.',
             ],
             [
                 'name' => 'NYMÅNE Pendant lamp',
@@ -256,7 +267,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '40 cm diameter',
                 'is_bestseller' => false,
                 'description' => 'Provides good, glare-free general lighting that’s easy to direct over the dining table.',
-                'description_id' => 'Memberi cahaya umum yang baik tanpa silau, mudah diarahkan ke atas meja ruang makan.'
+                'description_id' => 'Memberi cahaya umum yang baik tanpa silau, mudah diarahkan ke atas meja ruang makan.',
             ],
             [
                 'name' => 'LANTLIV Plant stand',
@@ -269,7 +280,7 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '74 cm height',
                 'is_bestseller' => false,
                 'description' => 'A plant stand makes it possible to decorate with plants everywhere in the home.',
-                'description_id' => 'Rak tanaman memudahkan penataan pot-pot tanaman hias di mana saja dalam rumah.'
+                'description_id' => 'Rak tanaman memudahkan penataan pot-pot tanaman hias di mana saja dalam rumah.',
             ],
             [
                 'name' => 'ODGER Chair',
@@ -282,15 +293,15 @@ class DatabaseSeeder extends Seeder
                 'dimensions' => '45x51x81 cm',
                 'is_bestseller' => true,
                 'description' => 'Comfortable to sit on thanks to the bowl-shaped seat and rounded back.',
-                'description_id' => 'Nyaman diduduki berkat bentuk jok yang cekung dan punggung yang membulat.'
-            ]
+                'description_id' => 'Nyaman diduduki berkat bentuk jok yang cekung dan punggung yang membulat.',
+            ],
         ];
 
         $productModels = [];
-        foreach($productsData as $pd) {
+        foreach ($productsData as $pd) {
             $catId = $categories[$pd['category']]->id;
             $brandId = $brands[$pd['brand']]->id;
-            
+
             $p = Product::create([
                 'category_id' => $catId,
                 'brand_id' => $brandId,
@@ -303,13 +314,13 @@ class DatabaseSeeder extends Seeder
                 'image' => $pd['image'],
                 'stock' => rand(10, 200),
                 'is_bestseller' => $pd['is_bestseller'],
-                'is_featured' => rand(0,1) == 1,
+                'is_featured' => rand(0, 1) == 1,
                 'material' => $pd['material'],
                 'dimensions' => $pd['dimensions'],
                 'weight' => $pd['weight'],
             ]);
             $productModels[] = $p;
-            
+
             // Create exactly 2 variants for each product
             $colors = ['Grey', 'White', 'Black', 'Oak', 'Brown'];
             ProductVariant::create([
@@ -341,10 +352,10 @@ class DatabaseSeeder extends Seeder
             // Create some random gallery images
             ProductImage::factory(2)->create([
                 'product_id' => $p->id,
-                'image_url' => 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80'
+                'image_url' => 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80',
             ]);
         }
-        
+
         // -------------------------
         // 4. RANDOMIZE OTHERS
         // -------------------------
@@ -357,10 +368,10 @@ class DatabaseSeeder extends Seeder
             if (rand(0, 1)) {
                 Address::factory(rand(1, 2))->create(['user_id' => $user->id]);
             }
-            
+
             // Give all users some wishlists
             $wishlists = collect($productModels)->random(rand(1, 4));
-            foreach($wishlists as $p) {
+            foreach ($wishlists as $p) {
                 Wishlist::factory()->create(['user_id' => $user->id, 'product_id' => $p->id]);
             }
         });
@@ -368,7 +379,7 @@ class DatabaseSeeder extends Seeder
         // Create 20 Orders
         Order::factory(20)->create()->each(function (Order $order) use ($productModels) {
             $randomProducts = collect($productModels)->random(rand(1, 3));
-            foreach($randomProducts as $itemProduct) {
+            foreach ($randomProducts as $itemProduct) {
                 // Determine a variant if any
                 $variant = $itemProduct->variants()->inRandomOrder()->first();
                 $price = $variant ? $variant->price : $itemProduct->price;
@@ -387,11 +398,11 @@ class DatabaseSeeder extends Seeder
 
                 // Create a review sometimes
                 if (rand(0, 1)) {
-                    if (!Review::where('user_id', $order->user_id)->where('product_id', $itemProduct->id)->exists()) {
-                         Review::factory()->create([
-                             'user_id' => $order->user_id,
-                             'product_id' => $itemProduct->id,
-                         ]);
+                    if (! Review::where('user_id', $order->user_id)->where('product_id', $itemProduct->id)->exists()) {
+                        Review::factory()->create([
+                            'user_id' => $order->user_id,
+                            'product_id' => $itemProduct->id,
+                        ]);
                     }
                 }
             }

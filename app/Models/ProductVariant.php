@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ProductVariant extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'product_id', 'variant_name', 'color', 'size', 'material',
         'sku', 'price', 'stock', 'image', 'is_active',

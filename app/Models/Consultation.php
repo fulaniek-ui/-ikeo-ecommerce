@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Consultation extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'user_id', 'store_id', 'name', 'email', 'phone', 'preferred_date', 'message', 'status',
     ];

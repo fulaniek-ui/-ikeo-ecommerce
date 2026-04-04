@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use Xendit\Configuration;
-use Xendit\Invoice\InvoiceApi;
 use Xendit\Invoice\CreateInvoiceRequest;
+use Xendit\Invoice\InvoiceApi;
 
 class XenditService
 {
@@ -13,10 +13,10 @@ class XenditService
     public function __construct()
     {
         Configuration::setXenditKey(config('services.xendit.secret_key'));
-        $this->invoiceApi = new InvoiceApi();
+        $this->invoiceApi = new InvoiceApi;
     }
 
-    public function createInvoice(array $params): object
+    public function createInvoice(array $params): array
     {
         $request = new CreateInvoiceRequest([
             'external_id' => $params['external_id'],
@@ -29,11 +29,15 @@ class XenditService
             'invoice_duration' => 86400,
         ]);
 
-        return $this->invoiceApi->createInvoice($request);
+        $response = $this->invoiceApi->createInvoice($request);
+
+        return json_decode(json_encode($response), true);
     }
 
-    public function getInvoice(string $invoiceId): object
+    public function getInvoice(string $invoiceId): array
     {
-        return $this->invoiceApi->getInvoiceById($invoiceId);
+        $response = $this->invoiceApi->getInvoiceById($invoiceId);
+
+        return json_decode(json_encode($response), true);
     }
 }

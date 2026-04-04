@@ -20,7 +20,7 @@ class ProductController extends Controller
             ->when($request->boolean('featured'), fn ($q) => $q->where('is_featured', true))
             ->when($request->sort === 'price_asc', fn ($q) => $q->orderBy('price'))
             ->when($request->sort === 'price_desc', fn ($q) => $q->orderByDesc('price'))
-            ->when(!$request->sort, fn ($q) => $q->latest())
+            ->when(! $request->sort, fn ($q) => $q->latest())
             ->paginate($request->per_page ?? 12);
 
         return response()->json($products);
@@ -34,7 +34,7 @@ class ProductController extends Controller
             ->withCount('reviews')
             ->first();
 
-        if (!$product) {
+        if (! $product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
 

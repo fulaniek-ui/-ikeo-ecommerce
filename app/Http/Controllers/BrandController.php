@@ -81,6 +81,7 @@ class BrandController extends Controller
             Storage::disk('public')->delete($brand->logo);
         }
         $brand->delete();
+
         return redirect()->route('brands.index');
     }
 }
