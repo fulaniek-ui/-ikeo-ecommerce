@@ -1,39 +1,83 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import {
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Category } from '@/types';
 import { router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
-import { SafeImage } from '@/components/safe-image';
+import { MoreHorizontal, Pencil, Trash2, ImageIcon } from 'lucide-react';
 
 export const columns: ColumnDef<Category>[] = [
-  {
-    accessorKey: 'image',
-    header: 'Image',
-    cell: ({ row }) => {
-      const image = row.getValue('image') as string;
-      const src = image?.startsWith('http') ? image : `/storage/${image}`;
-      return <SafeImage src={src} alt="" className="h-10 w-10 rounded-xl object-cover shadow-sm border border-zinc-100 dark:border-zinc-800" />;
+    {
+        accessorKey: 'image',
+        header: '',
+        cell: ({ row }) => {
+            const image = row.getValue('image') as string;
+            return image ? (
+                <img src={image.startsWith('http') ? image : `/storage/${image}`} alt="" className="h-12 w-12 rounded-xl object-cover shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800" />
+            ) : (
+                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700 flex items-center justify-center">
+                    <ImageIcon className="w-5 h-5 text-zinc-400" />
+                </div>
+            );
+        },
+        size: 60,
     },
-  },
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'name_id', header: 'Name (ID)' },
-  { accessorKey: 'slug', header: 'Slug' },
-  {
-    id: 'actions',
-    cell: ({ row }) => {
-      const category = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild><Button variant="ghost" className="h-8 w-8 p-0"><MoreHorizontal className="h-4 w-4" /></Button></DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => router.visit(`/dashboard/categories/${category.id}/edit`)}>Edit</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.visit(`/dashboard/categories/${category.id}`, { method: 'delete' })}>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+    {
+        accessorKey: 'name',
+        header: 'Category',
+        cell: ({ row }) => (
+            <div className="flex flex-col gap-0.5">
+                <span className="font-bold text-zinc-900 dark:text-zinc-100">{row.original.name}</span>
+                {row.original.name_id && (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">{row.original.name_id}</span>
+                )}
+            </div>
+        ),
     },
-  },
+    {
+        accessorKey: 'slug',
+        header: 'Slug',
+        cell: ({ row }) => (
+            <Badge variant="outline" className="font-mono text-[11px] px-2 py-0.5 rounded-lg bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700">
+                {row.original.slug}
+            </Badge>
+        ),
+    },
+    {
+        accessorKey: 'icon',
+        header: 'Icon',
+        cell: ({ row }) => (
+            <span className="text-sm text-zinc-500">{row.original.icon || '—'}</span>
+        ),
+    },
+    {
+        id: 'actions',
+        cell: ({ row }) => {
+            const category = row.original;
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-9 w-9 p-0 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                            <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="rounded-xl shadow-xl border-zinc-200 dark:border-zinc-800 min-w-[150px]">
+                        <DropdownMenuItem onClick={() => router.visit(`/dashboard/categories/${category.id}/edit`)} className="cursor-pointer gap-2 font-medium">
+                            <Pencil className="w-4 h-4" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => { if (confirm('Delete this category?')) router.visit(`/dashboard/categories/${category.id}`, { method: 'delete' }); }}
+                            className="cursor-pointer gap-2 font-medium text-red-500 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/30"
+                        >
+                            <Trash2 className="w-4 h-4" /> Delete
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            );
+        },
+    },
 ];
