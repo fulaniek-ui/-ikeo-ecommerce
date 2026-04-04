@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { router } from '@inertiajs/react';
+import type { ColumnDef } from '@tanstack/react-table';
+import { MoreHorizontal, Pencil, Trash2, ImageIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Category } from '@/types';
-import { router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal, Pencil, Trash2, ImageIcon } from 'lucide-react';
+import type { Category } from '@/types';
 
 export const columns: ColumnDef<Category>[] = [
     {
@@ -16,6 +16,7 @@ export const columns: ColumnDef<Category>[] = [
         header: '',
         cell: ({ row }) => {
             const image = row.getValue('image') as string;
+
             return image ? (
                 <img src={image.startsWith('http') ? image : `/storage/${image}`} alt="" className="h-12 w-12 rounded-xl object-cover shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800" />
             ) : (
@@ -58,6 +59,7 @@ export const columns: ColumnDef<Category>[] = [
         id: 'actions',
         cell: ({ row }) => {
             const category = row.original;
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -70,7 +72,11 @@ export const columns: ColumnDef<Category>[] = [
                             <Pencil className="w-4 h-4" /> Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                            onClick={() => { if (confirm('Delete this category?')) router.visit(`/dashboard/categories/${category.id}`, { method: 'delete' }); }}
+                            onClick={() => {
+ if (confirm('Delete this category?')) {
+router.visit(`/dashboard/categories/${category.id}`, { method: 'delete' });
+} 
+}}
                             className="cursor-pointer gap-2 font-medium text-red-500 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/30"
                         >
                             <Trash2 className="w-4 h-4" /> Delete

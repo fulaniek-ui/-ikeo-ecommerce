@@ -1,13 +1,13 @@
+import { Head, useForm, Link } from '@inertiajs/react';
+import { ArrowLeft, Save, Info, MapPin, Clock, Phone, Navigation } from 'lucide-react';
+import type { FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { Store } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
-import { FormEvent } from 'react';
-import { ArrowLeft, Save, Info, MapPin, Clock, Phone, Navigation } from 'lucide-react';
+import type { Store } from '@/types';
 
 interface Props { store?: Store; }
 
@@ -25,8 +25,12 @@ export default function Form({ store }: Props) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (store) { patch(`/dashboard/stores/${store.id}`); }
-    else { post('/dashboard/stores'); }
+
+    if (store) {
+ patch(`/dashboard/stores/${store.id}`); 
+} else {
+ post('/dashboard/stores'); 
+}
   };
 
   return (

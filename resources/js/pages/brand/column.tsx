@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { router } from '@inertiajs/react';
+import type { ColumnDef } from '@tanstack/react-table';
+import { MoreHorizontal, Pencil, Trash2, ImageIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Brand } from '@/types';
-import { router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal, Pencil, Trash2, ImageIcon } from 'lucide-react';
+import type { Brand } from '@/types';
 
 export const columns: ColumnDef<Brand>[] = [
     {
@@ -16,6 +16,7 @@ export const columns: ColumnDef<Brand>[] = [
         header: '',
         cell: ({ row }) => {
             const logo = row.getValue('logo') as string;
+
             return logo ? (
                 <div className="h-12 w-12 rounded-xl bg-white dark:bg-zinc-900 p-1.5 shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800 flex items-center justify-center">
                     <img src={logo.startsWith('http') ? logo : `/storage/${logo}`} alt="" className="max-h-full max-w-full object-contain rounded-md" />
@@ -53,6 +54,7 @@ export const columns: ColumnDef<Brand>[] = [
         id: 'actions',
         cell: ({ row }) => {
             const brand = row.original;
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -65,7 +67,11 @@ export const columns: ColumnDef<Brand>[] = [
                             <Pencil className="w-4 h-4" /> Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                            onClick={() => { if (confirm('Delete this brand?')) router.visit(`/dashboard/brands/${brand.id}`, { method: 'delete' }); }}
+                            onClick={() => {
+ if (confirm('Delete this brand?')) {
+router.visit(`/dashboard/brands/${brand.id}`, { method: 'delete' });
+} 
+}}
                             className="cursor-pointer gap-2 font-medium text-red-500 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/30"
                         >
                             <Trash2 className="w-4 h-4" /> Delete

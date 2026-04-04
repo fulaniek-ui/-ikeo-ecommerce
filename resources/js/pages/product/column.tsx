@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { router } from '@inertiajs/react';
+import type { ColumnDef } from '@tanstack/react-table';
+import { MoreHorizontal, Pencil, Trash2, Layers, ImageIcon, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Product } from '@/types';
-import { router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal, Pencil, Trash2, Layers, ImageIcon, Star } from 'lucide-react';
+import type { Product } from '@/types';
 
 const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(value);
 
@@ -18,6 +18,7 @@ export const columns: ColumnDef<Product>[] = [
         header: '',
         cell: ({ row }) => {
             const image = row.getValue('image') as string;
+
             return image ? (
                 <img src={image.startsWith('http') ? image : `/storage/${image}`} alt="" className="h-14 w-14 rounded-xl object-cover shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800" />
             ) : (
@@ -76,6 +77,7 @@ export const columns: ColumnDef<Product>[] = [
                 : stock <= 5
                     ? 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400'
                     : 'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400';
+
             return (
                 <Badge variant="outline" className={`font-bold text-xs px-2 py-0.5 rounded-lg border ${color}`}>
                     {stock === 0 ? 'Out of stock' : `${stock} pcs`}
@@ -87,6 +89,7 @@ export const columns: ColumnDef<Product>[] = [
         id: 'actions',
         cell: ({ row }) => {
             const product = row.original;
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -103,7 +106,11 @@ export const columns: ColumnDef<Product>[] = [
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                            onClick={() => { if (confirm('Delete this product?')) router.visit(`/dashboard/products/${product.id}`, { method: 'delete' }); }}
+                            onClick={() => {
+ if (confirm('Delete this product?')) {
+router.visit(`/dashboard/products/${product.id}`, { method: 'delete' });
+} 
+}}
                             className="cursor-pointer gap-2 font-medium text-red-500 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/30"
                         >
                             <Trash2 className="w-4 h-4" /> Delete

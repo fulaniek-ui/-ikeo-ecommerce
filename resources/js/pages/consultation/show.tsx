@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import AppLayout from '@/layouts/app-layout';
-import { Consultation } from '@/types';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { FormEvent } from 'react';
 import { MessageSquare, Calendar, User, Mail, Phone, Store, ArrowLeft, CheckCircle2, Bookmark, Save } from 'lucide-react';
+import type { FormEvent } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import AppLayout from '@/layouts/app-layout';
+import type { Consultation } from '@/types';
 
 const statusColor: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200',

@@ -1,15 +1,11 @@
+import { Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Image as ImageIcon } from 'lucide-react';
 
-interface SafeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  fallback?: string;
-}
+type SafeImageProps = React.ImgHTMLAttributes<HTMLImageElement>;
 
-export function SafeImage({ src, alt, className, fallback, ...props }: SafeImageProps) {
+export function SafeImage({ src, alt, className, ...props }: SafeImageProps) {
   const [error, setError] = useState(false);
-  
-  const defaultFallback = 'https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=300&auto=format&fit=crop'; // Modern chair placeholder
 
   if (!src || error) {
     return (

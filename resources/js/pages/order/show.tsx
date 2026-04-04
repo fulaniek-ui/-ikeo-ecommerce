@@ -1,12 +1,13 @@
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import AppLayout from '@/layouts/app-layout';
-import { Order } from '@/types';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { FormEvent, useState } from 'react';
 import { Package, Truck, User, MapPin, CreditCard, Calendar, ArrowLeft, RefreshCw, CheckCircle2, AlertCircle, Receipt } from 'lucide-react';
+import type { FormEvent} from 'react';
+import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import AppLayout from '@/layouts/app-layout';
+import type { Order } from '@/types';
 
 const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
 
@@ -36,10 +37,12 @@ export default function Show({ order: initialOrder }: Props) {
   const checkPayment = async () => {
     setChecking(true);
     setPaymentMsg('');
+
     try {
       const res = await fetch(`/api/payments/${order.id}/check`);
       const json = await res.json();
       setPaymentMsg(json.message);
+
       if (json.data) {
         setOrder(json.data);
         setData('status', json.data.status);
@@ -47,6 +50,7 @@ export default function Show({ order: initialOrder }: Props) {
     } catch {
       setPaymentMsg('Failed to check payment status');
     }
+
     setChecking(false);
   };
 

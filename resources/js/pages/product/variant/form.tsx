@@ -1,14 +1,14 @@
+import { Head, useForm, Link } from '@inertiajs/react';
+import { Box, Image as ImageIcon, CircleDollarSign, ArrowLeft, Info, Save, Settings2 } from 'lucide-react';
+import type { FormEvent } from 'react';
+import { SafeImage } from '@/components/safe-image';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { Product, ProductVariant } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
-import { FormEvent } from 'react';
-import { Box, Image as ImageIcon, CircleDollarSign, ArrowLeft, Info, Save, Settings2 } from 'lucide-react';
-import { SafeImage } from '@/components/safe-image';
+import type { Product, ProductVariant } from '@/types';
 
 interface Props {
   product: Product;

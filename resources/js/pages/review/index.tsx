@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { DataTable } from '@/components/data-table';
-import AppLayout from '@/layouts/app-layout';
-import { Review, PaginatedData } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal, Star, MessageSquare, Search, Trash2, Calendar, User, Package } from 'lucide-react';
 import { useState } from 'react';
+import { DataTable } from '@/components/data-table';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import AppLayout from '@/layouts/app-layout';
+import type { Review, PaginatedData } from '@/types';
 
 const columns: ColumnDef<Review>[] = [
   { 
@@ -49,7 +49,8 @@ const columns: ColumnDef<Review>[] = [
     accessorKey: 'comment', 
     header: 'Comment', 
     cell: ({ row }) => { 
-      const c = row.getValue('comment') as string; 
+      const c = row.getValue('comment') as string;
+ 
       return (
         <div className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400 italic">
           "{c || 'No comment provided.'}"
@@ -71,6 +72,7 @@ const columns: ColumnDef<Review>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const review = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -80,7 +82,11 @@ const columns: ColumnDef<Review>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl overflow-hidden min-w-[140px]">
             <DropdownMenuItem 
-              onClick={() => { if(confirm('Delete this product review?')) router.visit(`/dashboard/reviews/${review.id}`, { method: 'delete' }) }} 
+              onClick={() => {
+ if(confirm('Delete this product review?')) {
+router.visit(`/dashboard/reviews/${review.id}`, { method: 'delete' })
+} 
+}} 
               className="cursor-pointer py-2.5 px-3 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400 text-red-500 font-medium transition-colors gap-2"
             >
               <Trash2 className="w-4 h-4" />

@@ -1,12 +1,12 @@
 import { Head, Link } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
-    Package, Tag, Award, Users, ShoppingCart, TrendingUp,
-    AlertTriangle, Archive, Star, MessageSquare, Clock,
-    ArrowUpRight, Zap, Eye, Flame, Sparkles,
+    Package, Tag, Award, Users, ShoppingCart,
+    AlertTriangle, Star, MessageSquare, Clock,
+    ArrowUpRight, Zap, Flame, Sparkles,
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
 import type { DashboardStats, Order, Product } from '@/types';
 
 interface Props {
@@ -18,7 +18,10 @@ interface Props {
 }
 
 const formatIDR = (v: number | null | undefined) => {
-    if (!v) return 'Rp 0';
+    if (!v) {
+return 'Rp 0';
+}
+
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v);
 };
 
@@ -51,8 +54,12 @@ function MiniStat({ label, value, icon: Icon, color, href }: {
 }
 
 function StarRating({ rating }: { rating: number | string | null }) {
-    if (!rating) return <span className="text-[10px] text-zinc-400 italic">No reviews</span>;
+    if (!rating) {
+return <span className="text-[10px] text-zinc-400 italic">No reviews</span>;
+}
+
     const n = Number(rating);
+
     return (
         <div className="flex items-center gap-0.5">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -64,8 +71,12 @@ function StarRating({ rating }: { rating: number | string | null }) {
 }
 
 function ProductImage({ src, alt }: { src?: string | null; alt?: string }) {
-    if (!src) return <div className="h-full w-full rounded-xl bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700" />;
+    if (!src) {
+return <div className="h-full w-full rounded-xl bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700" />;
+}
+
     const url = src.startsWith('http') ? src : `/storage/${src}`;
+
     return <img src={url} alt={alt || ''} className="h-full w-full rounded-xl object-cover" />;
 }
 
@@ -164,6 +175,7 @@ export default function Dashboard({ stats, latestOrders, latestProducts, lowStoc
                             ) : (
                                 latestOrders.map((order) => {
                                     const sc = statusConfig[order.status] || statusConfig.pending;
+
                                     return (
                                         <Link key={order.id} href={`/dashboard/orders/${order.id}`}>
                                             <Card className="border-0 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group bg-white dark:bg-zinc-900/60">

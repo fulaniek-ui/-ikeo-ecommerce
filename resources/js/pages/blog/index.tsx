@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { DataTable } from '@/components/data-table';
-import AppLayout from '@/layouts/app-layout';
-import { Blog, PaginatedData } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal, FileText, Plus, Search, BookOpen, User } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
+import { DataTable } from '@/components/data-table';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import AppLayout from '@/layouts/app-layout';
+import type { Blog, PaginatedData } from '@/types';
 
 const columns: ColumnDef<Blog>[] = [
   { 
@@ -37,7 +37,8 @@ const columns: ColumnDef<Blog>[] = [
     accessorKey: 'published_at', 
     header: 'Status', 
     cell: ({ row }) => { 
-      const d = row.getValue('published_at') as string; 
+      const d = row.getValue('published_at') as string;
+ 
       return (
         <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${d ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50' : 'bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'}`}>
           {d ? `Published on ${new Date(d).toLocaleDateString('id-ID')}` : 'Draft'}
@@ -49,6 +50,7 @@ const columns: ColumnDef<Blog>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const blog = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -60,7 +62,11 @@ const columns: ColumnDef<Blog>[] = [
             <DropdownMenuItem onClick={() => router.visit(`/dashboard/blogs/${blog.id}/edit`)} className="cursor-pointer py-2.5 px-3 focus:bg-zinc-100 dark:focus:bg-zinc-900 font-medium transition-colors">
               Edit Article
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => { if(confirm('Are you sure you want to delete this article?')) router.visit(`/dashboard/blogs/${blog.id}`, { method: 'delete' }) }} className="cursor-pointer py-2.5 px-3 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400 text-red-500 font-medium transition-colors">
+            <DropdownMenuItem onClick={() => {
+ if(confirm('Are you sure you want to delete this article?')) {
+router.visit(`/dashboard/blogs/${blog.id}`, { method: 'delete' })
+} 
+}} className="cursor-pointer py-2.5 px-3 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400 text-red-500 font-medium transition-colors">
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -1,14 +1,13 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { DataTable } from '@/components/data-table';
-import AppLayout from '@/layouts/app-layout';
-import { Store, PaginatedData } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal, Store as StoreIcon, Plus, Search, MapPin, Phone, Building2 } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
+import { DataTable } from '@/components/data-table';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import AppLayout from '@/layouts/app-layout';
+import type { Store, PaginatedData } from '@/types';
 
 const columns: ColumnDef<Store>[] = [
   { 
@@ -47,6 +46,7 @@ const columns: ColumnDef<Store>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const store = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -58,7 +58,11 @@ const columns: ColumnDef<Store>[] = [
             <DropdownMenuItem onClick={() => router.visit(`/dashboard/stores/${store.id}/edit`)} className="cursor-pointer py-2.5 border-b border-zinc-100 dark:border-zinc-900 px-3 focus:bg-zinc-100 dark:focus:bg-zinc-900 font-medium transition-colors">
               Edit Store
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => { if(confirm('Are you sure you want to delete this store location?')) router.visit(`/dashboard/stores/${store.id}`, { method: 'delete' }) }} className="cursor-pointer py-2.5 px-3 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400 text-red-500 font-medium transition-colors">
+            <DropdownMenuItem onClick={() => {
+ if(confirm('Are you sure you want to delete this store location?')) {
+router.visit(`/dashboard/stores/${store.id}`, { method: 'delete' })
+} 
+}} className="cursor-pointer py-2.5 px-3 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400 text-red-500 font-medium transition-colors">
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

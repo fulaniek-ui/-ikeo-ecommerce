@@ -1,6 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { dashboard, login, register } from '@/routes';
 import { Armchair, ShieldCheck, Truck, Headphones } from 'lucide-react';
+import { dashboard, login, register } from '@/routes';
 
 export default function Welcome({ canRegister = true }: { canRegister?: boolean }) {
     const { auth } = usePage().props;

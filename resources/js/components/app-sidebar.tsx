@@ -60,6 +60,7 @@ function NavGroup({ label, items }: { label: string; items: ColoredNavItem[] }) 
             <SidebarMenu>
                 {items.map((item) => {
                     const active = isCurrentUrl(item.href);
+
                     return (
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton

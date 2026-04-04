@@ -1,17 +1,17 @@
+import { Head, useForm, Link } from '@inertiajs/react';
+import { Package, Image as ImageIcon, Tags, CircleDollarSign, ArrowLeft, Info, Star, Save } from 'lucide-react';
+import type { FormEvent } from 'react';
+import { SafeImage } from '@/components/safe-image';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { Category, Brand, Product } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
-import { FormEvent } from 'react';
-import { Package, Image as ImageIcon, Tags, CircleDollarSign, ArrowLeft, Info, Star, Save } from 'lucide-react';
-import { SafeImage } from '@/components/safe-image';
+import type { Category, Brand, Product } from '@/types';
 
 interface Props {
   product?: Product;

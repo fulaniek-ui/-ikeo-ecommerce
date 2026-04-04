@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { DataTable } from '@/components/data-table';
-import AppLayout from '@/layouts/app-layout';
-import { Category, PaginatedData } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { columns } from './column';
-import { useState } from 'react';
 import { Tag, Plus, Search, FolderTree } from 'lucide-react';
+import { useState } from 'react';
+import { DataTable } from '@/components/data-table';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import AppLayout from '@/layouts/app-layout';
+import type { Category, PaginatedData } from '@/types';
+import { columns } from './column';
 
 interface Props {
   categories: PaginatedData<Category>;

@@ -1,14 +1,14 @@
+import { Head, useForm, Link } from '@inertiajs/react';
+import { ArrowLeft, Save, Image as ImageIcon, BookOpen, Clock, Tags } from 'lucide-react';
+import type { FormEvent } from 'react';
+import { SafeImage } from '@/components/safe-image';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { Blog } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
-import { FormEvent } from 'react';
-import { ArrowLeft, Save, Info, Image as ImageIcon, BookOpen, Clock, Tags } from 'lucide-react';
-import { SafeImage } from '@/components/safe-image';
+import type { Blog } from '@/types';
 
 interface Props { blog?: Blog; }
 
