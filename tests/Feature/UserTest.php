@@ -2,28 +2,29 @@
 
 use App\Models\User;
 
-test('user can register', function () {
-    $response = $this->post('/api/register', [
-        'email' => 'admin_test@gmail.com',
-        'password' => 'rahasia',
-        'password_confirmation' => 'rahasia',
-        'name' => 'admin',
+test('user can register via api', function () {
+    $response = $this->postJson('/api/register', [
+        'name' => 'Test User',
+        'email' => 'apitest@gmail.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
     ]);
 
-    $response->assertStatus(200)->orAssertStatus(201); // Menyesuaikan respon laravel fortify / custom
+    $response->assertCreated();
+    $this->assertDatabaseHas('users', ['email' => 'apitest@gmail.com']);
 });
 
-test('user can login', function () {
-    // Pastikan user ada sebelum login
+test('user can login via api', function () {
     User::factory()->create([
-        'email' => 'admin2_test@gmail.com',
-        'password' => bcrypt('rahasia'),
+        'email' => 'logintest@gmail.com',
+        'password' => bcrypt('password'),
     ]);
 
-    $response = $this->post('/api/login', [
-        'email' => 'admin2_test@gmail.com',
-        'password' => 'rahasia',
+    $response = $this->postJson('/api/login', [
+        'email' => 'logintest@gmail.com',
+        'password' => 'password',
     ]);
 
-    $response->assertStatus(200);
+    $response->assertOk();
+    $response->assertJsonStructure(['token']);
 });

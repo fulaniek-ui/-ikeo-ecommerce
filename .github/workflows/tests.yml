@@ -1,7 +1,16 @@
 name: tests
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - main
+      - master
+  pull_request:
+    branches:
+      - develop
+      - main
+      - master
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -12,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.4']
 
     steps:
       - name: Checkout code
@@ -23,7 +32,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-          coverage: xdebug
           extensions: pdo_sqlite, sqlite3, mbstring
 
       - name: Setup Node
@@ -45,7 +53,7 @@ jobs:
       - name: Build Assets
         run: npm run build
 
-      - name: Tests
+      - name: Run Tests
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
