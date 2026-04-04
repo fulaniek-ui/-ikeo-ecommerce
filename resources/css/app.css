@@ -138,38 +138,74 @@
     }
 
     body {
-        @apply bg-background text-foreground antialiased selection:bg-indigo-500/10 selection:text-indigo-600;
+        @apply bg-background text-foreground antialiased;
     }
 }
 
-/* Premium Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+/* Text selection */
+::selection {
+    background: rgba(99, 102, 241, 0.12);
+    color: rgb(67, 56, 202);
 }
 
-::-webkit-scrollbar-track {
-    @apply bg-transparent;
+.dark ::selection {
+    background: rgba(129, 140, 248, 0.2);
+    color: rgb(165, 180, 252);
 }
 
-::-webkit-scrollbar-thumb {
-    @apply bg-zinc-400/30 rounded-full hover:bg-zinc-400/50 transition-colors;
+/* Premium Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+.dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
+.dark ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+html { scroll-behavior: smooth; }
+
+/* Card hover glow effect */
+.card-glow {
+    position: relative;
+}
+.card-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(59,130,246,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 0;
+}
+.card-glow:hover::before {
+    opacity: 1;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-    @apply bg-zinc-600/30 hover:bg-zinc-600/50;
+/* Smooth page transitions */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Smooth Scrolling */
-html {
-    scroll-behavior: smooth;
+.animate-fade-in-up {
+    animation: fadeInUp 0.4s ease-out;
 }
 
-/* Glassmorphism Utilities */
-.glass {
-    @apply bg-white/70 backdrop-blur-md border-white/20 shadow-sm transition-all duration-300;
+/* Pulse glow for alerts */
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
 }
 
-.dark .glass {
-    @apply bg-zinc-950/70 backdrop-blur-md border-zinc-800/30;
+.pulse-glow-red {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Gradient text */
+.text-gradient {
+    background: linear-gradient(135deg, #6366f1, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
