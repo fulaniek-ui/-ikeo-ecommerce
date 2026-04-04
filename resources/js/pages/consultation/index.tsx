@@ -1,6 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { MessageSquare, Search, Eye, Calendar, Store } from 'lucide-react';
+import { MessageSquare, Search, Eye, Calendar, Store, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/data-table';
 import { Badge } from '@/components/ui/badge';
