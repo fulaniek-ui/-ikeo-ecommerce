@@ -17,6 +17,10 @@ Route::inertia('/', 'welcome', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
 
+// Public catalog (React fetches from API)
+Route::inertia('/catalog', 'catalog/index')->name('catalog.index');
+Route::inertia('/catalog/{slug}', 'catalog/show')->name('catalog.show');
+
 Route::middleware(['auth', 'checkAdmin'])->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 

@@ -15,6 +15,9 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                         <span className="text-xl font-bold tracking-wide">IKEO</span>
                     </div>
                     <nav className="flex items-center gap-3">
+                        <Link href="/catalog" className="rounded-lg px-5 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                            Shop
+                        </Link>
                         {auth.user ? (
                             <Link href={dashboard()} className="rounded-lg bg-amber-500 px-5 py-2 text-sm font-medium text-white hover:bg-amber-600 transition-colors">
                                 Dashboard
@@ -47,8 +50,8 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                             Simple, functional, and beautifully designed for modern living.
                         </p>
                         <div className="mt-10 flex items-center justify-center gap-4">
-                            <Link href={auth.user ? dashboard() : register()} className="rounded-xl bg-[#1b1b18] px-8 py-3.5 text-sm font-semibold text-white hover:bg-black transition-colors dark:bg-white dark:text-black dark:hover:bg-[#e5e5e5]">
-                                Get Started
+                            <Link href="/catalog" className="rounded-xl bg-[#1b1b18] px-8 py-3.5 text-sm font-semibold text-white hover:bg-black transition-colors dark:bg-white dark:text-black dark:hover:bg-[#e5e5e5]">
+                                Shop Now
                             </Link>
                             <a href="#features" className="rounded-xl border border-[#e3e3e0] px-8 py-3.5 text-sm font-semibold hover:border-[#c5c5c0] transition-colors dark:border-[#3E3E3A] dark:hover:border-[#62605b]">
                                 Learn More
