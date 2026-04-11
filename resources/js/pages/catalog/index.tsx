@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
-import { useEffect, useState, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent } from '@/components/ui/card';
 import { Search, SlidersHorizontal, Star, ShoppingCart, X, Loader2 } from 'lucide-react';
+import { useEffect, useState, useCallback } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface FilterCategory { id: number; name: string; name_id: string; slug: string; products_count: number; }
 interface FilterBrand { id: number; name: string; slug: string; products_count: number; }
@@ -46,10 +46,23 @@ export default function CatalogIndex() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (category) params.set('category', category);
-    if (brand) params.set('brand', brand);
-    if (sort !== 'latest') params.set('sort', sort);
+
+    if (search) {
+params.set('search', search);
+}
+
+    if (category) {
+params.set('category', category);
+}
+
+    if (brand) {
+params.set('brand', brand);
+}
+
+    if (sort !== 'latest') {
+params.set('sort', sort);
+}
+
     params.set('page', page.toString());
     params.set('per_page', '12');
 
@@ -59,9 +72,13 @@ export default function CatalogIndex() {
     setLoading(false);
   }, [search, category, brand, sort, page]);
 
-  useEffect(() => { fetchProducts(); }, [fetchProducts]);
+  useEffect(() => {
+ fetchProducts(); 
+}, [fetchProducts]);
 
-  const clearFilters = () => { setSearch(''); setCategory(''); setBrand(''); setSort('latest'); setPage(1); };
+  const clearFilters = () => {
+ setSearch(''); setCategory(''); setBrand(''); setSort('latest'); setPage(1); 
+};
   const hasFilters = search || category || brand || sort !== 'latest';
 
   return (
@@ -81,7 +98,9 @@ export default function CatalogIndex() {
                 <Input
                   placeholder="Search furniture..."
                   value={search}
-                  onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                  onChange={(e) => {
+ setSearch(e.target.value); setPage(1); 
+}}
                   className="w-64 pl-9 rounded-full border-muted bg-muted/30"
                 />
               </div>
@@ -98,7 +117,9 @@ export default function CatalogIndex() {
           <div className="sm:hidden mb-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input placeholder="Search furniture..." value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} className="pl-9 rounded-full" />
+              <Input placeholder="Search furniture..." value={search} onChange={(e) => {
+ setSearch(e.target.value); setPage(1); 
+}} className="pl-9 rounded-full" />
             </div>
           </div>
 
@@ -109,7 +130,9 @@ export default function CatalogIndex() {
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div>
                     <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Category</label>
-                    <Select value={category} onValueChange={(v) => { setCategory(v === 'all' ? '' : v); setPage(1); }}>
+                    <Select value={category} onValueChange={(v) => {
+ setCategory(v === 'all' ? '' : v); setPage(1); 
+}}>
                       <SelectTrigger className="rounded-lg"><SelectValue placeholder="All Categories" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Categories</SelectItem>
@@ -121,7 +144,9 @@ export default function CatalogIndex() {
                   </div>
                   <div>
                     <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Brand</label>
-                    <Select value={brand} onValueChange={(v) => { setBrand(v === 'all' ? '' : v); setPage(1); }}>
+                    <Select value={brand} onValueChange={(v) => {
+ setBrand(v === 'all' ? '' : v); setPage(1); 
+}}>
                       <SelectTrigger className="rounded-lg"><SelectValue placeholder="All Brands" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Brands</SelectItem>
@@ -133,7 +158,9 @@ export default function CatalogIndex() {
                   </div>
                   <div>
                     <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Sort By</label>
-                    <Select value={sort} onValueChange={(v) => { setSort(v); setPage(1); }}>
+                    <Select value={sort} onValueChange={(v) => {
+ setSort(v); setPage(1); 
+}}>
                       <SelectTrigger className="rounded-lg"><SelectValue /></SelectTrigger>
                       <SelectContent>
                         {data.filters.sort_options.map((s) => (
@@ -248,10 +275,17 @@ export default function CatalogIndex() {
               <div className="flex items-center gap-1">
                 {Array.from({ length: Math.min(data.meta.last_page, 7) }, (_, i) => {
                   let p: number;
-                  if (data.meta.last_page <= 7) { p = i + 1; }
-                  else if (page <= 4) { p = i + 1; }
-                  else if (page >= data.meta.last_page - 3) { p = data.meta.last_page - 6 + i; }
-                  else { p = page - 3 + i; }
+
+                  if (data.meta.last_page <= 7) {
+ p = i + 1; 
+} else if (page <= 4) {
+ p = i + 1; 
+} else if (page >= data.meta.last_page - 3) {
+ p = data.meta.last_page - 6 + i; 
+} else {
+ p = page - 3 + i; 
+}
+
                   return (
                     <Button key={p} variant={p === page ? 'default' : 'ghost'} size="sm"
                       className={`h-8 w-8 rounded-full p-0 ${p === page ? 'bg-amber-500 hover:bg-amber-600' : ''}`}

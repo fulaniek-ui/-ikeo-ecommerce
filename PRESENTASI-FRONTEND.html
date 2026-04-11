@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IKEO - Presentasi Frontend React</title>
+<style>
+  @page { size: A4; margin: 15mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a2e; background: #fff; line-height: 1.6; padding: 20px 40px; }
+  .page-break { page-break-after: always; }
+  h1 { font-size: 2.2em; color: #0f3460; margin-bottom: 5px; }
+  h2 { font-size: 1.4em; color: #0f3460; border-bottom: 3px solid #e94560; padding-bottom: 5px; margin: 30px 0 15px; }
+  h3 { font-size: 1.1em; color: #16213e; margin: 15px 0 8px; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 20px; font-size: 0.9em; }
+  th { background: #0f3460; color: #fff; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border-bottom: 1px solid #ddd; }
+  tr:nth-child(even) { background: #f8f9fa; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 10px 0; }
+  .card { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; }
+  .card-title { font-weight: bold; color: #0f3460; margin-bottom: 5px; }
+  .tree { background: #f8f9fa; padding: 15px 20px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.85em; line-height: 1.8; margin: 10px 0; }
+  code { background: #eef; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  .header-box { background: linear-gradient(135deg, #16213e, #0f3460); color: #fff; padding: 30px; border-radius: 12px; text-align: center; margin-bottom: 25px; }
+  .header-box h1 { color: #fff; font-size: 2.5em; }
+  .stat-row { display: flex; gap: 15px; margin: 15px 0; }
+  .stat { flex: 1; text-align: center; background: #f0f4ff; border-radius: 8px; padding: 12px; }
+  .stat-num { font-size: 1.8em; font-weight: bold; color: #e94560; }
+  .stat-label { font-size: 0.85em; color: #555; }
+  .badge { display: inline-block; background: #0f3460; color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; margin: 2px; }
+  .badge-green { background: #27ae60; }
+  .badge-orange { background: #f39c12; }
+  .badge-red { background: #e94560; }
+  .check { color: #27ae60; margin-right: 3px; }
+  .flow { background: #f0f4ff; border-left: 4px solid #0f3460; padding: 15px 20px; margin: 10px 0; border-radius: 0 8px 8px 0; font-size: 0.9em; }
+  .flow .step { margin: 4px 0; }
+  .flow .arrow { color: #e94560; font-weight: bold; margin-right: 5px; }
+  ul { padding-left: 20px; margin: 5px 0; }
+  li { margin: 3px 0; font-size: 0.9em; }
+  .footer { text-align: center; color: #999; font-size: 0.8em; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="header-box">
+  <h1>🪑 IKEO — Frontend</h1>
+  <p style="color:#ccc; font-size:1em;">E-Commerce Furniture — Presentasi Frontend React</p>
+  <p style="color:#aaa; font-size:0.9em;">Final Project Bootcamp | React + TypeScript + Tailwind CSS</p>
+</div>
+
+<div class="stat-row">
+  <div class="stat"><div class="stat-num">16</div><div class="stat-label">Halaman</div></div>
+  <div class="stat"><div class="stat-num">6</div><div class="stat-label">Context Provider</div></div>
+  <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Komponen</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">Bahasa (ID/EN)</div></div>
+</div>
+
+<!-- 1. APA ITU IKEO FRONTEND -->
+<h2>1. Apa Itu IKEO Frontend?</h2>
+<p>IKEO Frontend adalah <strong>website e-commerce furniture</strong> untuk customer, dibangun dengan React sebagai Single Page Application (SPA).</p>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">🛒 Untuk Customer</div>
+    Browse produk, keranjang belanja, checkout, pembayaran via Xendit, wishlist, profil, blog
+  </div>
+  <div class="card">
+    <div class="card-title">🔗 Terhubung ke Backend</div>
+    Mengkonsumsi REST API Laravel untuk data produk, autentikasi, order, dan pembayaran
+  </div>
+</div>
+
+<!-- 2. TECH STACK -->
+<h2>2. Tech Stack</h2>
+<table>
+  <tr><th>Komponen</th><th>Teknologi</th><th>Fungsi</th></tr>
+  <tr><td>Framework</td><td>React 18</td><td>UI Library</td></tr>
+  <tr><td>Bahasa</td><td>TypeScript</td><td>Type safety</td></tr>
+  <tr><td>Styling</td><td>Tailwind CSS</td><td>Utility-first CSS</td></tr>
+  <tr><td>UI Components</td><td>shadcn/ui + Radix UI</td><td>Komponen siap pakai (50+ komponen)</td></tr>
+  <tr><td>Routing</td><td>React Router DOM v6</td><td>Client-side routing</td></tr>
+  <tr><td>State Management</td><td>React Context API</td><td>Global state (6 context)</td></tr>
+  <tr><td>Data Fetching</td><td>TanStack React Query</td><td>Server state & caching</td></tr>
+  <tr><td>Form</td><td>React Hook Form + Zod</td><td>Form handling & validasi</td></tr>
+  <tr><td>Cart</td><td>react-use-cart</td><td>Keranjang belanja</td></tr>
+  <tr><td>Icons</td><td>Lucide React</td><td>Icon library</td></tr>
+  <tr><td>Build Tool</td><td>Vite</td><td>Dev server & bundler</td></tr>
+  <tr><td>Testing</td><td>Vitest + Testing Library</td><td>Unit testing</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- 3. HALAMAN -->
+<h2>3. Halaman Aplikasi (16 Routes)</h2>
+<table>
+  <tr><th>Route</th><th>Halaman</th><th>Fungsi</th></tr>
+  <tr><td><code>/</code></td><td>Index (Home)</td><td>Landing page: hero, featured products, kategori, testimonial, blog</td></tr>
+  <tr><td><code>/products</code></td><td>Products</td><td>Katalog produk + filter, search, sort, pagination</td></tr>
+  <tr><td><code>/product/:id</code></td><td>ProductDetail</td><td>Detail produk, pilih opsi, review, related products</td></tr>
+  <tr><td><code>/rooms</code></td><td>Rooms</td><td>Browse produk berdasarkan ruangan</td></tr>
+  <tr><td><code>/deals</code></td><td>Deals</td><td>Flash sale, promo, countdown timer</td></tr>
+  <tr><td><code>/blog</code></td><td>Blog</td><td>Daftar artikel + filter kategori & tag</td></tr>
+  <tr><td><code>/blog/:id</code></td><td>BlogDetail</td><td>Detail artikel blog</td></tr>
+  <tr><td><code>/stores</code></td><td>StoreLocator</td><td>Lokasi toko fisik</td></tr>
+  <tr><td><code>/about</code></td><td>About</td><td>Tentang IKEO, tim, visi misi</td></tr>
+  <tr><td><code>/cart</code></td><td>Cart</td><td>Keranjang belanja, update qty, hapus item</td></tr>
+  <tr><td><code>/checkout</code></td><td>Checkout</td><td>Form pengiriman, pilih kurir & metode bayar</td></tr>
+  <tr><td><code>/payment-status</code></td><td>PaymentStatus</td><td>Status pembayaran setelah redirect dari Xendit</td></tr>
+  <tr><td><code>/wishlist</code></td><td>Wishlist</td><td>Daftar produk favorit</td></tr>
+  <tr><td><code>/profile</code></td><td>Profile</td><td>Profil user, pesanan, alamat</td></tr>
+  <tr><td><code>/compare</code></td><td>Compare</td><td>Bandingkan hingga 4 produk</td></tr>
+  <tr><td><code>*</code></td><td>NotFound</td><td>Halaman 404</td></tr>
+</table>
+
+<!-- 4. ARSITEKTUR -->
+<h2>4. Arsitektur & Struktur Folder</h2>
+<div class="tree">
+src/<br>
+├── assets/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Gambar hero, produk, kategori, blog<br>
+├── components/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 15+ komponen reusable<br>
+│&nbsp;&nbsp;&nbsp;└── ui/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 50+ shadcn/ui komponen (button, card, dialog, dll)<br>
+├── context/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 6 Context Provider (global state)<br>
+├── data/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Static product data<br>
+├── hooks/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Custom hooks (useMobile, useToast)<br>
+├── lib/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Utility functions<br>
+├── pages/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 16 halaman<br>
+├── services/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ API service (fetch products, Xendit payment)<br>
+├── test/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Test setup & test files<br>
+├── App.tsx &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Root component + routing<br>
+└── main.tsx &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Entry point
+</div>
+
+<div class="page-break"></div>
+
+<!-- 5. CONTEXT / STATE MANAGEMENT -->
+<h2>5. State Management (6 Context)</h2>
+<p>Aplikasi menggunakan <strong>React Context API</strong> untuk mengelola global state:</p>
+<table>
+  <tr><th>Context</th><th>Fungsi</th><th>State yang Dikelola</th></tr>
+  <tr><td>🛍️ ShopContext</td><td>Filter & sort produk</td><td>searchQuery, selectedCategory, priceRange, selectedBrands, sortBy, filteredProducts</td></tr>
+  <tr><td>🛒 CartProvider</td><td>Keranjang belanja</td><td>items, addItem, updateQuantity, removeItem, emptyCart, totalItems, totalPrice</td></tr>
+  <tr><td>🌐 LanguageContext</td><td>Multi-bahasa (ID/EN)</td><td>language, setLanguage, t() translation function</td></tr>
+  <tr><td>📊 ComparisonContext</td><td>Bandingkan produk</td><td>comparisonList (max 4), add/remove/clear/isInComparison</td></tr>
+  <tr><td>👁️ RecentlyViewedContext</td><td>Produk terakhir dilihat</td><td>recentlyViewed (max 6), persist ke localStorage</td></tr>
+  <tr><td>📝 BlogContext</td><td>Filter blog</td><td>searchQuery, selectedCategory, selectedTag, filteredBlogs</td></tr>
+</table>
+
+<h3>Provider Hierarchy di App.tsx</h3>
+<div class="flow">
+  <div class="step">QueryClientProvider <span style="color:#999">(React Query)</span></div>
+  <div class="step">&nbsp;&nbsp;└── LanguageProvider <span style="color:#999">(ID/EN)</span></div>
+  <div class="step">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── CartProvider <span style="color:#999">(react-use-cart)</span></div>
+  <div class="step">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── ComparisonProvider</div>
+  <div class="step">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── RecentlyViewedProvider</div>
+  <div class="step">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── ShopProvider</div>
+  <div class="step">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── BlogProvider</div>
+  <div class="step">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <strong>Routes</strong></div>
+</div>
+
+<!-- 6. KOMPONEN -->
+<h2>6. Komponen Utama</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">🏠 Homepage</div>
+    <ul>
+      <li>HeroSection — Banner utama</li>
+      <li>FeaturedProducts — Produk unggulan</li>
+      <li>CategoriesSection — Kategori ruangan</li>
+      <li>WhyChooseUs — Keunggulan IKEO</li>
+      <li>Testimonials — Review pelanggan</li>
+      <li>BlogSection — Artikel terbaru</li>
+      <li>ValueProps — Free delivery, garansi, dll</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">🧩 Shared Components</div>
+    <ul>
+      <li>Navbar — Navigasi + search + cart badge</li>
+      <li>Footer — Links + newsletter</li>
+      <li>Price — Format harga Rupiah</li>
+      <li>StockBadge — Status stok (in/low/out)</li>
+      <li>QuickViewModal — Preview produk cepat</li>
+      <li>RecentlyViewed — Produk terakhir dilihat</li>
+      <li>ScrollToTop — Auto scroll ke atas</li>
+    </ul>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- 7. FITUR E-COMMERCE -->
+<h2>7. Fitur E-Commerce</h2>
+
+<h3>🔍 Katalog Produk</h3>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">Filter</div>
+    <ul>
+      <li>Search by nama produk</li>
+      <li>Filter by kategori (Living Room, Bedroom, dll)</li>
+      <li>Filter by range harga (slider)</li>
+      <li>Filter by brand (multi-select)</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Sort</div>
+    <ul>
+      <li>Featured (default)</li>
+      <li>Harga: rendah → tinggi</li>
+      <li>Harga: tinggi → rendah</li>
+      <li>Rating tertinggi</li>
+      <li>Nama A-Z</li>
+    </ul>
+  </div>
+</div>
+
+<h3>🛒 Shopping Flow</h3>
+<div class="flow">
+  <div class="step"><span class="arrow">1.</span> Browse produk → filter/search/sort</div>
+  <div class="step"><span class="arrow">2.</span> Lihat detail produk → pilih material/size/finish</div>
+  <div class="step"><span class="arrow">3.</span> Add to Cart → update quantity</div>
+  <div class="step"><span class="arrow">4.</span> Cart page → review items, lihat subtotal + pajak 10%</div>
+  <div class="step"><span class="arrow">5.</span> Checkout → isi nama, email, alamat, pilih kurir & metode bayar</div>
+  <div class="step"><span class="arrow">6.</span> Place Order → redirect ke Xendit payment page</div>
+  <div class="step"><span class="arrow">7.</span> Bayar → redirect ke Payment Status page</div>
+</div>
+
+<h3>💡 Fitur Tambahan</h3>
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title">❤️ Wishlist</div>
+    Simpan produk favorit
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Compare</div>
+    Bandingkan max 4 produk
+  </div>
+  <div class="card">
+    <div class="card-title">👁️ Recently Viewed</div>
+    6 produk terakhir dilihat (localStorage)
+  </div>
+  <div class="card">
+    <div class="card-title">🏪 Store Locator</div>
+    Lokasi toko fisik
+  </div>
+  <div class="card">
+    <div class="card-title">📝 Blog</div>
+    Artikel + filter kategori & tag
+  </div>
+  <div class="card">
+    <div class="card-title">📅 Consultation</div>
+    Booking konsultasi desain
+  </div>
+</div>
+
+<!-- 8. MULTI BAHASA -->
+<h2>8. Multi Bahasa (i18n)</h2>
+<p>Aplikasi mendukung <strong>2 bahasa</strong> menggunakan LanguageContext:</p>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">🇮🇩 Bahasa Indonesia (Default)</div>
+    <code>t("cart.title")</code> → "Keranjang Belanja"<br>
+    <code>t("products.title")</code> → "Semua Produk"<br>
+    <code>t("checkout.placeOrder")</code> → "Buat Pesanan"
+  </div>
+  <div class="card">
+    <div class="card-title">🇬🇧 English</div>
+    <code>t("cart.title")</code> → "Shopping Cart"<br>
+    <code>t("products.title")</code> → "All Products"<br>
+    <code>t("checkout.placeOrder")</code> → "Place Order"
+  </div>
+</div>
+<p style="margin-top:10px; font-size:0.9em;">Semua teks di aplikasi menggunakan fungsi <code>t("key")</code> dari <code>useLanguage()</code> hook. Total <strong>200+ translation keys</strong> mencakup navbar, home, products, cart, checkout, profile, blog, about, dan lainnya.</p>
+
+<div class="page-break"></div>
+
+<!-- 9. INTEGRASI API -->
+<h2>9. Integrasi API Backend</h2>
+<p>Frontend terhubung ke Laravel backend melalui <code>services/api.ts</code>:</p>
+<table>
+  <tr><th>Fungsi</th><th>Endpoint</th><th>Kegunaan</th></tr>
+  <tr><td><code>fetchProducts()</code></td><td>GET /api/products</td><td>Ambil produk + filter + pagination</td></tr>
+  <tr><td><code>createXenditInvoice()</code></td><td>POST /api/xendit/invoice</td><td>Buat invoice pembayaran Xendit</td></tr>
+  <tr><td><code>getXenditInvoiceStatus()</code></td><td>GET /api/xendit/invoice/:id</td><td>Cek status pembayaran</td></tr>
+</table>
+
+<h3>Konfigurasi</h3>
+<div class="tree">
+API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api"
+</div>
+<p style="font-size:0.9em;">Base URL API dikonfigurasi via environment variable <code>VITE_API_URL</code> di file <code>.env</code>.</p>
+
+<!-- 10. UI LIBRARY -->
+<h2>10. UI Library (shadcn/ui)</h2>
+<p>Menggunakan <strong>50+ komponen shadcn/ui</strong> berbasis Radix UI:</p>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">📋 Form & Input</div>
+    <span class="badge">Button</span>
+    <span class="badge">Input</span>
+    <span class="badge">Textarea</span>
+    <span class="badge">Select</span>
+    <span class="badge">Checkbox</span>
+    <span class="badge">Radio Group</span>
+    <span class="badge">Slider</span>
+    <span class="badge">Switch</span>
+    <span class="badge">Calendar</span>
+    <span class="badge">Form</span>
+    <span class="badge">Label</span>
+  </div>
+  <div class="card">
+    <div class="card-title">📦 Layout & Display</div>
+    <span class="badge">Card</span>
+    <span class="badge">Table</span>
+    <span class="badge">Tabs</span>
+    <span class="badge">Accordion</span>
+    <span class="badge">Badge</span>
+    <span class="badge">Avatar</span>
+    <span class="badge">Separator</span>
+    <span class="badge">Skeleton</span>
+    <span class="badge">Progress</span>
+    <span class="badge">Carousel</span>
+    <span class="badge">Aspect Ratio</span>
+  </div>
+  <div class="card">
+    <div class="card-title">🔔 Overlay & Feedback</div>
+    <span class="badge">Dialog</span>
+    <span class="badge">Sheet</span>
+    <span class="badge">Drawer</span>
+    <span class="badge">Alert Dialog</span>
+    <span class="badge">Toast</span>
+    <span class="badge">Sonner</span>
+    <span class="badge">Tooltip</span>
+    <span class="badge">Popover</span>
+    <span class="badge">Hover Card</span>
+  </div>
+  <div class="card">
+    <div class="card-title">🧭 Navigation</div>
+    <span class="badge">Navigation Menu</span>
+    <span class="badge">Menubar</span>
+    <span class="badge">Dropdown Menu</span>
+    <span class="badge">Context Menu</span>
+    <span class="badge">Command</span>
+    <span class="badge">Breadcrumb</span>
+    <span class="badge">Pagination</span>
+    <span class="badge">Scroll Area</span>
+    <span class="badge">Sidebar</span>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- 11. ALUR CHECKOUT & PAYMENT -->
+<h2>11. Alur Checkout & Payment (Xendit)</h2>
+<div class="flow">
+  <div class="step"><span class="arrow">1.</span> Customer klik <strong>"Lanjut ke Pembayaran"</strong> di halaman Cart</div>
+  <div class="step"><span class="arrow">2.</span> Halaman Checkout: isi nama, email, alamat pengiriman</div>
+  <div class="step"><span class="arrow">3.</span> Pilih kurir: <span class="badge badge-green">JNE</span> <span class="badge badge-green">GoSend</span> <span class="badge badge-green">SiCepat</span></div>
+  <div class="step"><span class="arrow">4.</span> Pilih metode bayar: <span class="badge badge-orange">Transfer Bank</span> <span class="badge badge-orange">E-Wallet</span></div>
+  <div class="step"><span class="arrow">5.</span> Review pesanan: items + subtotal + ongkir + pajak 10%</div>
+  <div class="step"><span class="arrow">6.</span> Klik <strong>"Buat Pesanan"</strong> → <code>createXenditInvoice()</code></div>
+  <div class="step"><span class="arrow">7.</span> Redirect ke halaman pembayaran Xendit</div>
+  <div class="step"><span class="arrow">8.</span> Setelah bayar → redirect ke <code>/payment-status</code></div>
+</div>
+
+<!-- 12. RESPONSIVE & UX -->
+<h2>12. Responsive Design & UX</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">📱 Responsive</div>
+    <ul>
+      <li>Tailwind CSS breakpoints (sm, md, lg, xl)</li>
+      <li>Custom <code>useMobile()</code> hook untuk deteksi mobile</li>
+      <li>Sheet/Drawer untuk mobile navigation</li>
+      <li>Grid layout yang adaptif</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">✨ User Experience</div>
+    <ul>
+      <li>ScrollToTop otomatis saat pindah halaman</li>
+      <li>Toast notification (Sonner)</li>
+      <li>Loading skeleton saat fetch data</li>
+      <li>Quick View modal untuk preview produk</li>
+      <li>Recently Viewed products (persist localStorage)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 13. KESIMPULAN -->
+<h2>13. Kesimpulan</h2>
+<div style="font-size: 1.05em; line-height: 2;">
+  <span class="check">✅</span> SPA React + TypeScript dengan 16 halaman<br>
+  <span class="check">✅</span> 6 Context Provider untuk state management<br>
+  <span class="check">✅</span> 50+ UI komponen (shadcn/ui + Radix UI)<br>
+  <span class="check">✅</span> Multi bahasa Indonesia & English (200+ keys)<br>
+  <span class="check">✅</span> Integrasi REST API Laravel + Xendit Payment<br>
+  <span class="check">✅</span> Fitur lengkap: katalog, cart, checkout, wishlist, compare, blog<br>
+  <span class="check">✅</span> Responsive design (mobile & desktop)<br>
+  <span class="check">✅</span> Deployment ke cPanel
+</div>
+
+<div class="footer">
+  IKEO Frontend — Final Project Bootcamp | React 18 + TypeScript + Tailwind CSS + shadcn/ui
+</div>
+
+</body>
+</html>

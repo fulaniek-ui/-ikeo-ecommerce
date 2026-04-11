@@ -42,11 +42,11 @@ class OrderController extends Controller
             'address_id' => ['required', 'exists:addresses,id'],
             'payment_method' => ['required', 'in:transfer,ewallet'],
             'courier' => ['required', 'in:JNE,GoSend,SiCepat'],
-            'notes' => ['nullable', 'string'],
-            'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'exists:products,id'],
-            'items.*.product_variant_id' => ['nullable', 'exists:product_variants,id'],
-            'items.*.quantity' => ['required', 'integer', 'min:1'],
+            'notes' => ['nullable', 'string', 'max:500'],
+            'items' => ['required', 'array', 'min:1', 'max:20'],
+            'items.*.product_id' => ['required', 'integer', 'exists:products,id'],
+            'items.*.product_variant_id' => ['nullable', 'integer', 'exists:product_variants,id'],
+            'items.*.quantity' => ['required', 'integer', 'min:1', 'max:100'],
         ]);
 
         return DB::transaction(function () use ($request, $xendit) {
@@ -59,7 +59,16 @@ class OrderController extends Controller
                     ? ProductVariant::findOrFail($item['product_variant_id'])
                     : null;
 
-                $price = $variant ? $variant->price : ($product->discount_price ?? $product->price);
+                $price = $variant ? $variant->price : ($product->discount_price ?: $product->price);
+
+                if ($price <= 0) {
+                    abort(422, "Product '{$product->name}' has invalid price.");
+                }
+
+                if ($product->stock < $item['quantity']) {
+                    abort(422, "Product '{$product->name}' only has {$product->stock} items in stock.");
+                }
+
                 $itemSubtotal = $price * $item['quantity'];
                 $subtotal += $itemSubtotal;
 
@@ -72,6 +81,10 @@ class OrderController extends Controller
                     'quantity' => $item['quantity'],
                     'subtotal' => $itemSubtotal,
                 ];
+            }
+
+            if ($subtotal <= 0) {
+                abort(422, 'Order total cannot be zero. Please add valid items.');
             }
 
             $shippingCost = 15000;
@@ -93,6 +106,14 @@ class OrderController extends Controller
             ]);
 
             $order->orderItems()->createMany($orderItems);
+
+            // Reduce stock
+            foreach ($request->items as $item) {
+                Product::where('id', $item['product_id'])->decrement('stock', $item['quantity']);
+                if (!empty($item['product_variant_id'])) {
+                    ProductVariant::where('id', $item['product_variant_id'])->decrement('stock', $item['quantity']);
+                }
+            }
 
             // Create Xendit invoice
             $invoice = $xendit->createInvoice([

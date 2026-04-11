@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IKEO - Presentasi Backend</title>
+<style>
+  @page { size: A4; margin: 15mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a2e; background: #fff; line-height: 1.6; padding: 20px 40px; }
+  .page-break { page-break-after: always; }
+  h1 { font-size: 2.2em; color: #0f3460; margin-bottom: 5px; }
+  h2 { font-size: 1.4em; color: #0f3460; border-bottom: 3px solid #e94560; padding-bottom: 5px; margin: 30px 0 15px; }
+  h3 { font-size: 1.1em; color: #16213e; margin: 15px 0 8px; }
+  .subtitle { color: #555; font-size: 1em; margin-bottom: 20px; }
+  .badge { display: inline-block; background: #e94560; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; margin-right: 5px; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0 20px; font-size: 0.9em; }
+  th { background: #0f3460; color: #fff; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border-bottom: 1px solid #ddd; }
+  tr:nth-child(even) { background: #f8f9fa; }
+  .flow { background: #f0f4ff; border-left: 4px solid #0f3460; padding: 15px 20px; margin: 10px 0; border-radius: 0 8px 8px 0; font-size: 0.9em; }
+  .flow .step { margin: 4px 0; }
+  .flow .arrow { color: #e94560; font-weight: bold; margin-right: 5px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 10px 0; }
+  .card { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; }
+  .card-title { font-weight: bold; color: #0f3460; margin-bottom: 5px; }
+  .check { color: #27ae60; margin-right: 3px; }
+  .tree { background: #f8f9fa; padding: 15px 20px; border-radius: 8px; font-family: 'Consolas', monospace; font-size: 0.85em; line-height: 1.8; margin: 10px 0; }
+  code { background: #eef; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  .header-box { background: linear-gradient(135deg, #0f3460, #16213e); color: #fff; padding: 30px; border-radius: 12px; text-align: center; margin-bottom: 25px; }
+  .header-box h1 { color: #fff; font-size: 2.5em; }
+  .header-box .subtitle { color: #ccc; }
+  .stat-row { display: flex; gap: 15px; margin: 15px 0; }
+  .stat { flex: 1; text-align: center; background: #f0f4ff; border-radius: 8px; padding: 12px; }
+  .stat-num { font-size: 1.8em; font-weight: bold; color: #e94560; }
+  .stat-label { font-size: 0.85em; color: #555; }
+  .pass { background: #27ae60; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
+  ul { padding-left: 20px; margin: 5px 0; }
+  li { margin: 3px 0; font-size: 0.9em; }
+  .footer { text-align: center; color: #999; font-size: 0.8em; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER -->
+<div class="header-box">
+  <h1>🪑 IKEO</h1>
+  <p class="subtitle">E-Commerce Furniture — Presentasi Backend</p>
+  <p style="color:#aaa; font-size:0.9em;">Final Project Bootcamp | Fullstack Laravel + React</p>
+</div>
+
+<div class="stat-row">
+  <div class="stat"><div class="stat-num">16</div><div class="stat-label">Model Database</div></div>
+  <div class="stat"><div class="stat-num">23</div><div class="stat-label">API Endpoint</div></div>
+  <div class="stat"><div class="stat-num">63</div><div class="stat-label">Test Cases ✅</div></div>
+  <div class="stat"><div class="stat-num">13</div><div class="stat-label">API Controller</div></div>
+</div>
+
+<!-- SLIDE 2: APA ITU IKEO -->
+<h2>1. Apa Itu IKEO?</h2>
+<p>IKEO adalah <strong>e-commerce furniture</strong> fullstack yang terdiri dari:</p>
+<div class="grid">
+  <div class="card" style="grid-column: span 2;">
+    <ul style="list-style: none; padding: 0;">
+      <li>🌐 <strong>Frontend</strong> — Website toko online (React)</li>
+      <li>🛠️ <strong>Admin Panel</strong> — Dashboard manajemen (Laravel + Inertia)</li>
+      <li>🔗 <strong>REST API</strong> — Penghubung frontend &amp; backend (Laravel Sanctum)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SLIDE 3: TECH STACK -->
+<h2>2. Tech Stack</h2>
+<table>
+  <tr><th>Komponen</th><th>Teknologi</th><th>Fungsi</th></tr>
+  <tr><td>Framework</td><td>Laravel 11</td><td>Backend & Admin Panel</td></tr>
+  <tr><td>Database</td><td>MySQL</td><td>Penyimpanan data</td></tr>
+  <tr><td>API Auth</td><td>Laravel Sanctum</td><td>Token-based authentication</td></tr>
+  <tr><td>Admin Auth</td><td>Laravel Fortify</td><td>Session + Two Factor Auth</td></tr>
+  <tr><td>Admin UI</td><td>Inertia.js + React</td><td>SPA admin dashboard</td></tr>
+  <tr><td>Payment</td><td>Xendit</td><td>Invoice & pembayaran online</td></tr>
+  <tr><td>Testing</td><td>Pest PHP</td><td>Unit & Feature testing</td></tr>
+  <tr><td>Deployment</td><td>cPanel</td><td>Hosting & domain</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SLIDE 3: DATABASE -->
+<h2>3. Struktur Database (16 Model)</h2>
+<div class="tree">
+User ──┬── Address ──── Order ──── OrderItem<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Wishlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Review&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product ──┬── ProductVariant<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Consultation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── ProductImage<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Blog ── BlogTag&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Category<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Brand<br>
+<br>
+Store &nbsp;&nbsp;&nbsp; NewsletterSubscriber
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-title">📦 E-Commerce</div>
+    Products, ProductVariants, ProductImages, Categories, Brands, Orders, OrderItems, Addresses, Reviews, Wishlists
+  </div>
+  <div class="card">
+    <div class="card-title">📝 Content & Lainnya</div>
+    Blogs, BlogTags, Stores, Consultations, NewsletterSubscribers, Users
+  </div>
+</div>
+
+<!-- SLIDE 4: API ENDPOINTS -->
+<h2>4. API Endpoints</h2>
+
+<h3>🔓 Public (Tanpa Login)</h3>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Fungsi</th></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/register</td><td>Registrasi user baru</td></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/login</td><td>Login & dapat token</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/products</td><td>List produk + filter/sort/search</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/products/{slug}</td><td>Detail produk + related products</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/categories</td><td>List kategori</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/brands</td><td>List brand</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/blogs</td><td>List blog (published)</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/stores</td><td>List toko fisik</td></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/newsletter</td><td>Subscribe newsletter</td></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/consultations</td><td>Booking konsultasi</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h3>🔒 Authenticated (Perlu Token)</h3>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Fungsi</th></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/logout</td><td>Logout & hapus token</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/profile</td><td>Lihat profil user</td></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/profile</td><td>Update profil + avatar</td></tr>
+  <tr><td><span class="badge" style="background:#f39c12">CRUD</span></td><td>/api/addresses</td><td>Kelola alamat pengiriman</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/wishlist</td><td>Lihat wishlist</td></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/wishlist</td><td>Toggle add/remove wishlist</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/orders</td><td>Riwayat pesanan</td></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/orders</td><td>Buat pesanan baru</td></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/reviews</td><td>Kirim review produk</td></tr>
+</table>
+
+<h3>💳 Payment (Xendit)</h3>
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Fungsi</th></tr>
+  <tr><td><span class="badge">POST</span></td><td>/api/payments/webhook</td><td>Callback otomatis dari Xendit</td></tr>
+  <tr><td><span class="badge" style="background:#27ae60">GET</span></td><td>/api/payments/{order}/check</td><td>Cek status pembayaran</td></tr>
+</table>
+
+<!-- SLIDE 5: ORDER FLOW -->
+<h2>5. Alur Pemesanan</h2>
+<div class="flow">
+  <div class="step"><span class="arrow">1.</span> Customer pilih produk & masukkan ke keranjang</div>
+  <div class="step"><span class="arrow">2.</span> <code>POST /api/orders</code> — kirim items + alamat + metode bayar + kurir</div>
+  <div class="step"><span class="arrow">3.</span> Backend hitung: subtotal + pajak (11%) + ongkir (Rp15.000)</div>
+  <div class="step"><span class="arrow">4.</span> Backend buat invoice ke Xendit → dapat <code>payment_url</code></div>
+  <div class="step"><span class="arrow">5.</span> Customer redirect ke halaman pembayaran Xendit</div>
+  <div class="step"><span class="arrow">6.</span> Customer bayar → Xendit kirim webhook ke <code>POST /api/payments/webhook</code></div>
+  <div class="step"><span class="arrow">7.</span> Status order berubah: <code>pending</code> → <code>processing</code></div>
+  <div class="step"><span class="arrow">8.</span> Admin proses & kirim pesanan</div>
+</div>
+
+<!-- SLIDE 6: PRODUCT FEATURES -->
+<h2>6. Fitur Produk</h2>
+<div class="grid">
+  <div class="card">
+    <div class="card-title">🔍 Search & Filter</div>
+    <ul>
+      <li>Search: nama, deskripsi, material</li>
+      <li>Filter: kategori, brand, range harga</li>
+      <li>Flag: bestseller, featured</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 Sort & Pagination</div>
+    <ul>
+      <li>Sort: terbaru, terlama, harga, nama</li>
+      <li>Pagination: default 12/halaman</li>
+      <li>Response: products + filters + meta</li>
+    </ul>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- SLIDE 7: SECURITY -->
+<h2>7. Keamanan</h2>
+<table>
+  <tr><th>Fitur</th><th>Implementasi</th></tr>
+  <tr><td>API Authentication</td><td>Sanctum Bearer Token di setiap request</td></tr>
+  <tr><td>Role Check</td><td>Login API hanya untuk role <code>user</code> (bukan admin)</td></tr>
+  <tr><td>Ownership Check</td><td>User hanya bisa akses data miliknya (address, order)</td></tr>
+  <tr><td>Webhook Validation</td><td>Xendit webhook divalidasi pakai <code>x-callback-token</code></td></tr>
+  <tr><td>Input Validation</td><td>Semua input divalidasi di setiap controller</td></tr>
+  <tr><td>Password Hashing</td><td>Otomatis via Laravel cast <code>hashed</code></td></tr>
+  <tr><td>Admin 2FA</td><td>Two Factor Authentication via Fortify</td></tr>
+</table>
+
+<!-- SLIDE 8: ADMIN PANEL -->
+<h2>8. Admin Panel</h2>
+<p>Dashboard admin menggunakan <strong>Inertia.js + React</strong> untuk mengelola:</p>
+<div class="grid">
+  <div class="card"><div class="card-title">📦 Products & Variants</div>CRUD produk, varian, gambar</div>
+  <div class="card"><div class="card-title">📂 Categories & Brands</div>Kelola kategori & brand</div>
+  <div class="card"><div class="card-title">🛒 Orders</div>Lihat & update status pesanan</div>
+  <div class="card"><div class="card-title">⭐ Reviews</div>Moderasi review customer</div>
+  <div class="card"><div class="card-title">📝 Blogs</div>Tulis & publish artikel</div>
+  <div class="card"><div class="card-title">🏪 Stores</div>Kelola info toko fisik</div>
+  <div class="card"><div class="card-title">📅 Consultations</div>Lihat booking konsultasi</div>
+  <div class="card"><div class="card-title">👤 Users</div>Manajemen user & profil</div>
+</div>
+
+<!-- SLIDE 9: TESTING -->
+<h2>9. Unit Testing (Pest PHP)</h2>
+<p><span class="pass">63 TEST — ALL PASSED ✅</span></p>
+<table>
+  <tr><th>Test File</th><th>Jumlah</th><th>Yang Diuji</th></tr>
+  <tr><td>UserTest</td><td>10</td><td>Register, login, logout, profile, validasi, role check</td></tr>
+  <tr><td>CategoryTest</td><td>3</td><td>List, show by slug, 404</td></tr>
+  <tr><td>BrandTest</td><td>3</td><td>List, show by slug, 404</td></tr>
+  <tr><td>ProductTest</td><td>6</td><td>List, show, filter category/brand, search, 404</td></tr>
+  <tr><td>BlogTest</td><td>4</td><td>List published, show, unpublished 404</td></tr>
+  <tr><td>StoreTest</td><td>1</td><td>List stores</td></tr>
+  <tr><td>NewsletterTest</td><td>3</td><td>Subscribe, validasi email, idempotent</td></tr>
+  <tr><td>ConsultationTest</td><td>3</td><td>Booking, validasi field & tanggal</td></tr>
+  <tr><td>AddressTest</td><td>8</td><td>CRUD, forbidden, auth required, validasi</td></tr>
+  <tr><td>WishlistTest</td><td>5</td><td>List, add, toggle remove, validasi, auth</td></tr>
+  <tr><td>OrderTest</td><td>6</td><td>List, show, create (mock Xendit), forbidden, auth</td></tr>
+  <tr><td>ReviewTest</td><td>5</td><td>Submit, duplikat, validasi rating 1-5, auth</td></tr>
+  <tr><td>PaymentTest</td><td>6</td><td>Webhook PAID/EXPIRED, invalid token, 404</td></tr>
+</table>
+<p style="margin-top:10px;">Jalankan test: <code>php artisan test</code></p>
+
+<div class="page-break"></div>
+
+<!-- SLIDE 10: STRUKTUR FOLDER -->
+<h2>10. Struktur Folder</h2>
+<div class="tree">
+app/<br>
+├── Http/Controllers/API/ &nbsp;&nbsp;→ 13 API Controller<br>
+├── Http/Controllers/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 10 Admin Controller<br>
+├── Http/Resources/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Product Resource & Collection<br>
+├── Models/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 16 Eloquent Model<br>
+├── Services/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ XenditService (Payment)<br>
+database/<br>
+├── factories/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 16 Factory (untuk testing)<br>
+├── migrations/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 21 Migration<br>
+tests/Feature/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ 13 Test File (63 test cases)
+</div>
+
+<!-- SLIDE 11: KESIMPULAN -->
+<h2>11. Kesimpulan</h2>
+<div style="font-size: 1.05em; line-height: 2;">
+  <span class="check">✅</span> REST API lengkap dengan token authentication (Sanctum)<br>
+  <span class="check">✅</span> Payment gateway terintegrasi (Xendit)<br>
+  <span class="check">✅</span> Admin panel SPA (Inertia + React)<br>
+  <span class="check">✅</span> 63 unit test — semua passed<br>
+  <span class="check">✅</span> Keamanan: role check, ownership, webhook validation, 2FA<br>
+  <span class="check">✅</span> Deployment ke cPanel (admin + frontend)
+</div>
+
+<div class="footer">
+  IKEO — Final Project Bootcamp | Dibuat dengan Laravel 11 + React + Pest PHP
+</div>
+
+</body>
+</html>

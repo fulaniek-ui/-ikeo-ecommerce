@@ -1,9 +1,9 @@
 import { Head } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { Star, ArrowLeft, Loader2, ShoppingCart, Truck, ShieldCheck, Package } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface ProductDetail {
   id: number; name: string; slug: string; description: string; description_id: string;
@@ -24,6 +24,7 @@ const formatIDR = (v: number) => new Intl.NumberFormat('id-ID', { style: 'curren
 
 function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'md' }) {
   const cls = size === 'md' ? 'h-5 w-5' : 'h-3.5 w-3.5';
+
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((i) => (
@@ -43,7 +44,10 @@ export default function CatalogShow() {
   const slug = typeof window !== 'undefined' ? window.location.pathname.split('/').pop() : '';
 
   useEffect(() => {
-    if (!slug) return;
+    if (!slug) {
+return;
+}
+
     setLoading(true);
     fetch(`/api/products/${slug}`)
       .then((r) => r.json())

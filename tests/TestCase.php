@@ -18,7 +18,25 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // Sesuai modul bootcamp untuk membersihkan tb users sebelum testing
-        DB::delete('delete from users');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('reviews')->truncate();
+        DB::table('wishlists')->truncate();
+        DB::table('order_items')->truncate();
+        DB::table('orders')->truncate();
+        DB::table('addresses')->truncate();
+        DB::table('consultations')->truncate();
+        DB::table('newsletter_subscribers')->truncate();
+        DB::table('blog_tags')->truncate();
+        DB::table('blogs')->truncate();
+        DB::table('product_images')->truncate();
+        DB::table('product_variants')->truncate();
+        DB::table('products')->truncate();
+        DB::table('categories')->truncate();
+        DB::table('brands')->truncate();
+        DB::table('stores')->truncate();
+        DB::table('personal_access_tokens')->truncate();
+        DB::table('users')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }
