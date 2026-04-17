@@ -20,10 +20,10 @@ class BlogController extends Controller
         return response()->json($blogs);
     }
 
-    public function show(string $slug)
+    public function show(string $slugOrId)
     {
-        $blog = Blog::where('slug', $slug)
-            ->whereNotNull('published_at')
+        $blog = Blog::whereNotNull('published_at')
+            ->where(fn ($q) => $q->where('slug', $slugOrId)->orWhere('id', is_numeric($slugOrId) ? $slugOrId : 0))
             ->with('author', 'tags')
             ->first();
 

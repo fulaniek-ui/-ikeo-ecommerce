@@ -62,9 +62,9 @@ class ProductController extends Controller
         return (new ProductCollection($products))->setFilters($filters);
     }
 
-    public function show(string $slug)
+    public function show(string $slugOrId)
     {
-        $product = Product::where('slug', $slug)
+        $product = Product::where(fn ($q) => $q->where('slug', $slugOrId)->orWhere('id', is_numeric($slugOrId) ? $slugOrId : 0))
             ->with(['category', 'brand', 'variants' => fn ($q) => $q->where('is_active', true), 'images' => fn ($q) => $q->orderBy('sort_order'), 'reviews.user'])
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')

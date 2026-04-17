@@ -17,7 +17,7 @@ class OrderController extends Controller
     {
         $orders = $request->user()
             ->orders()
-            ->with('orderItems')
+            ->with('orderItems.product:id,name,slug,image')
             ->when($request->status, fn ($q, $s) => $q->where('status', $s))
             ->latest()
             ->paginate(10);

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -17,6 +18,8 @@ class Product extends Model
         'material', 'dimensions', 'weight',
     ];
 
+    protected $appends = ['image_url'];
+
     protected function casts(): array
     {
         return [
@@ -26,6 +29,12 @@ class Product extends Model
             'is_bestseller' => 'boolean',
             'is_featured' => 'boolean',
         ];
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (!$this->image) return null;
+        return str_starts_with($this->image, 'http') ? $this->image : asset('storage/' . $this->image);
     }
 
     public function category(): BelongsTo
@@ -67,14 +76,14 @@ class Product extends Model
             ->orWhere('material', 'like', "%{$keyword}%"));
     }
 
-    public function scopeFilterCategory($query, ?string $slug)
+    public function scopeFilterCategory($query, ?string $category)
     {
-        return $query->when($slug, fn ($q) => $q->whereHas('category', fn ($cq) => $cq->where('slug', $slug)));
+        return $query->when($category, fn ($q) => $q->whereHas('category', fn ($cq) => $cq->where('slug', $category)->orWhere('name', $category)));
     }
 
-    public function scopeFilterBrand($query, ?string $slug)
+    public function scopeFilterBrand($query, ?string $brand)
     {
-        return $query->when($slug, fn ($q) => $q->whereHas('brand', fn ($bq) => $bq->where('slug', $slug)));
+        return $query->when($brand, fn ($q) => $q->whereHas('brand', fn ($bq) => $bq->where('slug', $brand)->orWhere('name', $brand)));
     }
 
     public function scopeFilterPrice($query, ?float $min, ?float $max)

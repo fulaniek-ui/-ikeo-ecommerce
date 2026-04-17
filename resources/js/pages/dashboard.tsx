@@ -2,10 +2,11 @@ import { Head, Link } from '@inertiajs/react';
 import {
     Package, Tag, Award, Users, ShoppingCart,
     AlertTriangle, Star, MessageSquare, Clock,
-    ArrowUpRight, Zap, Flame, Sparkles,
+    ArrowUpRight, TrendingUp, Flame, Sparkles,
+    DollarSign, Eye, BarChart3, Activity,
+    ChevronRight, Truck, CheckCircle2, XCircle,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import type { DashboardStats, Order, Product } from '@/types';
 
@@ -18,318 +19,320 @@ interface Props {
 }
 
 const formatIDR = (v: number | null | undefined) => {
-    if (!v) {
-return 'Rp 0';
-}
-
+    if (!v) return 'Rp 0';
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v);
 };
 
-const statusConfig: Record<string, { bg: string; dot: string }> = {
-    pending: { bg: 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400', dot: 'bg-amber-500' },
-    processing: { bg: 'bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400', dot: 'bg-blue-500' },
-    shipped: { bg: 'bg-purple-50 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400', dot: 'bg-purple-500' },
-    delivered: { bg: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400', dot: 'bg-emerald-500' },
-    cancelled: { bg: 'bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400', dot: 'bg-red-500' },
+const formatCompact = (v: number) => {
+    if (v >= 1_000_000_000) return `${(v / 1_000_000_000).toFixed(1)}B`;
+    if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000) return `${(v / 1_000).toFixed(1)}K`;
+    return v.toString();
 };
 
-function MiniStat({ label, value, icon: Icon, color, href }: {
-    label: string; value: string | number; icon: React.ElementType; color: string; href: string;
-}) {
-    return (
-        <Link href={href} className="group">
-            <div className="relative flex items-center gap-3.5 rounded-2xl border border-zinc-100 dark:border-zinc-800/60 bg-white dark:bg-zinc-900/50 p-4 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
-                <div className={`absolute top-0 left-0 h-full w-1 ${color}`} />
-                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${color} shadow-md`}>
-                    <Icon className="h-5 w-5 text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{label}</p>
-                    <p className="text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-100">{value}</p>
-                </div>
-                <ArrowUpRight className="h-4 w-4 text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </div>
-        </Link>
-    );
+const statusIcon: Record<string, { icon: React.ElementType; color: string; bg: string }> = {
+    pending: { icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-950/40' },
+    processing: { icon: Activity, color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-950/40' },
+    shipped: { icon: Truck, color: 'text-violet-600', bg: 'bg-violet-50 dark:bg-violet-950/40' },
+    delivered: { icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-950/40' },
+    cancelled: { icon: XCircle, color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-950/40' },
+};
+
+function ProductImage({ src, alt }: { src?: string | null; alt?: string }) {
+    if (!src) return <div className="h-full w-full bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700" />;
+    const url = src.startsWith('http') ? src : `/storage/${src}`;
+    return <img src={url} alt={alt || ''} className="h-full w-full object-cover" />;
 }
 
 function StarRating({ rating }: { rating: number | string | null }) {
-    if (!rating) {
-return <span className="text-[10px] text-zinc-400 italic">No reviews</span>;
-}
-
+    if (!rating) return <span className="text-xs text-zinc-400 italic">No reviews</span>;
     const n = Number(rating);
-
     return (
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-1">
             {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} className={`h-3 w-3 ${i <= Math.round(n) ? 'fill-amber-400 text-amber-400' : 'text-zinc-200 dark:text-zinc-700'}`} />
+                <Star key={i} className={`h-3.5 w-3.5 ${i <= Math.round(n) ? 'fill-amber-400 text-amber-400' : 'text-zinc-200 dark:text-zinc-700'}`} />
             ))}
-            <span className="text-[11px] font-bold text-zinc-600 dark:text-zinc-400 ml-1">{n.toFixed(1)}</span>
+            <span className="text-xs font-bold text-zinc-500 ml-1">{n.toFixed(1)}</span>
         </div>
     );
 }
 
-function ProductImage({ src, alt }: { src?: string | null; alt?: string }) {
-    if (!src) {
-return <div className="h-full w-full rounded-xl bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-700" />;
-}
-
-    const url = src.startsWith('http') ? src : `/storage/${src}`;
-
-    return <img src={url} alt={alt || ''} className="h-full w-full rounded-xl object-cover" />;
-}
-
 export default function Dashboard({ stats, latestOrders, latestProducts, lowStock, topProducts }: Props) {
     const hour = new Date().getHours();
-    const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+    const greeting = hour < 12 ? 'Selamat Pagi' : hour < 18 ? 'Selamat Siang' : 'Selamat Malam';
 
     return (
         <AppLayout breadcrumbs={[{ title: 'Dashboard', href: '/dashboard' }]}>
             <Head title="Dashboard" />
-            <div className="p-4 sm:p-6 lg:p-8 space-y-8 max-w-[1400px] mx-auto">
 
-                {/* ── Hero Banner ── */}
-                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 p-6 sm:p-8 text-white shadow-2xl shadow-indigo-500/20">
-                    {/* Decorative circles */}
-                    <div className="absolute -top-12 -right-12 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
-                    <div className="absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
-                    <div className="absolute top-1/2 right-1/4 h-24 w-24 rounded-full bg-cyan-400/20 blur-xl" />
+            <div className="p-6 sm:p-8 lg:p-10 space-y-8">
 
-                    <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                        <div>
-                            <div className="flex items-center gap-2 text-cyan-200 text-sm mb-2">
-                                <Clock className="h-4 w-4" />
-                                {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-                            </div>
-                            <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
-                                {greeting}, Admin <span className="inline-block animate-bounce">👋</span>
-                            </h1>
-                            <p className="text-blue-100 mt-2 max-w-md">
-                                Here's what's happening with your IKEO store today. Stay on top of your business!
-                            </p>
-                        </div>
+                {/* ═══ HERO BANNER — compact ═══ */}
+                <div className="relative overflow-hidden rounded-2xl" style={{ background: 'linear-gradient(135deg, #003d82 0%, #0058a3 40%, #006fbe 100%)' }}>
+                    <div className="absolute inset-0 overflow-hidden">
+                        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-10" style={{ background: '#ffdb00' }} />
+                        <div className="absolute -bottom-20 -left-16 w-72 h-72 rounded-full opacity-5" style={{ background: '#ffdb00' }} />
+                        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(rgba(255,219,0,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,219,0,.3) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+                    </div>
 
-                        {/* Revenue quick stats */}
-                        <div className="flex gap-4 sm:gap-6">
-                            <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-5 py-4 min-w-[140px]">
-                                <p className="text-xs text-blue-200 font-medium">Total Revenue</p>
-                                <p className="text-2xl font-black mt-1">{formatIDR(stats.revenue)}</p>
-                                <div className="flex items-center gap-1 mt-1">
-                                    <Zap className="h-3 w-3 text-yellow-300" />
-                                    <span className="text-[11px] text-cyan-200">Today: {formatIDR(stats.todayRevenue)}</span>
+                    <div className="relative p-6 sm:p-8">
+                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                            <div>
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-3" style={{ background: 'rgba(255,219,0,0.15)', color: '#ffdb00' }}>
+                                    <Clock className="h-3.5 w-3.5" />
+                                    {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                                 </div>
+                                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                                    {greeting}, Admin! <span className="inline-block animate-bounce">👋</span>
+                                </h1>
+                                <p className="text-blue-200/70 mt-1 text-sm max-w-lg">
+                                    Kelola toko IKEO Anda dari sini. Pantau penjualan, produk, dan pesanan.
+                                </p>
                             </div>
-                            <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-5 py-4 min-w-[100px]">
-                                <p className="text-xs text-blue-200 font-medium">Orders</p>
-                                <p className="text-2xl font-black mt-1">{stats.orders}</p>
-                                <div className="flex items-center gap-1 mt-1">
-                                    <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-                                    <span className="text-[11px] text-cyan-200">{stats.pendingOrders} pending</span>
+
+                            <div className="flex gap-3 flex-wrap lg:flex-nowrap">
+                                <div className="flex-1 min-w-[140px] rounded-xl p-4 backdrop-blur-md border border-white/10" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#ffdb00' }}>
+                                            <DollarSign className="h-4 w-4 text-[#003d82]" />
+                                        </div>
+                                        <span className="text-xs font-semibold text-blue-200/70 uppercase tracking-wider">Revenue</span>
+                                    </div>
+                                    <p className="text-2xl font-black text-white tracking-tight">{formatCompact(stats.revenue)}</p>
+                                    <div className="flex items-center gap-1.5 mt-1">
+                                        <TrendingUp className="h-3 w-3" style={{ color: '#ffdb00' }} />
+                                        <span className="text-[11px] font-semibold text-blue-200/60">Today: {formatIDR(stats.todayRevenue)}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="hidden sm:block bg-white/15 backdrop-blur-sm rounded-2xl px-5 py-4 min-w-[100px]">
-                                <p className="text-xs text-blue-200 font-medium">Customers</p>
-                                <p className="text-2xl font-black mt-1">{stats.users}</p>
-                                <div className="flex items-center gap-1 mt-1">
-                                    <Users className="h-3 w-3 text-cyan-300" />
-                                    <span className="text-[11px] text-cyan-200">registered</span>
+                                <div className="flex-1 min-w-[120px] rounded-xl p-4 backdrop-blur-md border border-white/10" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#ffdb00' }}>
+                                            <ShoppingCart className="h-4 w-4 text-[#003d82]" />
+                                        </div>
+                                        <span className="text-xs font-semibold text-blue-200/70 uppercase tracking-wider">Orders</span>
+                                    </div>
+                                    <p className="text-2xl font-black text-white">{stats.orders}</p>
+                                    <div className="flex items-center gap-1.5 mt-1">
+                                        <span className="h-2 w-2 rounded-full animate-pulse" style={{ background: '#ffdb00' }} />
+                                        <span className="text-[11px] font-semibold text-blue-200/60">{stats.pendingOrders} pending</span>
+                                    </div>
+                                </div>
+                                <div className="flex-1 min-w-[110px] rounded-xl p-4 backdrop-blur-md border border-white/10" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#ffdb00' }}>
+                                            <Users className="h-4 w-4 text-[#003d82]" />
+                                        </div>
+                                        <span className="text-xs font-semibold text-blue-200/70 uppercase tracking-wider">Users</span>
+                                    </div>
+                                    <p className="text-2xl font-black text-white">{stats.users}</p>
+                                    <div className="flex items-center gap-1.5 mt-1">
+                                        <Eye className="h-3 w-3 text-blue-200/50" />
+                                        <span className="text-[11px] font-semibold text-blue-200/60">registered</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* ── Quick Stats Grid ── */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                    <MiniStat label="Categories" value={stats.categories} icon={Tag} color="bg-blue-500" href="/dashboard/categories" />
-                    <MiniStat label="Brands" value={stats.brands} icon={Award} color="bg-violet-500" href="/dashboard/brands" />
-                    <MiniStat label="Products" value={stats.products} icon={Package} color="bg-emerald-500" href="/dashboard/products" />
-                    <MiniStat label="Reviews" value={stats.reviews} icon={Star} color="bg-amber-500" href="/dashboard/reviews" />
-                    <MiniStat label="Out of Stock" value={stats.outOfStock} icon={AlertTriangle} color="bg-red-500" href="/dashboard/products" />
-                    <MiniStat label="Consult" value={stats.consultations} icon={MessageSquare} color="bg-pink-500" href="/dashboard/consultations" />
+                {/* ═══ QUICK STATS ═══ */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                    {[
+                        { label: 'Categories', value: stats.categories, icon: Tag, gradient: 'from-blue-500 to-blue-600', href: '/dashboard/categories' },
+                        { label: 'Brands', value: stats.brands, icon: Award, gradient: 'from-violet-500 to-violet-600', href: '/dashboard/brands' },
+                        { label: 'Products', value: stats.products, icon: Package, gradient: 'from-emerald-500 to-emerald-600', href: '/dashboard/products' },
+                        { label: 'Reviews', value: stats.reviews, icon: Star, gradient: 'from-amber-500 to-amber-600', href: '/dashboard/reviews' },
+                        { label: 'Out of Stock', value: stats.outOfStock, icon: AlertTriangle, gradient: 'from-red-500 to-red-600', href: '/dashboard/products' },
+                        { label: 'Consultations', value: stats.consultations, icon: MessageSquare, gradient: 'from-pink-500 to-pink-600', href: '/dashboard/consultations' },
+                    ].map((item) => (
+                        <Link key={item.label} href={item.href} className="group">
+                            <div className="relative rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800/50 p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden">
+                                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                                <div className="flex items-center gap-4">
+                                    <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg`}>
+                                        <item.icon className="h-5 w-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">{item.label}</p>
+                                        <p className="text-2xl font-black text-zinc-900 dark:text-zinc-100">{item.value}</p>
+                                    </div>
+                                </div>
+                                <ArrowUpRight className="absolute top-4 right-4 h-4 w-4 text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-all" />
+                            </div>
+                        </Link>
+                    ))}
                 </div>
 
-                {/* ── Main Content ── */}
-                <div className="grid gap-6 lg:grid-cols-5">
-
+                {/* ═══ MAIN — Orders + Top Products ═══ */}
+                <div className="grid gap-8 lg:grid-cols-5">
                     {/* Recent Orders */}
                     <div className="lg:col-span-3">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-bold flex items-center gap-2">
-                                <div className="h-6 w-1.5 rounded-full bg-indigo-500" />
-                                Recent Orders
-                            </h2>
-                            <Link href="/dashboard/orders" className="text-xs font-bold text-indigo-500 hover:text-indigo-600 flex items-center gap-1 transition-colors">
-                                View all <ArrowUpRight className="h-3 w-3" />
-                            </Link>
-                        </div>
-                        <div className="space-y-2.5">
+                        <div className="rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800/50 overflow-hidden">
+                            <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: '#0058a3' }}>
+                                        <BarChart3 className="h-5 w-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Recent Orders</h2>
+                                        <p className="text-xs text-zinc-400">Latest transactions</p>
+                                    </div>
+                                </div>
+                                <Link href="/dashboard/orders" className="inline-flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-lg transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800" style={{ color: '#0058a3' }}>
+                                    View all <ChevronRight className="h-4 w-4" />
+                                </Link>
+                            </div>
                             {latestOrders.length === 0 ? (
-                                <Card className="border border-dashed border-zinc-200 dark:border-zinc-800 bg-transparent shadow-none">
-                                    <CardContent className="flex flex-col items-center justify-center py-16 text-zinc-400">
-                                        <ShoppingCart className="h-10 w-10 mb-3 opacity-40" />
-                                        <p className="text-sm font-medium">No orders yet</p>
-                                    </CardContent>
-                                </Card>
+                                <div className="flex flex-col items-center justify-center py-20 text-zinc-400">
+                                    <ShoppingCart className="h-12 w-12 mb-3 opacity-30" />
+                                    <p className="text-sm font-medium">No orders yet</p>
+                                </div>
                             ) : (
-                                latestOrders.map((order) => {
-                                    const sc = statusConfig[order.status] || statusConfig.pending;
-
-                                    return (
-                                        <Link key={order.id} href={`/dashboard/orders/${order.id}`}>
-                                            <Card className="border-0 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group bg-white dark:bg-zinc-900/60">
-                                                <CardContent className="flex items-center gap-4 p-4">
-                                                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/40 dark:to-blue-950/40 group-hover:scale-110 transition-transform">
-                                                        <ShoppingCart className="h-5 w-5 text-indigo-500" />
+                                <div className="divide-y divide-zinc-50 dark:divide-zinc-800/30">
+                                    {latestOrders.map((order) => {
+                                        const st = statusIcon[order.status] || statusIcon.pending;
+                                        const StIcon = st.icon;
+                                        return (
+                                            <Link key={order.id} href={`/dashboard/orders/${order.id}`} className="flex items-center gap-4 px-6 py-4 hover:bg-zinc-50/80 dark:hover:bg-zinc-800/20 transition-colors group">
+                                                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${st.bg}`}>
+                                                    <StIcon className={`h-5 w-5 ${st.color}`} />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center gap-2">
+                                                        <p className="font-bold text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-[#0058a3] transition-colors">{order.order_number}</p>
+                                                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 font-semibold capitalize border-zinc-200 dark:border-zinc-700">{order.status}</Badge>
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <p className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{order.order_number}</p>
-                                                        <p className="text-xs text-zinc-400">{order.user?.name} · {new Date(order.created_at).toLocaleDateString('id-ID')}</p>
-                                                    </div>
-                                                    <div className="text-right space-y-1">
-                                                        <p className="font-black text-sm">{formatIDR(order.total)}</p>
-                                                        <Badge className={`text-[10px] px-2 py-0 border-0 font-bold inline-flex items-center gap-1 ${sc.bg}`}>
-                                                            <span className={`h-1.5 w-1.5 rounded-full ${sc.dot}`} />
-                                                            {order.status}
-                                                        </Badge>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-                                        </Link>
-                                    );
-                                })
+                                                    <p className="text-xs text-zinc-400 mt-0.5">{order.user?.name} · {new Date(order.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</p>
+                                                </div>
+                                                <p className="font-black text-sm text-zinc-900 dark:text-zinc-100 tabular-nums">{formatIDR(order.total)}</p>
+                                                <ChevronRight className="h-4 w-4 text-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Top Products */}
+                    {/* Top Rated */}
                     <div className="lg:col-span-2">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-bold flex items-center gap-2">
-                                <div className="h-6 w-1.5 rounded-full bg-amber-500" />
-                                Top Rated
-                            </h2>
-                            <Link href="/dashboard/products" className="text-xs font-bold text-amber-500 hover:text-amber-600 flex items-center gap-1 transition-colors">
-                                View all <ArrowUpRight className="h-3 w-3" />
-                            </Link>
-                        </div>
-                        <Card className="border-0 shadow-sm bg-white dark:bg-zinc-900/60">
-                            <CardContent className="p-3 space-y-1">
-                                {topProducts.length === 0 ? (
-                                    <div className="flex flex-col items-center justify-center py-16 text-zinc-400">
-                                        <Sparkles className="h-10 w-10 mb-3 opacity-40" />
-                                        <p className="text-sm font-medium">No products yet</p>
+                        <div className="rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800/50 overflow-hidden">
+                            <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: '#ffdb00' }}>
+                                        <Sparkles className="h-5 w-5 text-[#003d82]" />
                                     </div>
-                                ) : (
-                                    topProducts.map((product, i) => (
-                                        <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-3 rounded-xl p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-all group">
-                                            <div className="relative h-12 w-12 shrink-0">
+                                    <div>
+                                        <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Top Rated</h2>
+                                        <p className="text-xs text-zinc-400">Best reviewed products</p>
+                                    </div>
+                                </div>
+                                <Link href="/dashboard/products" className="inline-flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-lg transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800" style={{ color: '#0058a3' }}>
+                                    View all <ChevronRight className="h-4 w-4" />
+                                </Link>
+                            </div>
+                            {topProducts.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-20 text-zinc-400">
+                                    <Sparkles className="h-12 w-12 mb-3 opacity-30" />
+                                    <p className="text-sm font-medium">No products yet</p>
+                                </div>
+                            ) : (
+                                <div className="p-3 space-y-1">
+                                    {topProducts.map((product, i) => (
+                                        <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-4 rounded-xl p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-all group">
+                                            <div className="relative h-12 w-12 shrink-0 rounded-xl overflow-hidden ring-1 ring-zinc-100 dark:ring-zinc-800">
                                                 <ProductImage src={product.image} alt={product.name} />
-                                                <span className="absolute -top-1.5 -left-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-[10px] font-black text-white shadow-md ring-2 ring-white dark:ring-zinc-900">
-                                                    {i + 1}
-                                                </span>
+                                                <span className="absolute -top-0.5 -left-0.5 flex h-5 w-5 items-center justify-center rounded-br-lg text-[10px] font-black text-[#003d82]" style={{ background: '#ffdb00' }}>{i + 1}</span>
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="font-bold text-sm truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{product.name}</p>
+                                                <p className="font-bold text-sm truncate group-hover:text-[#0058a3] transition-colors">{product.name}</p>
                                                 <StarRating rating={product.reviews_avg_rating} />
                                             </div>
-                                            <span className="text-[11px] text-zinc-400 font-medium">{product.reviews_count}</span>
+                                            <span className="text-xs font-bold text-zinc-400 tabular-nums">{product.reviews_count} reviews</span>
                                         </Link>
-                                    ))
-                                )}
-                            </CardContent>
-                        </Card>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
-                {/* ── Bottom Section ── */}
-                <div className="grid gap-6 lg:grid-cols-2">
-
-                    {/* Low Stock */}
+                {/* ═══ BOTTOM — Low Stock + New Arrivals ═══ */}
+                <div className="grid gap-8 lg:grid-cols-2">
                     {lowStock.length > 0 && (
-                        <div>
-                            <div className="flex items-center gap-2 mb-4">
-                                <h2 className="text-lg font-bold flex items-center gap-2">
-                                    <div className="h-6 w-1.5 rounded-full bg-red-500" />
-                                    Low Stock Alert
-                                </h2>
-                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white animate-pulse">{lowStock.length}</span>
+                        <div className="rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800/50 overflow-hidden">
+                            <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-11 h-11 rounded-xl bg-red-500 flex items-center justify-center pulse-glow-red">
+                                        <AlertTriangle className="h-5 w-5 text-white" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Low Stock Alert</h2>
+                                        <p className="text-xs text-zinc-400">{lowStock.length} products need restock</p>
+                                    </div>
+                                </div>
+                                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500 text-xs font-black text-white">{lowStock.length}</span>
                             </div>
-                            <div className="space-y-2.5">
+                            <div className="divide-y divide-zinc-50 dark:divide-zinc-800/30">
                                 {lowStock.map((product) => (
-                                    <Link key={product.id} href={`/dashboard/products/${product.id}/edit`}>
-                                        <Card className="border-0 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-white dark:bg-zinc-900/60 overflow-hidden">
-                                            <CardContent className="flex items-center gap-4 p-4">
-                                                <div className="h-12 w-12 shrink-0 rounded-xl overflow-hidden ring-2 ring-red-100 dark:ring-red-900/30">
-                                                    <ProductImage src={product.image} alt={product.name} />
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="font-bold text-sm truncate">{product.name}</p>
-                                                    <p className="text-xs text-zinc-400">{product.category?.name}</p>
-                                                </div>
-                                                <div className="text-right space-y-1.5">
-                                                    <Badge variant="destructive" className="text-[11px] font-black px-2">
-                                                        <Flame className="h-3 w-3 mr-0.5" /> {product.stock} left
-                                                    </Badge>
-                                                    <div className="h-1.5 w-20 rounded-full bg-red-100 dark:bg-red-900/30 overflow-hidden">
-                                                        <div className="h-full rounded-full bg-gradient-to-r from-red-500 to-orange-500 transition-all" style={{ width: `${Math.min((product.stock / 10) * 100, 100)}%` }} />
-                                                    </div>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
+                                    <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-4 px-6 py-4 hover:bg-red-50/50 dark:hover:bg-red-950/10 transition-colors">
+                                        <div className="h-12 w-12 shrink-0 rounded-xl overflow-hidden ring-2 ring-red-100 dark:ring-red-900/30">
+                                            <ProductImage src={product.image} alt={product.name} />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="font-bold text-sm truncate">{product.name}</p>
+                                            <p className="text-xs text-zinc-400">{product.category?.name}</p>
+                                        </div>
+                                        <Badge variant="destructive" className="text-[10px] font-black px-2.5 py-0.5">
+                                            <Flame className="h-3 w-3 mr-0.5" /> {product.stock} left
+                                        </Badge>
                                     </Link>
                                 ))}
                             </div>
                         </div>
                     )}
 
-                    {/* Latest Products */}
-                    <div>
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-bold flex items-center gap-2">
-                                <div className="h-6 w-1.5 rounded-full bg-emerald-500" />
-                                New Arrivals
-                            </h2>
-                            <Link href="/dashboard/products" className="text-xs font-bold text-emerald-500 hover:text-emerald-600 flex items-center gap-1 transition-colors">
-                                View all <ArrowUpRight className="h-3 w-3" />
+                    <div className="rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800/50 overflow-hidden">
+                        <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800/50">
+                            <div className="flex items-center gap-4">
+                                <div className="w-11 h-11 rounded-xl bg-emerald-500 flex items-center justify-center">
+                                    <Package className="h-5 w-5 text-white" />
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">New Arrivals</h2>
+                                    <p className="text-xs text-zinc-400">Recently added products</p>
+                                </div>
+                            </div>
+                            <Link href="/dashboard/products" className="inline-flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-lg transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800" style={{ color: '#0058a3' }}>
+                                View all <ChevronRight className="h-4 w-4" />
                             </Link>
                         </div>
-                        <div className="space-y-2.5">
-                            {latestProducts.length === 0 ? (
-                                <Card className="border border-dashed border-zinc-200 dark:border-zinc-800 bg-transparent shadow-none">
-                                    <CardContent className="flex flex-col items-center justify-center py-16 text-zinc-400">
-                                        <Package className="h-10 w-10 mb-3 opacity-40" />
-                                        <p className="text-sm font-medium">No products yet</p>
-                                    </CardContent>
-                                </Card>
-                            ) : (
-                                latestProducts.map((product) => (
-                                    <Link key={product.id} href={`/dashboard/products/${product.id}/edit`}>
-                                        <Card className="border-0 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-white dark:bg-zinc-900/60 group">
-                                            <CardContent className="flex items-center gap-4 p-4">
-                                                <div className="h-14 w-14 shrink-0 rounded-xl overflow-hidden shadow-sm group-hover:shadow-md transition-shadow">
-                                                    <ProductImage src={product.image} alt={product.name} />
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="font-bold text-sm truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{product.name}</p>
-                                                    <p className="text-xs text-zinc-400">{product.category?.name} · {product.brand?.name}</p>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="font-black text-sm">{formatIDR(product.price)}</p>
-                                                    {product.discount_price && (
-                                                        <p className="text-[10px] text-zinc-400 line-through">{formatIDR(product.discount_price)}</p>
-                                                    )}
-                                                </div>
-                                            </CardContent>
-                                        </Card>
+                        {latestProducts.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-20 text-zinc-400">
+                                <Package className="h-12 w-12 mb-3 opacity-30" />
+                                <p className="text-sm font-medium">No products yet</p>
+                            </div>
+                        ) : (
+                            <div className="divide-y divide-zinc-50 dark:divide-zinc-800/30">
+                                {latestProducts.map((product) => (
+                                    <Link key={product.id} href={`/dashboard/products/${product.id}/edit`} className="flex items-center gap-4 px-6 py-4 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/10 transition-colors group">
+                                        <div className="h-12 w-12 shrink-0 rounded-xl overflow-hidden ring-1 ring-zinc-100 dark:ring-zinc-800 group-hover:ring-emerald-200 transition-all">
+                                            <ProductImage src={product.image} alt={product.name} />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="font-bold text-sm truncate group-hover:text-emerald-600 transition-colors">{product.name}</p>
+                                            <p className="text-xs text-zinc-400">{product.category?.name} · {product.brand?.name}</p>
+                                        </div>
+                                        <div className="text-right shrink-0">
+                                            <p className="font-black text-sm tabular-nums">{formatIDR(product.price)}</p>
+                                            {product.discount_price && <p className="text-[10px] text-zinc-400 line-through tabular-nums">{formatIDR(product.discount_price)}</p>}
+                                        </div>
                                     </Link>
-                                ))
-                            )}
-                        </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
-
             </div>
         </AppLayout>
     );

@@ -65,9 +65,9 @@ class DatabaseSeeder extends Seeder
                 'Beds' => 'https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=800&q=80',
                 'Tables' => 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=800&q=80',
                 'Chairs' => 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=80',
-                'Storage' => 'https://images.unsplash.com/photo-1595514535215-8a4fa58e0a13?auto=format&fit=crop&w=800&q=80',
-                'Lighting' => 'https://images.unsplash.com/photo-1513506003901-1e6a229e9d15?auto=format&fit=crop&w=800&q=80',
-                'Decor' => 'https://images.unsplash.com/photo-1558211583-d26f610b1ebb?auto=format&fit=crop&w=800&q=80',
+                'Storage' => 'https://images.unsplash.com/photo-1594620302200-9a762244a156?auto=format&fit=crop&w=800&q=80',
+                'Lighting' => 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?auto=format&fit=crop&w=800&q=80',
+                'Decor' => 'https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=800&q=80',
                 default => 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?auto=format&fit=crop&w=800&q=80',
             };
 
@@ -176,7 +176,7 @@ class DatabaseSeeder extends Seeder
                 'category' => 'Storage',
                 'brand' => 'ScandiHome',
                 'price' => 999000,
-                'image' => 'https://images.unsplash.com/photo-1595514535215-8a4fa58e0a13?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1594620302200-9a762244a156?auto=format&fit=crop&w=800&q=80',
                 'material' => 'Fiberboard',
                 'weight' => 25.0,
                 'dimensions' => '77x147 cm',
@@ -228,7 +228,7 @@ class DatabaseSeeder extends Seeder
                 'category' => 'Decor',
                 'brand' => 'JYSK',
                 'price' => 1499000,
-                'image' => 'https://images.unsplash.com/photo-1558211583-d26f610b1ebb?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=800&q=80',
                 'material' => 'Jute',
                 'weight' => 5.0,
                 'dimensions' => '200x300 cm',
@@ -254,7 +254,7 @@ class DatabaseSeeder extends Seeder
                 'category' => 'Storage',
                 'brand' => 'IKEA',
                 'price' => 599000,
-                'image' => 'https://images.unsplash.com/photo-1583847268964-b28ce8fba18e?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1556909114-44e3e70034e2?auto=format&fit=crop&w=800&q=80',
                 'material' => 'Steel',
                 'weight' => 7.0,
                 'dimensions' => '35x45x78 cm',
@@ -267,7 +267,7 @@ class DatabaseSeeder extends Seeder
                 'category' => 'Lighting',
                 'brand' => 'Nordiska',
                 'price' => 699000,
-                'image' => 'https://images.unsplash.com/photo-1513506003901-1e6a229e9d15?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?auto=format&fit=crop&w=800&q=80',
                 'material' => 'Steel',
                 'weight' => 1.5,
                 'dimensions' => '40 cm diameter',
@@ -280,7 +280,7 @@ class DatabaseSeeder extends Seeder
                 'category' => 'Decor',
                 'brand' => 'JYSK',
                 'price' => 499000,
-                'image' => 'https://images.unsplash.com/photo-1416879598555-22d71fa5113d?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80',
                 'material' => 'Solid pine',
                 'weight' => 4.0,
                 'dimensions' => '74 cm height',
@@ -365,7 +365,51 @@ class DatabaseSeeder extends Seeder
         // -------------------------
         // 4. RANDOMIZE OTHERS
         // -------------------------
-        Store::factory(3)->create();
+        $storesData = [
+            [
+                'name' => 'IKEO Jakarta Selatan',
+                'address' => 'Jl. TB Simatupang No. 123, Cilandak',
+                'city' => 'Jakarta Selatan',
+                'phone' => '+62 21 1234 5678',
+                'latitude' => -6.2884,
+                'longitude' => 106.8233,
+                'hours_id' => 'Senin - Minggu: 10:00 - 22:00',
+                'hours_en' => 'Mon - Sun: 10:00 AM - 10:00 PM',
+            ],
+            [
+                'name' => 'IKEO Surabaya',
+                'address' => 'Jl. Raya Darmo No. 456, Wonokromo',
+                'city' => 'Surabaya',
+                'phone' => '+62 31 9876 5432',
+                'latitude' => -7.2819,
+                'longitude' => 112.7378,
+                'hours_id' => 'Senin - Minggu: 10:00 - 22:00',
+                'hours_en' => 'Mon - Sun: 10:00 AM - 10:00 PM',
+            ],
+            [
+                'name' => 'IKEO Bandung',
+                'address' => 'Jl. Soekarno Hatta No. 789, Batununggal',
+                'city' => 'Bandung',
+                'phone' => '+62 22 5555 6666',
+                'latitude' => -6.9175,
+                'longitude' => 107.6191,
+                'hours_id' => 'Senin - Minggu: 10:00 - 22:00',
+                'hours_en' => 'Mon - Sun: 10:00 AM - 10:00 PM',
+            ],
+            [
+                'name' => 'IKEO Bali',
+                'address' => 'Jl. Sunset Road No. 321, Kuta',
+                'city' => 'Bali',
+                'phone' => '+62 361 7777 8888',
+                'latitude' => -8.7184,
+                'longitude' => 115.1686,
+                'hours_id' => 'Senin - Minggu: 10:00 - 22:00',
+                'hours_en' => 'Mon - Sun: 10:00 AM - 10:00 PM',
+            ],
+        ];
+        foreach ($storesData as $s) {
+            Store::create($s);
+        }
         NewsletterSubscriber::factory(10)->create();
 
         // Let's create user interactions safely
@@ -382,14 +426,17 @@ class DatabaseSeeder extends Seeder
             }
         });
 
-        // Create 20 Orders
+        // Create 20 Orders — totals calculated from actual items
         Order::factory(20)->create()->each(function (Order $order) use ($productModels) {
             $randomProducts = collect($productModels)->random(rand(1, 3));
+            $subtotal = 0;
+
             foreach ($randomProducts as $itemProduct) {
-                // Determine a variant if any
                 $variant = $itemProduct->variants()->inRandomOrder()->first();
                 $price = $variant ? $variant->price : $itemProduct->price;
                 $quantity = rand(1, 3);
+                $itemSubtotal = $price * $quantity;
+                $subtotal += $itemSubtotal;
 
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -399,10 +446,9 @@ class DatabaseSeeder extends Seeder
                     'variant_name' => $variant ? $variant->variant_name : null,
                     'price' => $price,
                     'quantity' => $quantity,
-                    'subtotal' => $price * $quantity,
+                    'subtotal' => $itemSubtotal,
                 ]);
 
-                // Create a review sometimes
                 if (rand(0, 1)) {
                     if (! Review::where('user_id', $order->user_id)->where('product_id', $itemProduct->id)->exists()) {
                         Review::factory()->create([
@@ -412,6 +458,13 @@ class DatabaseSeeder extends Seeder
                     }
                 }
             }
+
+            $tax = round($subtotal * 0.11); // PPN 11%
+            $order->update([
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'total' => $subtotal + $order->shipping_cost + $tax,
+            ]);
         });
 
         // Create Blogs — curated realistic content
@@ -499,7 +552,20 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Create Consultations
-        Consultation::factory(5)->create();
+        // Create Consultations using existing stores & users
+        $existingUsers = User::where('role', 'user')->pluck('id');
+        $existingStores = Store::pluck('id');
+        for ($i = 0; $i < 5; $i++) {
+            Consultation::create([
+                'user_id' => $existingUsers->random(),
+                'store_id' => $existingStores->random(),
+                'name' => fake()->name(),
+                'email' => fake()->safeEmail(),
+                'phone' => fake()->phoneNumber(),
+                'preferred_date' => fake()->dateTimeBetween('now', '+30 days')->format('Y-m-d'),
+                'message' => fake()->paragraph(),
+                'status' => fake()->randomElement(['pending', 'confirmed', 'completed', 'cancelled']),
+            ]);
+        }
     }
 }

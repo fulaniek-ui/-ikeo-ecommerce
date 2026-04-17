@@ -39,7 +39,7 @@ export default function Form({ category }: Props) {
     <AppLayout breadcrumbs={[{ title: 'Categories', href: '/dashboard/categories' }, { title: category ? 'Update' : 'Create', href: '#' }]}>
       <Head title={category ? 'Update Category' : 'Create Category'} />
       
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="mx-auto p-6 sm:p-8 lg:p-10">
         
         <form onSubmit={handleSubmit} className="space-y-8">
           

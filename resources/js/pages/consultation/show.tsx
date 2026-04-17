@@ -31,7 +31,7 @@ export default function Show({ consultation }: Props) {
     <AppLayout breadcrumbs={[{ title: 'Consultations', href: '/dashboard/consultations' }, { title: consultation.name, href: '#' }]}>
       <Head title={`Consultation — ${consultation.name}`} />
       
-      <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="max-w-5xl mx-auto p-6 sm:p-8 lg:p-10 space-y-8">
         
         {/* Header Actions */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

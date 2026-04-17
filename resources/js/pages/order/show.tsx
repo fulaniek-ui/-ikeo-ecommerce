@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AppLayout from '@/layouts/app-layout';
 import type { Order } from '@/types';
 
-const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(value);
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -58,7 +58,7 @@ export default function Show({ order: initialOrder }: Props) {
     <AppLayout breadcrumbs={[{ title: 'Orders', href: '/dashboard/orders' }, { title: order.order_number, href: '#' }]}>
       <Head title={`Order ${order.order_number}`} />
       
-      <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="max-w-5xl mx-auto p-6 sm:p-8 lg:p-10 space-y-8">
         
         {/* Header Actions */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -157,20 +157,20 @@ export default function Show({ order: initialOrder }: Props) {
                 <div className="w-full max-w-sm ml-auto space-y-3 text-sm">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span className="font-medium text-foreground">{formatIDR(order.subtotal)}</span>
+                    <span className="font-semibold text-foreground tabular-nums">{formatIDR(order.subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Shipping</span>
-                    <span className="font-medium text-foreground">{formatIDR(order.shipping_cost)}</span>
+                    <span className="font-semibold text-foreground tabular-nums">{formatIDR(order.shipping_cost)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
-                    <span>Tax</span>
-                    <span className="font-medium text-foreground">{formatIDR(order.tax)}</span>
+                    <span>Tax (PPN 11%)</span>
+                    <span className="font-semibold text-foreground tabular-nums">{formatIDR(order.tax)}</span>
                   </div>
                   <div className="h-px bg-zinc-200 dark:bg-zinc-800 my-2" />
-                  <div className="flex justify-between items-center text-lg font-extrabold text-amber-600 dark:text-amber-500">
+                  <div className="flex justify-between items-center text-lg font-extrabold" style={{ color: '#0058a3' }}>
                     <span>Total</span>
-                    <span>{formatIDR(order.total)}</span>
+                    <span className="tabular-nums">{formatIDR(order.total)}</span>
                   </div>
                 </div>
               </div>

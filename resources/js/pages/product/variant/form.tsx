@@ -41,7 +41,7 @@ export default function Form({ product, variant }: Props) {
     <AppLayout breadcrumbs={[{ title: 'Products', href: '/dashboard/products' }, { title: product.name, href: `/dashboard/products/${product.id}/variants` }, { title: variant ? 'Update Variant' : 'Create Variant', href: '#' }]}>
       <Head title={variant ? 'Update Variant' : 'Create Variant'} />
       
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="mx-auto p-6 sm:p-8 lg:p-10">
         
         <form onSubmit={handleSubmit} className="space-y-8">
           

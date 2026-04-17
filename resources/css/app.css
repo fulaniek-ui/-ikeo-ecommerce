@@ -182,6 +182,18 @@ html { scroll-behavior: smooth; }
     opacity: 1;
 }
 
+/* Admin panel — larger base size for readability */
+.admin-shell {
+    font-size: 16px;
+    line-height: 1.65;
+}
+
+@media (min-width: 1440px) {
+    .admin-shell {
+        font-size: 16.5px;
+    }
+}
+
 /* Smooth page transitions */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(12px); }

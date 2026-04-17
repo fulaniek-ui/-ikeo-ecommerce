@@ -21,7 +21,7 @@ class ConsultationFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'store_id' => Store::factory(),
+            'store_id' => Store::inRandomOrder()->first()?->id ?? Store::factory(),
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'phone' => fake()->phoneNumber(),

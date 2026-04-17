@@ -87,7 +87,7 @@ export default function ConsultationPage({ consultations, filters }: Props) {
     <AppLayout breadcrumbs={[{ title: 'Consultations overview', href: '/dashboard/consultations' }]}>
       <Head title="Consultations" />
       
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="mx-auto p-6 sm:p-8 lg:p-10 space-y-8">
         
         {/* Elegant Header Area */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-zinc-200 dark:border-zinc-800">

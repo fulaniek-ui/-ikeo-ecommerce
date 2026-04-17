@@ -54,7 +54,7 @@ function NavGroup({ label, items }: { label: string; items: ColoredNavItem[] }) 
 
     return (
         <SidebarGroup className="px-3 py-0">
-            <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400/70 dark:text-zinc-600 mb-1.5 px-3">
+            <SidebarGroupLabel className="text-[11px] font-black uppercase tracking-[0.18em] text-zinc-400/70 dark:text-zinc-600 mb-2 px-3">
                 {label}
             </SidebarGroupLabel>
             <SidebarMenu>
@@ -68,16 +68,16 @@ function NavGroup({ label, items }: { label: string; items: ColoredNavItem[] }) 
                                 isActive={active}
                                 tooltip={{ children: item.title }}
                                 className={`
-                                    rounded-xl h-10 px-3 transition-all duration-200 font-medium
+                                    rounded-xl h-12 px-4 transition-all duration-200 font-semibold text-[0.95rem]
                                     ${active
-                                        ? 'bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:from-indigo-600 hover:to-blue-600'
+                                        ? 'bg-gradient-to-r from-[#0058a3] to-[#006fbe] text-white font-bold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:from-[#004d91] hover:to-[#0058a3]'
                                         : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 hover:text-zinc-900 dark:hover:text-zinc-100'
                                     }
                                 `}
                             >
-                                <Link href={item.href} prefetch className="flex items-center gap-3">
-                                    {!active && <span className={`h-2 w-2 rounded-full ${item.color} shrink-0`} />}
-                                    {item.icon && <item.icon className={`!h-4 !w-4 ${active ? '' : 'opacity-70'}`} />}
+                                <Link href={item.href} prefetch className="flex items-center gap-3.5">
+                                    {!active && <span className={`h-2.5 w-2.5 rounded-full ${item.color} shrink-0`} />}
+                                    {item.icon && <item.icon className={`!h-5 !w-5 ${active ? '' : 'opacity-70'}`} />}
                                     <span>{item.title}</span>
                                 </Link>
                             </SidebarMenuButton>
@@ -91,11 +91,11 @@ function NavGroup({ label, items }: { label: string; items: ColoredNavItem[] }) 
 
 export function AppSidebar() {
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader className="pb-4 pt-4">
+        <Sidebar collapsible="icon" variant="sidebar">
+            <SidebarHeader className="pb-5 pt-5">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild className="hover:bg-transparent">
+                        <SidebarMenuButton size="lg" asChild className="hover:bg-transparent h-14">
                             <Link href={dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
@@ -104,7 +104,7 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent className="gap-3">
+            <SidebarContent className="gap-4 px-1">
                 <NavGroup label="Overview" items={overviewItems} />
                 <NavGroup label="Catalog" items={catalogItems} />
                 <NavGroup label="Sales & Support" items={salesItems} />
