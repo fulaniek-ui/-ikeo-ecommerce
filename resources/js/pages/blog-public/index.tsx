@@ -3,6 +3,7 @@ import { Loader2, BookOpen, Calendar, User, ArrowRight, Tag } from 'lucide-react
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { PublicNav, PublicFooter } from '@/components/public-nav';
 
 interface BlogItem {
     id: number; title: string; slug: string; excerpt: string;
@@ -28,19 +29,7 @@ export default function BlogPublicIndex() {
         <>
             <Head title="Blog — IKEO" />
             <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#0a0a0a]">
-                {/* Header */}
-                <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-lg dark:bg-[#0a0a0a]/80">
-                    <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-                        <a href="/" className="flex items-center gap-2">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white font-bold text-xs">IK</div>
-                            <span className="text-lg font-bold">IKEO</span>
-                        </a>
-                        <nav className="flex items-center gap-4 text-sm font-medium">
-                            <a href="/catalog" className="hover:text-amber-600 transition-colors">Shop</a>
-                            <a href="/blog" className="text-amber-600 font-semibold">Blog</a>
-                        </nav>
-                    </div>
-                </header>
+                <PublicNav />
 
                 <div className="mx-auto max-w-7xl px-4 py-12">
                     {/* Hero */}
@@ -132,11 +121,7 @@ export default function BlogPublicIndex() {
                     )}
                 </div>
 
-                <footer className="border-t mt-12">
-                    <div className="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} IKEO. Scandinavian Furniture.
-                    </div>
-                </footer>
+                <PublicFooter />
             </div>
         </>
     );

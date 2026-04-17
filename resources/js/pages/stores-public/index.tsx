@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { PublicNav, PublicFooter } from '@/components/public-nav';
 
 interface StoreItem {
     id: number; name: string; address: string; city: string;
@@ -26,20 +27,7 @@ export default function StoresPublicIndex() {
         <>
             <Head title="Store Locations — IKEO" />
             <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#0a0a0a]">
-                <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-lg dark:bg-[#0a0a0a]/80">
-                    <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-                        <a href="/" className="flex items-center gap-2">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white font-bold text-xs">IK</div>
-                            <span className="text-lg font-bold">IKEO</span>
-                        </a>
-                        <nav className="flex items-center gap-4 text-sm font-medium">
-                            <a href="/catalog" className="hover:text-amber-600 transition-colors">Products</a>
-                            <a href="/blog" className="hover:text-amber-600 transition-colors">Blog</a>
-                            <a href="/stores" className="text-amber-600 font-semibold">Stores</a>
-                            <a href="/consultation" className="hover:text-amber-600 transition-colors">Consultation</a>
-                        </nav>
-                    </div>
-                </header>
+                <PublicNav />
 
                 <div className="mx-auto max-w-7xl px-4 py-12">
                     <div className="text-center mb-12">
@@ -120,11 +108,7 @@ export default function StoresPublicIndex() {
                     </div>
                 </div>
 
-                <footer className="border-t mt-12">
-                    <div className="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} IKEO. Scandinavian Furniture.
-                    </div>
-                </footer>
+                <PublicFooter />
             </div>
         </>
     );

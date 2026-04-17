@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { PublicNav, PublicFooter } from '@/components/public-nav';
 
 interface StoreItem { id: number; name: string; city: string; }
 
@@ -53,20 +54,7 @@ export default function ConsultationPublicIndex() {
         <>
             <Head title="Book Consultation — IKEO" />
             <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#0a0a0a]">
-                <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-lg dark:bg-[#0a0a0a]/80">
-                    <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-                        <a href="/" className="flex items-center gap-2">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-white font-bold text-xs">IK</div>
-                            <span className="text-lg font-bold">IKEO</span>
-                        </a>
-                        <nav className="flex items-center gap-4 text-sm font-medium">
-                            <a href="/catalog" className="hover:text-amber-600 transition-colors">Products</a>
-                            <a href="/blog" className="hover:text-amber-600 transition-colors">Blog</a>
-                            <a href="/stores" className="hover:text-amber-600 transition-colors">Stores</a>
-                            <a href="/consultation" className="text-amber-600 font-semibold">Consultation</a>
-                        </nav>
-                    </div>
-                </header>
+                <PublicNav />
 
                 <div className="mx-auto max-w-3xl px-4 py-12">
                     <div className="text-center mb-10">
@@ -166,11 +154,7 @@ export default function ConsultationPublicIndex() {
                     )}
                 </div>
 
-                <footer className="border-t mt-12">
-                    <div className="mx-auto max-w-7xl px-4 py-6 text-center text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} IKEO. Scandinavian Furniture.
-                    </div>
-                </footer>
+                <PublicFooter />
             </div>
         </>
     );
