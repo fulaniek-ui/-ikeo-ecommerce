@@ -22,6 +22,8 @@ Route::inertia('/catalog', 'catalog/index')->name('catalog.index');
 Route::inertia('/catalog/{slug}', 'catalog/show')->name('catalog.show');
 Route::inertia('/blog', 'blog-public/index')->name('blog.public.index');
 Route::inertia('/blog/{slug}', 'blog-public/show')->name('blog.public.show');
+Route::inertia('/stores', 'stores-public/index')->name('stores.public.index');
+Route::inertia('/consultation', 'consultation-public/index')->name('consultation.public');
 
 Route::middleware(['auth', 'checkAdmin'])->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

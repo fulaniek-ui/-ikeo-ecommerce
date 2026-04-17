@@ -16,9 +16,8 @@ interface ProductDetail {
   variants: { id: number; variant_name: string; color: string; size: string; sku: string; price: number; stock: number; is_active: boolean }[];
   images: { id: number; url: string; sort_order: number }[];
   reviews_count: number; reviews_avg_rating: number | null;
+  reviews: { id: number; rating: number; comment: string; created_at: string; user: { name: string } }[];
 }
-
-interface ReviewItem { id: number; rating: number; comment: string; created_at: string; user: { name: string } }
 
 const formatIDR = (v: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v);
 
@@ -205,6 +204,45 @@ return;
               )}
             </div>
           </div>
+
+          {/* Reviews Section */}
+          {product.reviews && product.reviews.length > 0 && (
+            <div className="mt-16 border-t pt-10">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-2xl font-bold">Customer Reviews</h2>
+                  <div className="flex items-center gap-3 mt-2">
+                    <StarRating rating={product.reviews_avg_rating ?? 0} size="md" />
+                    <span className="text-lg font-bold">{product.reviews_avg_rating?.toFixed(1)}</span>
+                    <span className="text-muted-foreground">based on {product.reviews_count} reviews</span>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {product.reviews.map((review) => (
+                  <Card key={review.id} className="border-0 shadow-sm">
+                    <CardContent className="p-5">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center text-sm font-bold text-amber-700 dark:text-amber-400">
+                            {review.user.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-sm">{review.user.name}</p>
+                            <p className="text-xs text-muted-foreground">{new Date(review.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                          </div>
+                        </div>
+                        <StarRating rating={review.rating} />
+                      </div>
+                      {review.comment && (
+                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">"{review.comment}"</p>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Related products */}
           {related.length > 0 && (

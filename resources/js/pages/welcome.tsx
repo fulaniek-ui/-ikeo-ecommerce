@@ -48,6 +48,8 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                         <nav className="flex items-center gap-1 sm:gap-3">
                             <a href="/catalog" className="rounded-lg px-3 sm:px-5 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Products</a>
                             <a href="/blog" className="rounded-lg px-3 sm:px-5 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Blog</a>
+                            <a href="/stores" className="hidden sm:block rounded-lg px-3 sm:px-5 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Stores</a>
+                            <a href="/consultation" className="hidden sm:block rounded-lg px-3 sm:px-5 py-2 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Consultation</a>
                             {auth.user ? (
                                 <Link href={dashboard()} className="rounded-lg bg-amber-500 px-5 py-2 text-sm font-medium text-white hover:bg-amber-600 transition-colors">
                                     Dashboard

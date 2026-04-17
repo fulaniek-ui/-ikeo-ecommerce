@@ -61,6 +61,13 @@ class ProductResource extends JsonResource
                 $this->reviews_avg_rating !== null,
                 fn () => round((float) $this->reviews_avg_rating, 1)
             ),
+            'reviews' => $this->whenLoaded('reviews', fn () => $this->reviews->map(fn ($r) => [
+                'id' => $r->id,
+                'rating' => $r->rating,
+                'comment' => $r->comment,
+                'created_at' => $r->created_at->toISOString(),
+                'user' => ['name' => $r->user?->name ?? 'Anonymous'],
+            ])),
             'created_at' => $this->created_at->toISOString(),
         ];
     }
