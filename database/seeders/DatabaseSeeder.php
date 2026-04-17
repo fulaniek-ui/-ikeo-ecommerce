@@ -36,6 +36,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
+        User::factory()->create([
+            'name' => 'Niken Massy',
+            'email' => 'niken@ikeo.com',
+            'password' => Hash::make('password123'),
+        ]);
+
         // Random Users
         User::factory(10)->create();
 
@@ -408,10 +414,90 @@ class DatabaseSeeder extends Seeder
             }
         });
 
-        // Create Blogs
-        Blog::factory(10)->create()->each(function (Blog $blog) {
-            BlogTag::factory(rand(1, 3))->create(['blog_id' => $blog->id]);
-        });
+        // Create Blogs — curated realistic content
+        $admin = User::where('role', 'admin')->first();
+        $blogsData = [
+            [
+                'title' => '5 Ways to Create a Cozy Scandinavian Living Room',
+                'title_id' => '5 Cara Menciptakan Ruang Tamu Skandinavia yang Nyaman',
+                'slug' => '5-ways-cozy-scandinavian-living-room',
+                'category' => 'Design Tips',
+                'category_id_text' => 'Tips Desain',
+                'excerpt' => 'Discover how to bring warmth and simplicity into your living space with these timeless Scandinavian design principles.',
+                'excerpt_id' => 'Temukan cara membawa kehangatan dan kesederhanaan ke ruang tamu Anda dengan prinsip desain Skandinavia yang abadi ini.',
+                'content' => 'Scandinavian design is all about creating a space that feels warm, inviting, and effortlessly stylish. Start with a neutral color palette of whites, grays, and beiges, then layer in natural textures like wool throws and linen cushions. Choose furniture with clean lines and functional design — every piece should serve a purpose. Add warmth with wooden accents in light oak or birch, and don\'t forget the power of candlelight to create hygge. Finally, keep clutter to a minimum. A well-organized space is the cornerstone of Scandinavian living.',
+                'content_id' => 'Desain Skandinavia adalah tentang menciptakan ruang yang terasa hangat, mengundang, dan bergaya tanpa usaha. Mulailah dengan palet warna netral putih, abu-abu, dan krem, lalu tambahkan tekstur alami seperti selimut wol dan bantal linen. Pilih furniture dengan garis bersih dan desain fungsional — setiap bagian harus memiliki tujuan. Tambahkan kehangatan dengan aksen kayu oak atau birch terang, dan jangan lupakan kekuatan lilin untuk menciptakan hygge. Terakhir, jaga agar tetap rapi.',
+                'image' => 'https://images.unsplash.com/photo-1556228453-eec6c4ff41b9?w=800&q=80',
+                'published_at' => '2026-01-15 10:00:00',
+                'tags' => [['tag' => 'Scandinavian', 'tag_id' => 'Skandinavia'], ['tag' => 'Living Room', 'tag_id' => 'Ruang Tamu'], ['tag' => 'Cozy', 'tag_id' => 'Nyaman']],
+            ],
+            [
+                'title' => 'The Rise of Sustainable Furniture in 2026',
+                'title_id' => 'Kebangkitan Furniture Berkelanjutan di 2026',
+                'slug' => 'rise-of-sustainable-furniture-2026',
+                'category' => 'Home Trends',
+                'category_id_text' => 'Tren Rumah',
+                'excerpt' => 'Sustainability isn\'t just a trend — it\'s the future of furniture design. Here\'s what you need to know.',
+                'excerpt_id' => 'Keberlanjutan bukan hanya tren — ini adalah masa depan desain furniture. Inilah yang perlu Anda ketahui.',
+                'content' => 'As consumers become more environmentally conscious, the furniture industry is responding with innovative sustainable practices. From using FSC-certified wood to developing new materials from recycled ocean plastics, brands are rethinking every step of the production process. At IKEO, we\'ve committed to using 100% renewable materials by 2027. The shift towards sustainability isn\'t just good for the planet — it\'s creating beautiful, durable furniture that tells a story.',
+                'content_id' => 'Seiring konsumen menjadi lebih sadar lingkungan, industri furniture merespons dengan praktik berkelanjutan yang inovatif. Dari menggunakan kayu bersertifikat FSC hingga mengembangkan material baru dari plastik laut daur ulang, merek memikirkan ulang setiap langkah proses produksi. Di IKEO, kami berkomitmen menggunakan 100% material terbarukan pada 2027.',
+                'image' => 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80',
+                'published_at' => '2026-02-05 10:00:00',
+                'tags' => [['tag' => 'Sustainable', 'tag_id' => 'Berkelanjutan'], ['tag' => 'Eco-Friendly', 'tag_id' => 'Ramah Lingkungan'], ['tag' => 'Trends', 'tag_id' => 'Tren']],
+            ],
+            [
+                'title' => 'How to Choose the Perfect Sofa for Your Home',
+                'title_id' => 'Cara Memilih Sofa Sempurna untuk Rumah Anda',
+                'slug' => 'how-to-choose-perfect-sofa',
+                'category' => 'Buying Guide',
+                'category_id_text' => 'Panduan Membeli',
+                'excerpt' => 'A sofa is the heart of your living room. Learn how to pick one that fits your style, space, and budget.',
+                'excerpt_id' => 'Sofa adalah jantung ruang tamu Anda. Pelajari cara memilih yang sesuai dengan gaya, ruang, dan anggaran Anda.',
+                'content' => 'Choosing the right sofa can feel overwhelming with so many options available. Start by measuring your space carefully — a sofa that\'s too large will make the room feel cramped, while one that\'s too small will look lost. Consider the fabric: leather is durable and easy to clean, while cotton and linen offer a softer, more casual feel. Think about your lifestyle — if you have kids or pets, stain-resistant fabrics are a must. Finally, always test before you buy. Sit on it, lie on it, and make sure it feels right.',
+                'content_id' => 'Memilih sofa yang tepat bisa terasa membingungkan dengan begitu banyak pilihan yang tersedia. Mulailah dengan mengukur ruang Anda dengan cermat. Pertimbangkan kain: kulit tahan lama dan mudah dibersihkan, sementara katun dan linen menawarkan nuansa yang lebih lembut. Pikirkan gaya hidup Anda — jika Anda memiliki anak atau hewan peliharaan, kain anti noda adalah keharusan.',
+                'image' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+                'published_at' => '2026-02-20 10:00:00',
+                'tags' => [['tag' => 'Sofa', 'tag_id' => 'Sofa'], ['tag' => 'Buying Guide', 'tag_id' => 'Panduan'], ['tag' => 'Living Room', 'tag_id' => 'Ruang Tamu']],
+            ],
+            [
+                'title' => 'Small Space Solutions: Furniture for Compact Living',
+                'title_id' => 'Solusi Ruang Kecil: Furniture untuk Hunian Kompak',
+                'slug' => 'small-space-solutions-compact-living',
+                'category' => 'Design Tips',
+                'category_id_text' => 'Tips Desain',
+                'excerpt' => 'Living in a small apartment? These clever furniture solutions will help you maximize every square meter.',
+                'excerpt_id' => 'Tinggal di apartemen kecil? Solusi furniture cerdas ini akan membantu Anda memaksimalkan setiap meter persegi.',
+                'content' => 'Small spaces don\'t have to feel cramped. The key is choosing furniture that multitasks. Look for beds with built-in storage, extendable dining tables, and modular shelving units. Vertical storage is your best friend — use wall-mounted shelves and hooks to free up floor space. Light colors and mirrors can also make a room feel larger than it is.',
+                'content_id' => 'Ruang kecil tidak harus terasa sempit. Kuncinya adalah memilih furniture yang multifungsi. Cari tempat tidur dengan penyimpanan built-in, meja makan yang bisa diperpanjang, dan rak modular. Penyimpanan vertikal adalah sahabat terbaik Anda.',
+                'image' => 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80',
+                'published_at' => '2026-03-01 10:00:00',
+                'tags' => [['tag' => 'Small Space', 'tag_id' => 'Ruang Kecil'], ['tag' => 'Storage', 'tag_id' => 'Penyimpanan'], ['tag' => 'Apartment', 'tag_id' => 'Apartemen']],
+            ],
+            [
+                'title' => 'The Art of Minimalist Bedroom Design',
+                'title_id' => 'Seni Desain Kamar Tidur Minimalis',
+                'slug' => 'art-of-minimalist-bedroom-design',
+                'category' => 'Design Tips',
+                'category_id_text' => 'Tips Desain',
+                'excerpt' => 'Transform your bedroom into a serene retreat with minimalist design principles that promote better sleep.',
+                'excerpt_id' => 'Ubah kamar tidur Anda menjadi tempat peristirahatan yang tenang dengan prinsip desain minimalis yang mendukung tidur lebih baik.',
+                'content' => 'A minimalist bedroom is more than just an aesthetic choice — it\'s a lifestyle decision that can improve your sleep quality. Start by decluttering ruthlessly. Keep only what you need and love. Choose a bed frame with clean lines and invest in quality bedding. Use a muted color palette of whites, soft grays, and natural wood tones. Keep surfaces clear and use hidden storage solutions.',
+                'content_id' => 'Kamar tidur minimalis lebih dari sekadar pilihan estetika — ini adalah keputusan gaya hidup yang dapat meningkatkan kualitas tidur Anda. Mulailah dengan merapikan secara tegas. Simpan hanya yang Anda butuhkan dan cintai. Pilih rangka tempat tidur dengan garis bersih dan investasikan pada seprai berkualitas.',
+                'image' => 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=800&q=80',
+                'published_at' => '2026-03-15 10:00:00',
+                'tags' => [['tag' => 'Minimalist', 'tag_id' => 'Minimalis'], ['tag' => 'Bedroom', 'tag_id' => 'Kamar Tidur'], ['tag' => 'Design', 'tag_id' => 'Desain']],
+            ],
+        ];
+
+        foreach ($blogsData as $bd) {
+            $tags = $bd['tags'];
+            unset($bd['tags']);
+            $bd['author_id'] = $admin->id;
+            $blog = Blog::create($bd);
+            foreach ($tags as $t) {
+                BlogTag::create(['blog_id' => $blog->id, 'tag' => $t['tag'], 'tag_id' => $t['tag_id']]);
+            }
+        }
 
         // Create Consultations
         Consultation::factory(5)->create();

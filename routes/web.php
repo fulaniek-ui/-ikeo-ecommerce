@@ -20,6 +20,8 @@ Route::inertia('/', 'welcome', [
 // Public catalog (React fetches from API)
 Route::inertia('/catalog', 'catalog/index')->name('catalog.index');
 Route::inertia('/catalog/{slug}', 'catalog/show')->name('catalog.show');
+Route::inertia('/blog', 'blog-public/index')->name('blog.public.index');
+Route::inertia('/blog/{slug}', 'blog-public/show')->name('blog.public.show');
 
 Route::middleware(['auth', 'checkAdmin'])->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

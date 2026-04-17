@@ -22,7 +22,9 @@ class ProductResource extends JsonResource
                 ? round((1 - $this->discount_price / $this->price) * 100)
                 : 0,
             'image' => $this->image,
-            'image_url' => $this->image ? asset('storage/' . $this->image) : null,
+            'image_url' => $this->image
+                ? (str_starts_with($this->image, 'http') ? $this->image : asset('storage/' . $this->image))
+                : null,
             'stock' => $this->stock,
             'availability' => [
                 'in_stock' => $this->stock > 0,
@@ -44,7 +46,9 @@ class ProductResource extends JsonResource
                 'id' => $this->brand->id,
                 'name' => $this->brand->name,
                 'slug' => $this->brand->slug,
-                'logo' => $this->brand->logo ? asset('storage/' . $this->brand->logo) : null,
+                'logo' => $this->brand->logo
+                    ? (str_starts_with($this->brand->logo, 'http') ? $this->brand->logo : asset('storage/' . $this->brand->logo))
+                    : null,
             ]),
             'variants' => $this->whenLoaded('variants'),
             'images' => $this->whenLoaded('images', fn () => $this->images->map(fn ($img) => [
