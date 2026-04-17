@@ -31,6 +31,22 @@ class BlogController extends Controller
             return response()->json(['message' => 'Blog not found'], 404);
         }
 
-        return response()->json(['data' => $blog]);
+        // Related articles: same tags or same category
+        $tagNames = $blog->tags->pluck('tag')->toArray();
+        $related = Blog::whereNotNull('published_at')
+            ->where('id', '!=', $blog->id)
+            ->where(function ($q) use ($tagNames, $blog) {
+                $q->whereHas('tags', fn ($t) => $t->whereIn('tag', $tagNames))
+                  ->orWhere('category', $blog->category);
+            })
+            ->with('tags')
+            ->latest('published_at')
+            ->take(5)
+            ->get(['id', 'title', 'slug', 'category', 'image', 'published_at']);
+
+        return response()->json([
+            'data' => $blog,
+            'related' => $related,
+        ]);
     }
 }
