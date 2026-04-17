@@ -119,50 +119,63 @@ export default function BlogPublicShow() {
                         {/* ── Right: Related Articles Sidebar ── */}
                         <aside className="lg:col-span-1">
                             <div className="sticky top-20">
-                                <h3 className="text-lg font-extrabold mb-5 flex items-center gap-2">
-                                    <div className="h-5 w-1.5 rounded-full bg-amber-500" />
-                                    Related Articles
-                                </h3>
+                                <Card className="border border-zinc-200 dark:border-zinc-800 shadow-md rounded-2xl overflow-hidden">
+                                    {/* Box header */}
+                                    <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-4">
+                                        <h3 className="text-white font-extrabold flex items-center gap-2">
+                                            <BookOpen className="h-5 w-5" />
+                                            Related Articles
+                                        </h3>
+                                        <p className="text-amber-100 text-xs mt-0.5">More articles you might enjoy</p>
+                                    </div>
 
-                                {related.length === 0 ? (
-                                    <p className="text-sm text-muted-foreground">No related articles found.</p>
-                                ) : (
-                                    <div className="space-y-4">
-                                        {related.map((item) => (
-                                            <a key={item.id} href={`/blog/${item.slug}`} className="group block">
-                                                <Card className="overflow-hidden border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
-                                                    {item.image && (
-                                                        <div className="aspect-[16/9] overflow-hidden">
-                                                            <img src={item.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                                                        </div>
-                                                    )}
-                                                    <CardContent className="p-4">
-                                                        <Badge variant="outline" className="text-[10px] rounded-full px-2 mb-2">{item.category}</Badge>
-                                                        <h4 className="font-bold text-sm leading-tight line-clamp-2 group-hover:text-amber-600 transition-colors">{item.title}</h4>
-                                                        <p className="text-[11px] text-muted-foreground mt-2 flex items-center gap-1">
-                                                            <Calendar className="h-3 w-3" />
-                                                            {new Date(item.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                                        </p>
-                                                        {item.tags && item.tags.length > 0 && (
-                                                            <div className="flex flex-wrap gap-1 mt-2">
-                                                                {item.tags.slice(0, 2).map((t, i) => (
-                                                                    <span key={i} className="text-[10px] text-amber-600 bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 px-1.5 py-0.5 rounded">
-                                                                        {t.tag}
-                                                                    </span>
-                                                                ))}
+                                    <CardContent className="p-4">
+                                        {related.length === 0 ? (
+                                            <div className="text-center py-8 text-muted-foreground">
+                                                <BookOpen className="h-10 w-10 mx-auto mb-2 opacity-20" />
+                                                <p className="text-sm">No related articles found</p>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-3">
+                                                {related.map((item) => (
+                                                    <a key={item.id} href={`/blog/${item.slug}`} className="group flex gap-3 p-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                                        {item.image ? (
+                                                            <div className="h-16 w-16 shrink-0 rounded-lg overflow-hidden">
+                                                                <img src={item.image} alt={item.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform" />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="h-16 w-16 shrink-0 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                                                                <BookOpen className="h-5 w-5 text-zinc-300" />
                                                             </div>
                                                         )}
-                                                    </CardContent>
-                                                </Card>
-                                            </a>
-                                        ))}
-                                    </div>
-                                )}
+                                                        <div className="flex-1 min-w-0">
+                                                            <h4 className="font-bold text-xs leading-tight line-clamp-2 group-hover:text-amber-600 transition-colors">{item.title}</h4>
+                                                            <div className="flex items-center gap-2 mt-1.5">
+                                                                <Badge variant="outline" className="text-[9px] rounded-full px-1.5 py-0">{item.category}</Badge>
+                                                                <span className="text-[10px] text-muted-foreground">
+                                                                    {new Date(item.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                                                </span>
+                                                            </div>
+                                                            {item.tags && item.tags.length > 0 && (
+                                                                <div className="flex gap-1 mt-1">
+                                                                    {item.tags.slice(0, 2).map((t, i) => (
+                                                                        <span key={i} className="text-[9px] text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-1.5 py-0.5 rounded">{t.tag}</span>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        )}
 
-                                {/* Back to blog CTA */}
-                                <a href="/blog" className="mt-6 flex items-center gap-2 text-sm font-bold text-amber-600 hover:gap-3 transition-all">
-                                    View all articles <ArrowRight className="h-4 w-4" />
-                                </a>
+                                        <div className="border-t mt-4 pt-3">
+                                            <a href="/blog" className="flex items-center justify-center gap-2 text-xs font-bold text-amber-600 hover:gap-3 transition-all">
+                                                View all articles <ArrowRight className="h-3.5 w-3.5" />
+                                            </a>
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             </div>
                         </aside>
                     </div>
