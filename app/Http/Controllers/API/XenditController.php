@@ -5,16 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use App\Services\XenditService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class XenditController extends Controller
 {
-    /**
-     * Create Xendit invoice — called by frontend Checkout page.
-     * POST /api/xendit/invoice
-     */
     public function createInvoice(Request $request, XenditService $xendit)
     {
         $request->validate([
@@ -28,81 +24,87 @@ class XenditController extends Controller
             'failure_redirect_url' => ['nullable', 'string'],
         ]);
 
-        // Create order in database if user is authenticated
-        $user = $request->user('sanctum');
-        if ($user) {
-            $address = $user->addresses()->where('is_default', true)->first()
-                ?? $user->addresses()->first();
+        // Find user: try auth token first, then by email
+        $user = $request->user('sanctum')
+            ?? User::where('email', $request->payer_email)->first();
 
-            $subtotal = $request->amount * 0.85; // rough estimate before tax/shipping
-            $shipping = 15000;
-            $tax = round($subtotal * 0.11, 2);
+        // Calculate amounts
+        $shipping = 15000;
+        $itemsTotal = 0;
 
-            $order = Order::create([
-                'user_id' => $user->id,
-                'address_id' => $address?->id ?? 0,
-                'order_number' => $request->external_id,
-                'status' => 'pending',
-                'payment_method' => 'transfer',
-                'courier' => 'JNE',
-                'subtotal' => $request->amount - $shipping - $tax,
-                'shipping_cost' => $shipping,
-                'tax' => $tax,
-                'total' => $request->amount,
-            ]);
+        if ($request->items) {
+            foreach ($request->items as $item) {
+                $itemsTotal += ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
+            }
+        }
 
-            // Save order items from request
-            if ($request->items) {
-                foreach ($request->items as $item) {
-                    $product = Product::where('name', 'like', '%' . ($item['name'] ?? '') . '%')->first();
-                    $order->orderItems()->create([
-                        'product_id' => $product?->id ?? 0,
-                        'product_name' => $item['name'] ?? 'Unknown',
-                        'price' => $item['price'] ?? 0,
-                        'quantity' => $item['quantity'] ?? 1,
-                        'subtotal' => ($item['price'] ?? 0) * ($item['quantity'] ?? 1),
-                    ]);
-                }
+        $subtotal = $itemsTotal > 0 ? $itemsTotal : ($request->amount - $shipping);
+        $tax = round($subtotal * 0.11, 2);
+        $total = $request->amount;
+
+        // Always create order in database
+        $order = Order::create([
+            'user_id' => $user?->id ?? 0,
+            'address_id' => $user?->addresses()->where('is_default', true)->first()?->id
+                ?? $user?->addresses()->first()?->id ?? 0,
+            'order_number' => $request->external_id,
+            'status' => 'pending',
+            'payment_method' => 'transfer',
+            'courier' => $request->input('customer.courier', 'JNE'),
+            'subtotal' => $subtotal,
+            'shipping_cost' => $shipping,
+            'tax' => $tax,
+            'total' => $total,
+            'notes' => $request->input('customer.given_names')
+                ? "Customer: {$request->input('customer.given_names')} ({$request->payer_email})"
+                : null,
+        ]);
+
+        // Save order items
+        if ($request->items) {
+            foreach ($request->items as $item) {
+                $product = Product::where('name', $item['name'] ?? '')->first()
+                    ?? Product::where('name', 'like', '%' . ($item['name'] ?? '') . '%')->first();
+
+                $order->orderItems()->create([
+                    'product_id' => $product?->id ?? 0,
+                    'product_name' => $item['name'] ?? 'Unknown',
+                    'price' => $item['price'] ?? 0,
+                    'quantity' => $item['quantity'] ?? 1,
+                    'subtotal' => ($item['price'] ?? 0) * ($item['quantity'] ?? 1),
+                ]);
             }
         }
 
         // Create Xendit invoice
         $invoice = $xendit->createInvoice([
             'external_id' => $request->external_id,
-            'amount' => $request->amount,
+            'amount' => $total,
             'payer_email' => $request->payer_email,
             'description' => $request->description,
             'success_url' => $request->success_redirect_url ?? config('app.url'),
             'failure_url' => $request->failure_redirect_url ?? config('app.url'),
         ]);
 
-        // Update order with Xendit info
-        if (isset($order)) {
-            $order->update([
-                'xendit_invoice_id' => $invoice['id'],
-                'payment_url' => $invoice['invoice_url'],
-            ]);
-        }
+        $order->update([
+            'xendit_invoice_id' => $invoice['id'],
+            'payment_url' => $invoice['invoice_url'],
+        ]);
 
         return response()->json([
             'invoice_id' => $invoice['id'],
             'invoice_url' => $invoice['invoice_url'],
             'external_id' => $request->external_id,
             'status' => $invoice['status'] ?? 'PENDING',
-            'amount' => $request->amount,
+            'amount' => $total,
             'expiry_date' => $invoice['expiry_date'] ?? null,
         ]);
     }
 
-    /**
-     * Get invoice status
-     * GET /api/xendit/invoice/{invoiceId}
-     */
     public function getInvoiceStatus(string $invoiceId, XenditService $xendit)
     {
         $invoice = $xendit->getInvoice($invoiceId);
 
-        // Also update order status if paid
         $status = $invoice['status'] ?? '';
         if ($status === 'PAID' || $status === 'SETTLED') {
             $order = Order::where('xendit_invoice_id', $invoiceId)->first();
