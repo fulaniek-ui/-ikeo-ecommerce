@@ -13,6 +13,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ReviewController;
 use App\Http\Controllers\API\StoreController;
 use App\Http\Controllers\API\WishlistController;
+use App\Http\Controllers\API\XenditController;
 use Illuminate\Support\Facades\Route;
 
 // Auth
@@ -42,6 +43,10 @@ Route::post('/payments/webhook', [PaymentController::class, 'webhook']);
 Route::get('/payments/success', [PaymentController::class, 'success']);
 Route::get('/payments/failure', [PaymentController::class, 'failure']);
 Route::get('/payments/{order}/check', [PaymentController::class, 'checkStatus']);
+
+// Xendit Direct (called by frontend checkout)
+Route::post('/xendit/invoice', [XenditController::class, 'createInvoice']);
+Route::get('/xendit/invoice/{invoiceId}', [XenditController::class, 'getInvoiceStatus']);
 
 // Authenticated
 Route::middleware('auth:sanctum')->group(function () {
