@@ -42,24 +42,27 @@ export default function Form({ store }: Props) {
         <form onSubmit={handleSubmit} className="space-y-8">
           
           {/* Header Action Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-zinc-200 dark:border-zinc-800">
-            <div className="flex items-center gap-4">
-              <Link href="/dashboard/stores" className="p-2.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500">
-                <ArrowLeft className="w-5 h-5" />
-              </Link>
-              <div>
-                <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-                  {store ? 'Edit Outlet' : 'Add New Outlet'}
-                </h1>
-                <p className="text-zinc-500 dark:text-zinc-400 mt-1">
-                  {store ? 'Manage the coordinates and contact info for this showroom.' : 'Establish a new physical presence for your brand.'}
-                </p>
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 p-6 sm:p-8">
+            <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-white/5" />
+            <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <Link href="/dashboard/stores" className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-white border border-white/20">
+                  <ArrowLeft className="w-5 h-5" />
+                </Link>
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                    {store ? 'Edit Outlet' : 'Add New Outlet'}
+                  </h1>
+                  <p className="text-orange-100/70 mt-0.5 text-sm">
+                    {store ? 'Manage the coordinates and contact info for this showroom.' : 'Establish a new physical presence for your brand.'}
+                  </p>
+                </div>
               </div>
+              <Button disabled={processing} type="submit" size="lg" className="rounded-xl bg-white text-orange-700 hover:bg-orange-50 shadow-lg shadow-black/10 hover:-translate-y-0.5 transition-all h-12 px-8 font-bold">
+                <Save className="w-5 h-5 mr-2" />
+                {store ? 'Update Location' : 'Save Location'}
+              </Button>
             </div>
-            <Button disabled={processing} type="submit" size="lg" className="rounded-xl bg-orange-600 hover:bg-orange-700 text-white shadow-lg shadow-orange-500/20 hover:-translate-y-0.5 transition-all h-12 px-8 font-bold">
-              <Save className="w-5 h-5 mr-2" />
-              {store ? 'Update Location' : 'Save Location'}
-            </Button>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

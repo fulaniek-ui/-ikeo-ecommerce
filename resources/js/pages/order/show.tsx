@@ -60,27 +60,31 @@ export default function Show({ order: initialOrder }: Props) {
       
       <div className="max-w-5xl mx-auto p-6 sm:p-8 lg:p-10 space-y-8">
         
-        {/* Header Actions */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Link href="/dashboard/orders" className="p-2 -ml-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-3">
-                Order {order.order_number}
-                <Badge className={`px-3 py-1 text-sm font-semibold border ${statusColor[order.status] || ''}`}>
-                  {capitalize(order.status)}
-                </Badge>
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Placed on {new Date(order.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-              </p>
+        {/* Hero Header */}
+        <div className="relative overflow-hidden rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%)' }}>
+          <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-blue-500/5" />
+          <div className="relative p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <Link href="/dashboard/orders" className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-white border border-white/10">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                    Order {order.order_number}
+                  </h2>
+                  <Badge className={`px-3 py-1 text-sm font-semibold border ${statusColor[order.status] || ''}`}>
+                    {capitalize(order.status)}
+                  </Badge>
+                </div>
+                <p className="text-blue-200/50 text-sm mt-1 flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Placed on {new Date(order.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                </p>
+              </div>
             </div>
-          </div>
 
-          <form onSubmit={handleSubmit} className="flex bg-muted/30 p-2 rounded-2xl border border-border/50 items-center gap-3 shadow-sm">
+            <form onSubmit={handleSubmit} className="flex bg-white/10 backdrop-blur-sm p-2 rounded-2xl border border-white/10 items-center gap-3">
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <span className="text-sm font-medium text-muted-foreground ml-2 hidden sm:inline-block">Status:</span>
               <div className="w-[180px]">
@@ -100,11 +104,12 @@ export default function Show({ order: initialOrder }: Props) {
                   </SelectContent>
                 </Select>
               </div>
-              <Button disabled={processing} type="submit" size="sm" className="rounded-xl h-10 px-5 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 shadow-md transition-all hover:scale-105 active:scale-95">
+              <Button disabled={processing} type="submit" size="sm" className="rounded-xl h-10 px-5 bg-white text-zinc-900 hover:bg-zinc-100 shadow-md transition-all font-bold">
                 Save
               </Button>
             </div>
           </form>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -135,10 +140,21 @@ export default function Show({ order: initialOrder }: Props) {
                       {order.order_items?.map((item) => (
                         <tr key={item.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors">
                           <td className="p-4 pl-6">
-                            <p className="font-bold text-zinc-900 dark:text-zinc-100">{item.product_name}</p>
-                            {item.variant_name && (
-                              <p className="text-xs text-muted-foreground mt-0.5">{item.variant_name}</p>
-                            )}
+                            <div className="flex items-center gap-3">
+                              {item.product?.image ? (
+                                <img src={`/storage/${item.product.image}`} alt={item.product_name} className="h-12 w-12 rounded-lg object-cover shadow-sm border border-zinc-100 dark:border-zinc-800" />
+                              ) : (
+                                <div className="h-12 w-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                                  <Package className="h-5 w-5 text-zinc-400" />
+                                </div>
+                              )}
+                              <div>
+                                <p className="font-bold text-zinc-900 dark:text-zinc-100">{item.product_name}</p>
+                                {item.variant_name && (
+                                  <p className="text-xs text-muted-foreground mt-0.5">{item.variant_name}</p>
+                                )}
+                              </div>
+                            </div>
                           </td>
                           <td className="p-4 text-center text-muted-foreground font-medium">{formatIDR(item.price)}</td>
                           <td className="p-4 text-center">

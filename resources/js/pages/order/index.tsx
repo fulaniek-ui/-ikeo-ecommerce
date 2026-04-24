@@ -1,6 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { ShoppingCart, Search, LayoutGrid, Eye, Calendar, User, Truck } from 'lucide-react';
+import { ShoppingCart, Search, LayoutGrid, Eye, Calendar, User, Truck, Hash, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/data-table';
 import { Badge } from '@/components/ui/badge';
@@ -104,41 +104,62 @@ export default function OrderPage({ orders, filters }: Props) {
     <AppLayout breadcrumbs={[{ title: 'Orders overview', href: '/dashboard/orders' }]}>
       <Head title="Orders" />
       
-      <div className="mx-auto p-6 sm:p-8 lg:p-10 space-y-8">
+      <div className="space-y-6 p-6 sm:p-8 lg:p-10">
         
-        {/* Elegant Header Area */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="space-y-2">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-zinc-800 to-black dark:from-zinc-100 dark:to-zinc-400 flex items-center justify-center shadow-lg shadow-black/20 dark:shadow-white/10">
-                <ShoppingCart className="w-6 h-6 text-white dark:text-zinc-900" />
+        {/* Hero Banner */}
+        <div className="relative overflow-hidden rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%)' }}>
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-blue-500/5" />
+            <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-purple-500/5" />
+            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.3) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          </div>
+          <div className="relative p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
+                <ShoppingCart className="w-7 h-7 text-white" />
               </div>
-              <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-                Sales Orders
-              </h1>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                  Sales Orders
+                </h1>
+                <p className="text-blue-200/50 text-sm mt-0.5">
+                  Monitor transactions, track shipping, and manage payments
+                </p>
+              </div>
             </div>
-            <p className="text-zinc-500 dark:text-zinc-400 text-sm max-w-xl">
-              Monitor incoming transactions, track shipping status, and manage customer payments effortlessly.
-            </p>
+          </div>
+
+          <div className="relative grid grid-cols-3 border-t border-white/5">
+            {[
+              { label: 'Total Orders', value: orders.total, icon: ShoppingCart },
+              { label: 'Current Page', value: `${orders.current_page} / ${orders.last_page}`, icon: Hash },
+              { label: 'Showing', value: `${orders.data.length} items`, icon: TrendingUp },
+            ].map((s) => (
+              <div key={s.label} className="flex items-center gap-3 px-6 sm:px-8 py-4 border-r last:border-r-0 border-white/5">
+                <s.icon className="w-4 h-4 text-blue-300/40 hidden sm:block" />
+                <div>
+                  <p className="text-[10px] sm:text-xs font-semibold text-blue-300/40 uppercase tracking-wider">{s.label}</p>
+                  <p className="text-lg sm:text-xl font-black text-white">{s.value}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Data Card Content */}
-        <Card className="border-0 shadow-2xl shadow-zinc-200/50 dark:shadow-black/40 rounded-3xl overflow-hidden bg-white/80 dark:bg-zinc-900/80 backdrop-blur-3xl">
-          <CardHeader className="bg-zinc-50/50 dark:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800/50 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <CardTitle className="text-lg font-bold flex items-center gap-2">
-                <LayoutGrid className="w-5 h-5 text-zinc-800 dark:text-zinc-200" />
-                Order List ({orders.total})
-              </CardTitle>
-            </div>
+        {/* Table Card */}
+        <Card className="border-0 shadow-xl shadow-zinc-200/50 dark:shadow-black/40 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/80">
+          <CardHeader className="bg-zinc-50/80 dark:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800/50 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <CardTitle className="text-base font-bold flex items-center gap-2">
+              <LayoutGrid className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
+              Order List
+            </CardTitle>
             <div className="relative w-full sm:max-w-xs">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
               <Input 
                 placeholder="Search by order number..." 
                 value={search} 
                 onChange={(e) => handleSearch(e.target.value)} 
-                className="pl-10 rounded-xl bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-sm focus-visible:ring-black h-10 w-full" 
+                className="pl-10 rounded-xl bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-sm focus-visible:ring-blue-500 h-10 w-full" 
               />
             </div>
           </CardHeader>
@@ -147,7 +168,6 @@ export default function OrderPage({ orders, filters }: Props) {
             <DataTable columns={columns} data={orders.data} />
           </CardContent>
 
-          {/* Pagination */}
           {orders.last_page > 1 && (
             <div className="p-4 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/30 dark:bg-zinc-900/30 flex items-center justify-center gap-1.5 flex-wrap">
               {orders.links.map((link, i) => (
@@ -164,7 +184,6 @@ export default function OrderPage({ orders, filters }: Props) {
             </div>
           )}
         </Card>
-
       </div>
     </AppLayout>
   );

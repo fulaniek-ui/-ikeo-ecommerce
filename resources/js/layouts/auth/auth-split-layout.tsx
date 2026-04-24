@@ -13,7 +13,7 @@ export default function AuthSplitLayout({
     return (
         <div className="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
             {/* Left Panel - IKEO Branding */}
-            <div className="relative hidden h-full flex-col justify-between overflow-hidden bg-[#0058A3] p-10 text-white lg:flex">
+            <div className="relative hidden h-full flex-col items-center justify-between overflow-hidden bg-[#0058A3] p-10 text-white lg:flex">
                 {/* Background pattern */}
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-20 left-10 rotate-12">
@@ -30,7 +30,7 @@ export default function AuthSplitLayout({
                 {/* Logo */}
                 <Link
                     href={home()}
-                    className="relative z-20 flex items-center gap-3"
+                    className="relative z-20 flex w-full max-w-md items-center gap-3"
                 >
                     <AppLogoIcon className="size-10" />
                     <span className="text-2xl font-extrabold tracking-widest text-[#FFDA1A]">
@@ -39,7 +39,7 @@ export default function AuthSplitLayout({
                 </Link>
 
                 {/* Center content */}
-                <div className="relative z-20 space-y-6">
+                <div className="relative z-20 w-full max-w-md space-y-6">
                     <h2 className="text-4xl font-bold leading-tight">
                         Furnish your world,
                         <br />
@@ -65,7 +65,7 @@ export default function AuthSplitLayout({
                 </div>
 
                 {/* Footer */}
-                <div className="relative z-20">
+                <div className="relative z-20 w-full max-w-md">
                     <p className="text-sm text-blue-200">
                         &copy; {new Date().getFullYear()} IKEO. Affordable furniture for everyone.
                     </p>

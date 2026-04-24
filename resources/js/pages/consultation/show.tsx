@@ -33,27 +33,31 @@ export default function Show({ consultation }: Props) {
       
       <div className="max-w-5xl mx-auto p-6 sm:p-8 lg:p-10 space-y-8">
         
-        {/* Header Actions */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Link href="/dashboard/consultations" className="p-2 -ml-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-3">
-                {consultation.name}
-                <Badge className={`px-3 py-1 text-xs font-semibold border ${statusColor[consultation.status] || ''}`}>
-                  {capitalize(consultation.status)}
-                </Badge>
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
-                <Bookmark className="w-4 h-4 text-indigo-500" />
-                Inquiry for Design Consultation
-              </p>
+        {/* Hero Header */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-600">
+          <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-white/5" />
+          <div className="relative p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <Link href="/dashboard/consultations" className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors text-white border border-white/20">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                    {consultation.name}
+                  </h2>
+                  <Badge className={`px-3 py-1 text-xs font-semibold border ${statusColor[consultation.status] || ''}`}>
+                    {capitalize(consultation.status)}
+                  </Badge>
+                </div>
+                <p className="text-indigo-100/70 text-sm mt-1 flex items-center gap-2">
+                  <Bookmark className="w-4 h-4" />
+                  Inquiry for Design Consultation
+                </p>
+              </div>
             </div>
-          </div>
 
-          <form onSubmit={handleSubmit} className="flex bg-muted/30 p-2 rounded-2xl border border-border/50 items-center gap-3 shadow-sm">
+            <form onSubmit={handleSubmit} className="flex bg-white/10 backdrop-blur-sm p-2 rounded-2xl border border-white/10 items-center gap-3">
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <span className="text-sm font-medium text-muted-foreground ml-2 hidden sm:inline-block">Status:</span>
               <div className="w-[160px]">
@@ -70,12 +74,13 @@ export default function Show({ consultation }: Props) {
                   </SelectContent>
                 </Select>
               </div>
-              <Button disabled={processing} type="submit" size="sm" className="rounded-xl h-10 px-5 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md transition-all">
+              <Button disabled={processing} type="submit" size="sm" className="rounded-xl h-10 px-5 bg-white text-indigo-700 hover:bg-indigo-50 shadow-md transition-all font-bold">
                 <Save className="w-4 h-4 mr-2" />
                 Update
               </Button>
             </div>
           </form>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

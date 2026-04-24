@@ -1,0 +1,131 @@
+============================================================
+LINKEDIN PROFILE — NIKEN MASSY
+============================================================
+Copy-paste each section ke LinkedIn kamu.
+
+
+============================================================
+1. HEADLINE (di bawah nama, max 220 karakter)
+============================================================
+
+QA Engineer | Educational Technology | Playwright Automation | AS/400 Developer | Fullstack Web Dev (Laravel, React, TypeScript) | Open to Sponsorship (482/186/DAMA)
+
+
+============================================================
+2. ABOUT SECTION
+============================================================
+
+Quality-focused software professional with 7+ years of experience spanning quality assurance, legacy system development, and modern fullstack web technologies.
+
+Currently working as a QA Engineer at CareerHub/Symplicity, where I help ensure the quality and accessibility of an educational platform used by 900+ universities across Australia, the UK, the US, and Asia-Pacific. My day-to-day involves testing student-staff communication workflows, validating WCAG accessibility compliance, documenting defects in JIRA, and supporting automation efforts using Playwright — all within Agile sprint cycles.
+
+Before transitioning into QA, I spent several years as an IBM AS/400 Developer working with major financial institutions including UOB Bank, CIMB Bank, and Aeon Credit Services across Southeast Asia. I delivered system enhancements for platforms handling millions of customer records, coordinated SIT/UAT testing, and managed deployments across multiple countries.
+
+I'm also actively expanding my skill set through a Fullstack Web Development program, building production-grade applications with Laravel, React, TypeScript, and Inertia.js.
+
+What I bring to the table:
+→ Deep QA experience in educational technology and banking
+→ Ability to bridge modern testing practices with legacy enterprise systems
+→ Cross-cultural communication skills from working across Australia, Malaysia, Indonesia, and international teams
+→ A genuine passion for quality, reliability, and continuous improvement
+
+I'm based in Victoria, Australia on a 407 Training Visa (valid until Jan 2027) and actively seeking sponsorship opportunities (482, 186, or DAMA) to continue building my career here long-term.
+
+Let's connect — I'd love to chat about QA, EdTech, fullstack development, or any opportunities where I can add value to your team.
+
+📧 niken.massy@gmail.com
+📞 +61 411 722 726
+
+
+============================================================
+3. EXPERIENCE — Update role descriptions (ringkasan)
+============================================================
+
+--- CareerHub / Symplicity Australia | QA Engineer | Mar 2023 – Mar 2026 ---
+
+Ensuring quality and accessibility of an educational platform used by 900+ universities across Australia, UK, US, and Asia-Pacific.
+
+• Perform manual and exploratory testing on student career services, job boards, appointment scheduling, and employer engagement modules
+• Test student-staff communication workflows to ensure seamless interaction between students, career advisors, and university administrators
+• Validate WCAG accessibility compliance across devices
+• Document defects in JIRA and collaborate with cross-functional teams in Agile sprints
+• Support automation efforts using Playwright and VSCode
+
+
+--- Accenture South East Asia | RPG AS/400 Developer | Jan 2022 – Sep 2022 ---
+
+Client: UOB Group InnoHub — delivered system enhancements for the BWFCIF (Bank Wide Customer Information File) platform supporting 20M+ customer records across Southeast Asia.
+
+• Developed RPG/CLP programs and performed SIT/UAT support including FSD walkthroughs and defect triage
+• Coordinated deployment activities across multiple environments
+
+
+--- CIMB Bank Malaysia | Technical Support (RPG AS/400) | Aug 2020 – May 2021 ---
+
+Managed end-to-end incident handling and vendor coordination for core banking systems serving 4 countries.
+
+• Oversaw SIT/UAT promotions and production deployments across Malaysia, Indonesia, Vietnam, and UK
+• Acted as liaison between development teams and business stakeholders to resolve critical production issues
+
+
+--- Payment Networks | Software Tester (RPG AS/400) | Aug 2019 – Feb 2020 ---
+
+• Conducted testing for ATM software upgrades and Visa Terminal Certification across multiple terminal types
+• Automated ATM image deployment using PowerShell and Clonezilla, reducing setup time significantly
+
+
+--- Visualogic Resources | AS/400 Developer | Apr 2017 – Jun 2019 ---
+
+• Client Aeon Credit Services: maintained large-scale credit/financial applications, resolved functional issues, prepared technical documentation
+• Client UOB Bank: performed ATM testing across terminal types, created AS/400 utility programs for automated data patching
+
+
+--- Bank Resona Perdania | AS/400 Developer | Aug 2010 – Nov 2012 ---
+
+• Maintained and enhanced the MiSys Equation CoreBanking system for daily banking operations
+• Coordinated disaster recovery activities and managed communication between vendors and internal stakeholders
+
+
+--- Balicamp / Sigma Cipta Caraka | RPG AS/400 Developer | 2006 – 2010 ---
+
+• Developed and supported AlphaBits CoreBanking systems for regional banks across Southeast Asia
+• Delivered program fixes, enhancements, and technical solutions for clients in Indonesia and the region
+
+
+============================================================
+4. SKILLS (tambahkan di LinkedIn Skills section)
+============================================================
+
+- Quality Assurance
+- Software Testing
+- Playwright
+- Manual Testing
+- Automation Testing
+- Educational Technology
+- Accessibility Testing (WCAG)
+- JIRA
+- Agile / Scrum
+- IBM AS/400
+- RPG / RPGLE
+- COBOL
+- API Testing
+- HTML / CSS / JavaScript
+- React
+- TypeScript
+- Laravel
+- PHP
+- SQL
+- Postman
+- JMeter
+
+
+============================================================
+5. TIPS UNTUK LINKEDIN
+============================================================
+
+• Ganti foto profil yang profesional (background polos, senyum, pakai baju formal/smart casual)
+• Banner/cover photo: bisa pakai Canva, tulis "QA Engineer | Open to Sponsorship" 
+• Aktifkan "Open to Work" frame — pilih: QA Engineer, Software Tester, Web Developer
+• Setting visibility: "Recruiters only" supaya employer sekarang gak lihat
+• Minta endorsement skills dari kolega (Chan Kok Ling, Abdurahman, dll)
+• Post 1-2x seminggu tentang QA tips, testing insights, atau project bootcamp kamu

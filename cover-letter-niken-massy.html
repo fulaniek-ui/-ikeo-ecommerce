@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Letter — Niken Massy</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a2e; font-size: 11pt; line-height: 1.7; background: #fff; }
+  .page { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 0; }
+
+  .header { background: #1a1a2e; color: #fff; padding: 32px 48px 24px; }
+  .header h1 { font-size: 22pt; font-weight: 700; margin-bottom: 2px; }
+  .header .title { color: #4fc3f7; font-size: 10pt; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 12px; }
+  .header-contact { display: flex; gap: 24px; flex-wrap: wrap; font-size: 9pt; color: #ccc; }
+  .header-contact span { display: flex; align-items: center; gap: 6px; }
+  .header-contact .icon { color: #4fc3f7; }
+
+  .body { padding: 32px 48px 40px; }
+  .date { font-size: 10pt; color: #666; margin-bottom: 20px; }
+  .recipient { margin-bottom: 20px; font-size: 10pt; line-height: 1.6; }
+  .recipient strong { color: #1a1a2e; }
+  .greeting { font-size: 11pt; font-weight: 600; margin-bottom: 14px; }
+
+  .body p { font-size: 10pt; color: #333; line-height: 1.75; margin-bottom: 14px; text-align: justify; }
+  .body p strong { color: #1a1a2e; }
+
+  .highlight-box { background: #f0f9ff; border-left: 4px solid #4fc3f7; padding: 14px 18px; margin: 16px 0; border-radius: 4px; }
+  .highlight-box p { margin-bottom: 0; font-size: 9.5pt; }
+
+  .closing { margin-top: 24px; }
+  .closing p { margin-bottom: 4px; }
+  .signature { font-size: 11pt; font-weight: 700; color: #1a1a2e; margin-top: 8px; }
+  .sig-title { font-size: 9pt; color: #4fc3f7; font-weight: 600; }
+
+  .footer { border-top: 2px solid #4fc3f7; margin-top: 30px; padding-top: 14px; }
+  .footer h4 { font-size: 9pt; text-transform: uppercase; letter-spacing: 1.5px; color: #1a1a2e; margin-bottom: 6px; }
+  .footer p { font-size: 8.5pt; color: #555; line-height: 1.6; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { width: 100%; min-height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Niken Massy</h1>
+    <div class="title">QA Engineer &amp; Fullstack Web Developer</div>
+    <div class="header-contact">
+      <span><span class="icon">✉</span> niken.massy@gmail.com</span>
+      <span><span class="icon">☎</span> +61 411 722 726</span>
+      <span><span class="icon">🔗</span> linkedin.com/in/nmassy</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+    <div class="date" id="currentDate"></div>
+    <script>
+      const d = new Date();
+      document.getElementById('currentDate').textContent = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+    </script>
+
+    <div class="recipient">
+      <strong>[Hiring Manager / Contact Person Name]</strong><br>
+      [Company Name]<br>
+      [Company Address]<br>
+      [City, State, Postcode]
+    </div>
+
+    <div class="greeting">Dear [Hiring Manager's Name],</div>
+
+    <p>
+      I am writing to express my strong interest in the <strong>[Position Title]</strong> role at <strong>[Company Name]</strong>. With over 7 years of experience spanning quality assurance, software development, and educational technology platforms, I am confident I can make a meaningful contribution to your team. I am currently based in Victoria, Australia on a 407 Training Visa (valid until January 2027) and am open to <strong>482, 186, or DAMA sponsorship</strong> arrangements.
+    </p>
+
+    <p>
+      Most recently, I worked as a <strong>QA Engineer at CareerHub/Symplicity Australia</strong> in Brisbane, where I ensured the quality and accessibility of an educational platform used by universities across Australia. My role involved testing student-staff communication workflows, documenting defects in JIRA, collaborating with cross-functional teams in Agile sprints, and supporting automation efforts using <strong>Playwright</strong>. This experience gave me a deep understanding of how technology supports learning environments and institutional operations.
+    </p>
+
+    <p>
+      Prior to this, I spent several years as an <strong>AS/400 Developer</strong> working with major financial institutions including UOB Group, CIMB Bank, and Aeon Credit across Southeast Asia. I delivered system enhancements for platforms handling millions of customer records, coordinated SIT/UAT testing, and managed deployments across multiple regions. This background has given me strong analytical skills, attention to detail, and the ability to work effectively in high-stakes, regulated environments.
+    </p>
+
+    <p>
+      I am also actively expanding my skill set through a <strong>Fullstack Web Development Bootcamp</strong>, where I am building production-grade applications using <strong>Laravel, React, TypeScript, and Inertia.js</strong>. I am passionate about combining my QA expertise with modern development practices to deliver high-quality software solutions.
+    </p>
+
+    <div class="highlight-box">
+      <p><strong>What I bring to your team:</strong> A unique combination of QA rigour, development capability, educational technology experience, and cross-cultural communication skills developed through working across Australia, Malaysia, Indonesia, and with international teams. I can help your organisation build and maintain quality relationships with clients and partners around the world.</p>
+    </div>
+
+    <p>
+      I would welcome the opportunity to discuss how my experience and enthusiasm can contribute to <strong>[Company Name]</strong>'s success. I am available for a phone interview at your convenience and will follow up within 2–3 business days to discuss next steps. Please do not hesitate to contact me at <strong>niken.massy@gmail.com</strong> or <strong>+61 411 722 726</strong>.
+    </p>
+
+    <p>
+      Thank you for considering my application. I look forward to the opportunity to demonstrate my skills, professionalism, and genuine enthusiasm for this role.
+    </p>
+
+    <div class="closing">
+      <p>Kind regards,</p>
+      <div class="signature">Niken Massy</div>
+      <div class="sig-title">QA Engineer &amp; Fullstack Web Developer</div>
+    </div>
+
+    <div class="footer">
+      <h4>How to Use This Cover Letter</h4>
+      <p>
+        1. Replace all <strong>[bracketed text]</strong> with the specific company and role details.<br>
+        2. Email this cover letter along with your CV to the <strong>contact person / hiring manager</strong> at the agency.<br>
+        3. Follow up within <strong>2–3 business days</strong> by phone to ask about the interview process and speak with your case manager.<br>
+        4. Approach every interaction with <strong>confidence, professionalism, and enthusiasm</strong>.<br>
+        5. Contact all target agencies, find the right contact person, and aim for a <strong>phone interview</strong> first.
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

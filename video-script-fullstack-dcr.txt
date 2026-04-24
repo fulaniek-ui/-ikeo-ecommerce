@@ -1,0 +1,38 @@
+============================================================
+VIDEO SCRIPT — 60 SECONDS (SIMPLE VERSION)
+Full Stack Developer | Direct Care Resources
+============================================================
+
+[SENYUM]
+
+"Hi, I'm Niken. Thank you for this opportunity."
+
+"I'm applying for the Full Stack Developer role."
+
+"I have over 10 years in IT — software development, 
+testing, and banking systems."
+
+"Right now, I'm training in full stack web development 
+using Laravel, React, and TypeScript."
+
+"In my last role here in Brisbane, I worked as a QA 
+Engineer testing a platform used by hundreds of 
+universities."
+
+"So I don't just build things — I make sure they work well."
+
+"I'm a fast learner, I love working in teams, and I'm 
+ready to start."
+
+"I'd love the chance to chat more about this role. 
+Thank you for your time."
+
+[SENYUM]
+
+============================================================
+TIPS
+============================================================
+- Kalimat pendek = gampang diingat
+- Jeda sebentar antar kalimat, jangan buru-buru
+- Senyum, rileks, bicara seperti ngobrol
+- Latihan 2-3x, pilih yang paling natural
