@@ -13,6 +13,12 @@ const formatIDR = (value: number) => new Intl.NumberFormat('id-ID', { style: 'cu
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+const imgSrc = (path?: string | null) => {
+  if (!path) return null;
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `/storage/${path}`;
+};
+
 const statusColor: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200',
   processing: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200',
@@ -142,7 +148,7 @@ export default function Show({ order: initialOrder }: Props) {
                           <td className="p-4 pl-6">
                             <div className="flex items-center gap-3">
                               {item.product?.image ? (
-                                <img src={`/storage/${item.product.image}`} alt={item.product_name} className="h-12 w-12 rounded-lg object-cover shadow-sm border border-zinc-100 dark:border-zinc-800" />
+                                <img src={imgSrc(item.product.image)!} alt={item.product_name} className="h-12 w-12 rounded-lg object-cover shadow-sm border border-zinc-100 dark:border-zinc-800" />
                               ) : (
                                 <div className="h-12 w-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                                   <Package className="h-5 w-5 text-zinc-400" />
