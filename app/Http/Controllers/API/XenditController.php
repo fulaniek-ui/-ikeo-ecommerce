@@ -60,7 +60,7 @@ class XenditController extends Controller
         }
 
         // Calculate amounts
-        $shipping = 15000;
+        $shipping = $request->input('shipping_cost', 15000);
         $itemsTotal = 0;
         if ($request->items) {
             foreach ($request->items as $item) {
