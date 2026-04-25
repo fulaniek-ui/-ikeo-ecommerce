@@ -46,11 +46,11 @@ class XenditController extends Controller
                 'user_id' => $user->id,
                 'label' => 'Checkout',
                 'recipient_name' => $customerName ?: $user->name,
-                'phone' => $customerPhone ?: '-',
+                'phone' => $customerPhone ?: '',
                 'address' => $customerAddress,
-                'city' => '-',
-                'province' => '-',
-                'postal_code' => '-',
+                'city' => '',
+                'province' => '',
+                'postal_code' => '',
                 'is_default' => false,
             ]);
             $addressId = $address->id;

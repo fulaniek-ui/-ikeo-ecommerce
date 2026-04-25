@@ -50,7 +50,7 @@ export default function Show({ order: initialOrder }: Props) {
       setPaymentMsg(json.message);
 
       if (json.data) {
-        setOrder(json.data);
+        setOrder({ ...json.data, user: order.user, address: order.address, order_items: order.order_items });
         setData('status', json.data.status);
       }
     } catch {
@@ -297,8 +297,7 @@ export default function Show({ order: initialOrder }: Props) {
                         {order.address.recipient_name}
                       </p>
                       <p className="text-muted-foreground leading-relaxed pl-5">
-                        {order.address.address}<br/>
-                        {order.address.city}, {order.address.province} {order.address.postal_code}
+                        {[order.address.address, order.address.city, order.address.province, order.address.postal_code].filter(v => v && v !== '-').join(', ')}
                       </p>
                     </div>
                   </div>
@@ -319,7 +318,7 @@ export default function Show({ order: initialOrder }: Props) {
                   <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 flex items-center justify-center">
                     <CreditCard className="w-5 h-5" />
                   </div>
-                  <p className="font-bold text-foreground capitalize text-lg">{order.payment_method}</p>
+                  <p className="font-bold text-foreground capitalize text-lg">{order.payment_method === 'transfer' ? 'Xendit (Bank Transfer)' : order.payment_method === 'ewallet' ? 'E-Wallet / COD' : order.payment_method}</p>
                 </div>
               </CardContent>
             </Card>
