@@ -25,14 +25,18 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
-    public function show(Request $request, Order $order)
+    public function show(Request $request, string $order)
     {
-        if ($order->user_id !== $request->user()->id) {
+        $orderModel = is_numeric($order)
+            ? Order::findOrFail($order)
+            : Order::where('order_number', $order)->firstOrFail();
+
+        if ($orderModel->user_id !== $request->user()->id) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
         return response()->json([
-            'data' => $order->load('address', 'orderItems.product', 'orderItems.productVariant'),
+            'data' => $orderModel->load('address', 'orderItems.product:id,name,slug,image', 'orderItems.productVariant'),
         ]);
     }
 
