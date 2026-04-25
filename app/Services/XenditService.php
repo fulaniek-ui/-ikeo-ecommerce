@@ -27,6 +27,14 @@ class XenditService
             'failure_redirect_url' => $params['failure_url'] ?? config('app.url'),
             'currency' => 'IDR',
             'invoice_duration' => 86400,
+            'payment_methods' => [
+                'BCA', 'BNI', 'BRI', 'MANDIRI', 'PERMATA', 'BSI',
+                'OVO', 'DANA', 'SHOPEEPAY', 'LINKAJA', 'ASTRAPAY', 'JENIUSPAY',
+                'QRIS',
+                'CREDIT_CARD',
+                'ALFAMART', 'INDOMARET',
+            ],
+            'customer' => $params['customer'] ?? null,
         ]);
 
         $response = $this->invoiceApi->createInvoice($request);
