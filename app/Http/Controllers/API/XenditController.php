@@ -48,9 +48,9 @@ class XenditController extends Controller
                 'recipient_name' => $customerName ?: $user->name,
                 'phone' => $customerPhone ?: '',
                 'address' => $customerAddress,
-                'city' => '',
-                'province' => '',
-                'postal_code' => '',
+                'city' => $request->input('city', ''),
+                'province' => $request->input('province', ''),
+                'postal_code' => $request->input('postal_code', ''),
                 'is_default' => false,
             ]);
             $addressId = $address->id;
