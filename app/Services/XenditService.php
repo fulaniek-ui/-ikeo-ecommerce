@@ -18,7 +18,7 @@ class XenditService
 
     public function createInvoice(array $params): array
     {
-        $request = new CreateInvoiceRequest([
+        $data = [
             'external_id' => $params['external_id'],
             'amount' => $params['amount'],
             'payer_email' => $params['payer_email'],
@@ -27,15 +27,9 @@ class XenditService
             'failure_redirect_url' => $params['failure_url'] ?? config('app.url'),
             'currency' => 'IDR',
             'invoice_duration' => 86400,
-            'payment_methods' => [
-                'BCA', 'BNI', 'BRI', 'MANDIRI', 'PERMATA', 'BSI',
-                'OVO', 'DANA', 'SHOPEEPAY', 'LINKAJA', 'ASTRAPAY', 'JENIUSPAY',
-                'QRIS',
-                'CREDIT_CARD',
-                'ALFAMART', 'INDOMARET',
-            ],
-            'customer' => $params['customer'] ?? null,
-        ]);
+        ];
+
+        $request = new CreateInvoiceRequest($data);
 
         $response = $this->invoiceApi->createInvoice($request);
 
