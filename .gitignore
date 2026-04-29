@@ -28,3 +28,11 @@ yarn-error.log
 /.zed
 ngrok.exe
 *.py
+
+
+# Personal files - do not push
+payslip-*.html
+reference-letter-*.html
+job-description-*.html
+*.png
+script-presentasi-*.md
