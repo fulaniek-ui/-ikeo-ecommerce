@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PublicNav, PublicFooter } from '@/components/public-nav';
+import { API } from '@/lib/api';
 
 interface StoreItem { id: number; name: string; city: string; }
 
@@ -20,7 +21,7 @@ export default function ConsultationPublicIndex() {
     const [form, setForm] = useState({ store_id: '', name: '', email: '', phone: '', preferred_date: '', message: '' });
 
     useEffect(() => {
-        fetch('/api/stores')
+        fetch(`${API}/stores`)
             .then((r) => r.json())
             .then((json) => { setStores(json.data || []); setLoading(false); })
             .catch(() => setLoading(false));
@@ -31,7 +32,7 @@ export default function ConsultationPublicIndex() {
         setSubmitting(true);
         setErrors({});
 
-        const res = await fetch('/api/consultations', {
+        const res = await fetch(`${API}/consultations`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify({ ...form, store_id: form.store_id ? Number(form.store_id) : null }),

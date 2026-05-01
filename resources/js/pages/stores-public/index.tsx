@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { PublicNav, PublicFooter } from '@/components/public-nav';
+import { API } from '@/lib/api';
 
 interface StoreItem {
     id: number; name: string; address: string; city: string;
@@ -17,7 +18,7 @@ export default function StoresPublicIndex() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('/api/stores')
+        fetch(`${API}/stores`)
             .then((r) => r.json())
             .then((json) => { setStores(json.data || []); setLoading(false); })
             .catch(() => setLoading(false));

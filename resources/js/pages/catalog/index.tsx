@@ -27,6 +27,8 @@ interface ApiResponse {
     links: { prev: string | null; next: string | null };
 }
 
+import { API } from '@/lib/api';
+
 const formatIDR = (v: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v);
 
 export default function CatalogIndex() {
@@ -56,7 +58,7 @@ export default function CatalogIndex() {
         if (sort !== 'latest') params.set('sort', sort);
         params.set('page', page.toString());
         params.set('per_page', '15');
-        const res = await fetch(`/api/products?${params}`);
+        const res = await fetch(`${API}/products?${params}`);
         const json = await res.json();
         setData(json);
         setLoading(false);

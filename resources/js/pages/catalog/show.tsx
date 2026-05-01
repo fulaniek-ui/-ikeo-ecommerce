@@ -19,6 +19,8 @@ interface ProductDetail {
   reviews: { id: number; rating: number; comment: string; created_at: string; user: { name: string } }[];
 }
 
+import { API } from '@/lib/api';
+
 const formatIDR = (v: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v);
 
 function StarRating({ rating, size = 'sm' }: { rating: number; size?: 'sm' | 'md' }) {
@@ -48,7 +50,7 @@ return;
 }
 
     setLoading(true);
-    fetch(`/api/products/${slug}`)
+    fetch(`${API}/products/${slug}`)
       .then((r) => r.json())
       .then((json) => {
         setProduct(json.data);

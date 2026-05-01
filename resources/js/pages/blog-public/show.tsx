@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicNav, PublicFooter } from '@/components/public-nav';
+import { API } from '@/lib/api';
 
 interface BlogDetail {
     id: number; title: string; title_id: string; slug: string;
@@ -27,7 +28,7 @@ export default function BlogPublicShow() {
 
     useEffect(() => {
         if (!slug) return;
-        fetch(`/api/blogs/${slug}`)
+        fetch(`${API}/blogs/${slug}`)
             .then((r) => r.json())
             .then((json) => {
                 setBlog(json.data || json);

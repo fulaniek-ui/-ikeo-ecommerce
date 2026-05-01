@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicNav, PublicFooter } from '@/components/public-nav';
+import { API } from '@/lib/api';
 
 interface CategoryItem { id: number; name: string; name_id: string; slug: string; image: string | null; products_count: number; }
 interface BrandItem { id: number; name: string; slug: string; logo: string | null; description: string | null; products_count: number; }
@@ -25,10 +26,10 @@ export default function Welcome() {
 
     useEffect(() => {
         Promise.all([
-            fetch('/api/categories').then((r) => r.json()),
-            fetch('/api/brands').then((r) => r.json()),
-            fetch('/api/products?per_page=8&sort=latest').then((r) => r.json()),
-            fetch('/api/blogs?per_page=3').then((r) => r.json()),
+            fetch(`${API}/categories`).then((r) => r.json()),
+            fetch(`${API}/brands`).then((r) => r.json()),
+            fetch(`${API}/products?per_page=8&sort=latest`).then((r) => r.json()),
+            fetch(`${API}/blogs?per_page=3`).then((r) => r.json()),
         ]).then(([catJson, brandJson, prodJson, blogJson]) => {
             setCategories(catJson.data || []);
             setBrands(brandJson.data || []);

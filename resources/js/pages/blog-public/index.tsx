@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicNav, PublicFooter } from '@/components/public-nav';
+import { API } from '@/lib/api';
 
 interface BlogItem {
     id: number; title: string; slug: string; excerpt: string;
@@ -17,7 +18,7 @@ export default function BlogPublicIndex() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('/api/blogs')
+        fetch(`${API}/blogs`)
             .then((r) => r.json())
             .then((json) => {
  setBlogs(json.data); setLoading(false); 

@@ -3,6 +3,7 @@ import { Package, Truck, User, MapPin, CreditCard, Calendar, ArrowLeft, RefreshC
 import type { FormEvent} from 'react';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { API } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -45,7 +46,7 @@ export default function Show({ order: initialOrder }: Props) {
     setPaymentMsg('');
 
     try {
-      const res = await fetch(`/api/payments/${order.id}/check`);
+      const res = await fetch(`${API}/payments/${order.id}/check`);
       const json = await res.json();
       setPaymentMsg(json.message);
 
